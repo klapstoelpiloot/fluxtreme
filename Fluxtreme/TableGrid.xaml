@@ -10,6 +10,13 @@
 		<Grid Height="22" DockPanel.Dock="Top" Background="#FF424242">
 			<TextBlock x:Name="tablename" Margin="5,0,0,0" VerticalAlignment="Center" Opacity="0.5"/>
 		</Grid>
-		<DataGrid x:Name="tablecontents" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AreRowDetailsFrozen="True" IsReadOnly="True" AutoGeneratingColumn="AutoGeneratingColumn"/>
+		<DataGrid x:Name="tablecontents" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AreRowDetailsFrozen="True" IsReadOnly="True" AutoGeneratingColumn="AutoGeneratingColumn">
+			<DataGrid.CellStyle>
+				<Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+					<Setter Property="Padding" Value="10,10,10,10"/>
+					<Setter Property="VerticalContentAlignment" Value="Center"/>
+				</Style>
+			</DataGrid.CellStyle>
+		</DataGrid>
 	</DockPanel>
 </UserControl>

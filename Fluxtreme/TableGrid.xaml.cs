@@ -1,19 +1,9 @@
 ﻿using InfluxDB.Client.Core.Flux.Domain;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Fluxtreme
 {
@@ -36,11 +26,11 @@ namespace Fluxtreme
 
             // Build a DataTable from FluxTable
             datatable = new DataTable();
-            foreach(FluxColumn c in fluxtable.Columns)
+            foreach (FluxColumn c in fluxtable.Columns)
             {
                 datatable.Columns.Add(c.Label);
             }
-            foreach(FluxRecord r in fluxtable.Records)
+            foreach (FluxRecord r in fluxtable.Records)
             {
                 datatable.Rows.Add(r.Values.Values.ToArray());
             }
@@ -51,7 +41,7 @@ namespace Fluxtreme
             tablecontents.ItemsSource = datatable.DefaultView;
 
             // Make up table name
-            foreach(FluxColumn c in fluxtable.GetGroupKey())
+            foreach (FluxColumn c in fluxtable.GetGroupKey())
             {
                 string colvalue = fluxtable.Records[0].Values[c.Label].ToString();
 
@@ -66,17 +56,17 @@ namespace Fluxtreme
         {
             // This is a crude method to limit the initial width of a column in case we expect it to become very wide...
             int columnindex = datatable.Columns[e.Column.Header.ToString()].Ordinal;
-            if(fluxtable.Columns[columnindex].DataType == "string")
+            if (fluxtable.Columns[columnindex].DataType == "string")
             {
                 int maxlen = 0;
-                foreach(var r in fluxtable.Records)
+                foreach (var r in fluxtable.Records)
                 {
                     int len = r.GetValueByIndex(columnindex).ToString().Length;
-                    if(len > maxlen)
+                    if (len > maxlen)
                         maxlen = len;
                 }
-                
-                if(maxlen > 50)
+
+                if (maxlen > 50)
                     e.Column.Width = new DataGridLength(300);
             }
         }
