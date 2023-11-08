@@ -2248,7 +2248,7 @@
                             <Setter Property="BorderBrush" TargetName="HeaderBorder" Value="{DynamicResource ListView.Disabled.Border}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="HeaderBorder" Value="{DynamicResource ListView.MouseOver.Background}"/>
+							<Setter Property="Background" TargetName="HeaderBorder" Value="{DynamicResource ListView.GridView.HeaderItemMouseOver.Background}"/>
                             <Setter Property="BorderBrush" TargetName="HeaderBorder" Value="{DynamicResource ListView.MouseOver.Border}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">

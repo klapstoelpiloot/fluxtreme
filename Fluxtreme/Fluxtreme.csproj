@@ -275,6 +275,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\ExpandDownGroup.png" />
     <Content Include="Monaco\**" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

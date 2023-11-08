@@ -5,17 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Fluxtreme"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="800" Height="100">
+             d:DesignHeight="100" d:DesignWidth="800" UseLayoutRounding="True" SnapsToDevicePixels="True">
 	<UserControl.Resources>
+		<Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+			<Setter Property="HorizontalContentAlignment" Value="Left" />
+			<Setter Property="Foreground" Value="#FFFFFFFF" />
+		</Style>
+		<Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+			<Setter Property="Focusable" Value="False"/>
+		</Style>
 	</UserControl.Resources>
-	<DockPanel Margin="2, 2, 2, 10">
-		<Grid Height="22" DockPanel.Dock="Top" Background="#FF424242">
-			<TextBlock x:Name="title" Margin="5,0,0,0" VerticalAlignment="Center" Opacity="0.5"/>
-		</Grid>
-		<ListView x:Name="contents" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False" Grid.IsSharedSizeScope="True">
-			<ListView.View>
-				<GridView x:Name="contentview" AllowsColumnReorder="False" />
-			</ListView.View>
-		</ListView>
-	</DockPanel>
+	<Grid>
+		<DockPanel Margin="2, 2, 2, 10">
+			<Grid Height="21" DockPanel.Dock="Top" Background="#FF424242">
+				<TextBlock x:Name="title" Margin="5,0,0,0" VerticalAlignment="Center" Opacity="0.5"/>
+				<Button x:Name="expandbutton" Width="18" Height="18" HorizontalAlignment="Right" Margin="0,2,2,0" Padding="1" VerticalAlignment="Top" Click="expandbutton_Click">
+					<StackPanel>
+						<Image Source="Images/ExpandDownGroup.png" />
+						<TextBlock>Disconnect from Server</TextBlock>
+					</StackPanel>
+				</Button>
+			</Grid>
+			<ListView x:Name="contents" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False" Grid.IsSharedSizeScope="True" PreviewMouseWheel="contents_PreviewMouseWheel" SnapsToDevicePixels="True">
+				<ListView.View>
+					<GridView x:Name="contentview" AllowsColumnReorder="False">
+					</GridView>
+				</ListView.View>
+			</ListView>
+		</DockPanel>
+		<Rectangle x:Name="fade" Margin="0,0,0,9" Height="22" VerticalAlignment="Bottom" IsHitTestVisible="False">
+			<Rectangle.Fill>
+				<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,0.8">
+					<GradientStop Color="#00131313"/>
+					<GradientStop Color="#FF131313" Offset="1"/>
+				</LinearGradientBrush>
+			</Rectangle.Fill>
+		</Rectangle>
+	</Grid>
 </UserControl>

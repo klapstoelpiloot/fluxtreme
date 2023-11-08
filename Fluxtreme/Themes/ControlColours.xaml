@@ -101,9 +101,10 @@
     <SolidColorBrush x:Key="ListView.GridView.Static.Background"        Color="{DynamicResource AColour.Tone4.Background.Static}"/>
     <SolidColorBrush x:Key="ListView.GridView.Static.Border"            Color="{DynamicResource AColour.Tone4.Border.Static}"/>
     <SolidColorBrush x:Key="ListView.GridView.Grip.Background"          Color="{DynamicResource AColour.Tone4.Border.Static}"/>
-    <SolidColorBrush x:Key="ListView.GridView.HeaderItem.Background"    Color="{DynamicResource AColour.Tone5.Background.Static}"/>
+    <SolidColorBrush x:Key="ListView.GridView.HeaderItem.Background"    Color="{DynamicResource AColour.Tone7.Background.Static}"/>
+	<SolidColorBrush x:Key="ListView.GridView.HeaderItemMouseOver.Background"    Color="{DynamicResource AColour.Tone8.Background.Static}"/>
 
-    <SolidColorBrush x:Key="OptionMark.Static.Background"           Color="{DynamicResource AColour.Tone5.Background.Static}"/>
+	<SolidColorBrush x:Key="OptionMark.Static.Background"           Color="{DynamicResource AColour.Tone5.Background.Static}"/>
     <SolidColorBrush x:Key="OptionMark.Static.Border"               Color="{DynamicResource AColour.Tone5.Border.Static}"/>
     <SolidColorBrush x:Key="OptionMark.MouseOver.Background"        Color="{DynamicResource AColour.Tone5.Background.MouseOver}"/>
     <SolidColorBrush x:Key="OptionMark.MouseOver.Border"            Color="{DynamicResource AColour.Tone5.Border.MouseOver}"/>
