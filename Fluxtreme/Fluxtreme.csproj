@@ -170,6 +170,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FluxRecordWrap.cs" />
     <Compile Include="MonacoHostBridge.cs" />
     <Compile Include="ObservableCollectionEx.cs" />
     <Compile Include="AppSettings.Designer.cs">
@@ -177,8 +178,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>AppSettings.settings</DependentUpon>
     </Compile>
-    <Compile Include="TableGrid.xaml.cs">
-      <DependentUpon>TableGrid.xaml</DependentUpon>
+    <Compile Include="TableExtraData.cs" />
+    <Compile Include="TableView.xaml.cs">
+      <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\Attached\CornerRadiusHelper.cs" />
     <Compile Include="Themes\Attached\MenuHelper.cs" />
@@ -202,7 +204,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="TableGrid.xaml">
+    <Page Include="TableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

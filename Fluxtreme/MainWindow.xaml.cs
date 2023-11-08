@@ -42,10 +42,15 @@ namespace Fluxtreme
         public void ShowQueryError(string message, int fromLine = -1, int fromCol = -1, int toLine = -1, int toCol = -1)
         {
             queryerror.Content = message;
+            queryerror.ToolTip = message;
             queryerror.Visibility = Visibility.Visible;
             if ((fromLine > -1) && (fromCol > -1) && (toLine > -1) && (toCol > -1))
             {
                 queryeditor.ExecuteScriptAsync($"DisplayErrorMarker({fromLine}, {toLine}, {fromCol}, {toCol}, \"{HttpUtility.JavaScriptStringEncode(message)}\");");
+            }
+            else
+            {
+                queryeditor.ExecuteScriptAsync($"ClearErrorMarker();");
             }
         }
 
@@ -55,9 +60,14 @@ namespace Fluxtreme
             queryeditor.ExecuteScriptAsync($"ClearErrorMarker();");
         }
 
-        public void ShowQueryResults(List<FluxTable> tables)
+        public void ShowQueryResults(List<FluxTable> tables, List<TableExtraData> extradata)
         {
-            List<TableGrid> grids = tables.Select(ft => new TableGrid(ft)).ToList();
+            List<TableView> grids = new List<TableView>();
+            for(int i = 0; i < tables.Count; i++)
+            {
+                TableView t = new TableView(tables[i], extradata[i]);
+                grids.Add(t);
+            }
             tableslist.Children.Clear();
             grids.ForEach(t => tableslist.Children.Add(t));
         }
@@ -126,9 +136,12 @@ namespace Fluxtreme
                         return;
                     }
 
+                    // Calculate extra data for all tables received
+                    List<TableExtraData> extradata = tables.Select(t => TableExtraData.CalculateFor(t)).ToList();
+
                     // Show the result
                     Dispatcher.BeginInvoke(new Action(() => HideQueryError()));
-                    Dispatcher.BeginInvoke(new Action(() => ShowQueryResults(tables)));
+                    Dispatcher.BeginInvoke(new Action(() => ShowQueryResults(tables, extradata)));
                 }
                 finally
                 {
