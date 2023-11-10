@@ -35,13 +35,23 @@ namespace Fluxtreme
             }
 
             // Make up table name
-            foreach (FluxColumn c in fluxtable.GetGroupKey())
+            if (fluxtable.Records.Count > 0)
             {
-                string colvalue = fluxtable.Records[0].Values[c.Label].ToString();
-
-                title.Inlines.Add(new Run(c.Label + ":") { FontWeight = FontWeights.Bold });
-                title.Inlines.Add(new Run(" " + colvalue) { FontWeight = FontWeights.Normal });
-                title.Inlines.Add(new Run("   "));
+                foreach (FluxColumn c in fluxtable.GetGroupKey())
+                {
+                    string colvalue = fluxtable.Records[0].Values[c.Label].ToString();
+                    title.Inlines.Add(new Run(c.Label + ":") { FontWeight = FontWeights.Bold });
+                    title.Inlines.Add(new Run(" " + colvalue) { FontWeight = FontWeights.Normal });
+                    title.Inlines.Add(new Run("   "));
+                }
+            }
+            else
+            {
+                foreach (FluxColumn c in fluxtable.GetGroupKey())
+                {
+                    title.Inlines.Add(new Run(c.Label) { FontWeight = FontWeights.Bold });
+                    title.Inlines.Add(new Run("   "));
+                }
             }
 
             // Make columns

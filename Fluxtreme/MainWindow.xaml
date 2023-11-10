@@ -7,7 +7,7 @@
         xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf" x:Class="Fluxtreme.MainWindow"
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
-        Title="Fluxtreme" Height="800" Width="1024" Initialized="Window_Initialized" Closing="Window_Closing">
+        Title="Fluxtreme" Height="800" Width="1024" Closing="Window_Closing">
 	<Grid Background="#FF1E1E1E">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="1*"/>
@@ -21,6 +21,6 @@
 		<Grid Grid.Row="1" Margin="0,6,0,0">
 			<Label x:Name="queryerror" Background="#FFCC0000" Content="Error: Bla bla bla" Visibility="Hidden" Padding="5,0,0,0" Margin="0" VerticalContentAlignment="Center"/>
 		</Grid>
-		<Wpf:WebView2 x:Name="queryeditor" Grid.Row="2" DefaultBackgroundColor="#FF1E1E1E"/>
+		<local:FluxEditor x:Name="editor" Grid.Row="2" TextChanged="editor_TextChanged"/>
 	</Grid>
 </Window>

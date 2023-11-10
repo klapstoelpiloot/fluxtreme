@@ -1,5 +1,6 @@
 ﻿using InfluxDB.Client;
 using InfluxDB.Client.Core.Flux.Domain;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Fluxtreme
 {
@@ -16,7 +18,6 @@ namespace Fluxtreme
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MonacoHostBridge bridge = new MonacoHostBridge();
         private object querySyncObject = new object();
         private System.Timers.Timer queryDelay;
         private string query;
@@ -25,18 +26,15 @@ namespace Fluxtreme
         {
             InitializeComponent();
 
-            bridge.OnTextChanged += Bridge_OnTextChanged;
-
             queryDelay = new System.Timers.Timer(100);
             queryDelay.AutoReset = false;
             queryDelay.Elapsed += QueryDelay_Elapsed;
-        }
 
-        private async void Window_Initialized(object sender, EventArgs e)
-        {
-            await queryeditor.EnsureCoreWebView2Async();
-            queryeditor.CoreWebView2.AddHostObjectToScript("bridge", bridge);
-            queryeditor.Source = new Uri(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Monaco\index.html"));
+            editor.Text = "from(bucket: \"events\")\r\n" +
+					"\t|> range(start: 2023-11-03T00:00:00Z, stop: 2023-11-04T00:00:00Z)\r\n" +
+					"\t|> filter(fn: (r) => r[\"code\"] =~ /[IE]_SPE_03F2/)\r\n" +
+					"\t|> filter(fn: (r) => r[\"_field\"] == \"p-holder\" or r[\"_field\"] == \"p-mafm\" or r[\"_field\"] == \"p-sniffle_target\" or r[\"_field\"] == \"description\")\r\n" +
+					"\t|> filter(fn: (r) => r[\"ssindex\"] == \"0\")\r\n";
         }
 
         public void ShowQueryError(string message, int fromLine = -1, int fromCol = -1, int toLine = -1, int toCol = -1)
@@ -44,20 +42,11 @@ namespace Fluxtreme
             queryerror.Content = message;
             queryerror.ToolTip = message;
             queryerror.Visibility = Visibility.Visible;
-            if ((fromLine > -1) && (fromCol > -1) && (toLine > -1) && (toCol > -1))
-            {
-                queryeditor.ExecuteScriptAsync($"DisplayErrorMarker({fromLine}, {toLine}, {fromCol}, {toCol}, \"{HttpUtility.JavaScriptStringEncode(message)}\");");
-            }
-            else
-            {
-                queryeditor.ExecuteScriptAsync($"ClearErrorMarker();");
-            }
         }
 
         public void HideQueryError()
         {
             queryerror.Visibility = Visibility.Hidden;
-            queryeditor.ExecuteScriptAsync($"ClearErrorMarker();");
         }
 
         public void ShowQueryResults(List<FluxTable> tables, List<TableExtraData> extradata)
@@ -150,16 +139,16 @@ namespace Fluxtreme
             }
         }
 
-        private void Bridge_OnTextChanged(string text)
-        {
-            query = text;
-            queryDelay.Stop();
-            queryDelay.Start();
-        }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             AppSettings.Default.Save();
+        }
+
+        private void editor_TextChanged(object sender, EventArgs e)
+        {
+            query = editor.Text;
+            queryDelay.Stop();
+            queryDelay.Start();
         }
     }
 }
