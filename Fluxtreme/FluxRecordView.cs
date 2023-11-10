@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Fluxtreme
 {
-    public class FluxRecordWrap
+    public class FluxRecordView
     {
         private FluxRecord record;
 
         public object this[int value] => record.GetValueByIndex(value);
 
-        public FluxRecordWrap(FluxRecord record)
+        public FluxRecordView(FluxRecord record)
         {
             this.record = record;
         }

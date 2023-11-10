@@ -1,10 +1,13 @@
 ﻿using InfluxDB.Client.Core.Flux.Domain;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using static ScintillaNET.Style;
 
 namespace Fluxtreme
 {
@@ -14,7 +17,10 @@ namespace Fluxtreme
     public partial class TableView : UserControl
     {
         private const int CollapsedRowCount = 3;
+        private List<FluxRecordView> collapsedlist;
+        private List<FluxRecordView> expandedlist;
         private FluxTable fluxtable;
+        private bool expanded;
 
         public TableView()
         {
@@ -27,7 +33,8 @@ namespace Fluxtreme
 
             this.fluxtable = fluxtable;
 
-            bool expanded = fluxtable.Records.Count <= CollapsedRowCount;
+            // Show collapsed or expanded?
+            expanded = fluxtable.Records.Count <= CollapsedRowCount;
             if (expanded)
             {
                 expandbutton.Visibility = Visibility.Hidden;
@@ -64,23 +71,30 @@ namespace Fluxtreme
                 contentview.Columns.Add(col);
             }
 
-            // Make rows
-            for (int r = 0; r < Math.Min(fluxtable.Records.Count, CollapsedRowCount); r++)
-            {
-                contents.Items.Add(new FluxRecordWrap(fluxtable.Records[r]));
-            }
+            // Make rows. For the collapsedlist we just use a selection of items from the expandedlist.
+            expandedlist = fluxtable.Records.Select(r => new FluxRecordView(r)).ToList();
+            collapsedlist = expandedlist.GetRange(0, Math.Min(CollapsedRowCount, expandedlist.Count));
+
+            // Show contents
+            contents.ItemsSource = expanded ? expandedlist : collapsedlist;
         }
 
         private void expandbutton_Click(object sender, RoutedEventArgs e)
         {
-            // Add the remaining rows
-            for (int r = CollapsedRowCount; r < fluxtable.Records.Count; r++)
+            if (expanded)
             {
-                contents.Items.Add(new FluxRecordWrap(fluxtable.Records[r]));
+                expanded = false;
+                contents.ItemsSource = collapsedlist;
+                expandbutton.Content = FindResource("expandimage");
+                fade.Visibility = Visibility.Visible;
             }
-
-            expandbutton.Visibility = Visibility.Hidden;
-            fade.Visibility = Visibility.Collapsed;
+            else
+            {
+                expanded = true;
+                contents.ItemsSource = expandedlist;
+                expandbutton.Content = FindResource("collapseimage");
+                fade.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void contents_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
