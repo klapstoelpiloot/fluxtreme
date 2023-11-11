@@ -5,6 +5,13 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluxtreme", "Fluxtreme\Fluxtreme.csproj", "{B7198ED8-8595-414E-8BB1-7AE7A51A89C8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B4E7C85B-397A-44D6-B309-6A8EC4D4015C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FluxFunctions", "FluxFunctions", "{9D6E2D8A-9F0E-47E3-983D-8FC48EADC5AD}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\FluxFunctions\FluxFunctions.py = Tools\FluxFunctions\FluxFunctions.py
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +25,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9D6E2D8A-9F0E-47E3-983D-8FC48EADC5AD} = {B4E7C85B-397A-44D6-B309-6A8EC4D4015C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C426571F-46A6-4BF6-860E-83C216F812E4}

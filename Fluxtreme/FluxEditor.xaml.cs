@@ -109,7 +109,7 @@ namespace Fluxtreme
             //editor.Styles[ScintillaNET.Style.Python.TripleDouble].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[ScintillaNET.Style.Python.Word].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
             editor.Styles[ScintillaNET.Style.Python.Word2].ForeColor = Color.FromKnownColor(KnownColor.PeachPuff);
-
+            
             List<string> functions = new List<string>();
             Assembly asm = Assembly.GetExecutingAssembly();
             using (Stream stream = asm.GetManifestResourceStream("Fluxtreme.FluxFunctions.txt"))
@@ -125,11 +125,9 @@ namespace Fluxtreme
                 }
             }
 
-            string allfunctions = string.Join(" ", functions);
+            string allfunctions = string.Join(" ", functions.Select(f => f.Substring(0, f.IndexOf('('))).ToList());
 
             editor.SetKeywords(0, allfunctions);
-            //editor.SetKeywords(1, "bucket start stop fn or");
-
         }
 
         private void Editor_TextChanged(object sender, EventArgs e)

@@ -49,6 +49,11 @@ namespace Fluxtreme
             queryerror.Visibility = Visibility.Hidden;
         }
 
+        public void ShowQueryInProgress()
+        {
+            
+        }
+
         public void ShowQueryResults(List<FluxTable> tables, List<TableExtraData> extradata)
         {
             List<TableView> grids = new List<TableView>();
@@ -67,6 +72,8 @@ namespace Fluxtreme
 
             if (Monitor.TryEnter(querySyncObject, 1))
             {
+                Dispatcher.BeginInvoke(new Action(() => ShowQueryInProgress()));
+
                 try
                 {
                     try

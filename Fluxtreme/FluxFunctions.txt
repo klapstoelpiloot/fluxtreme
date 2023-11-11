@@ -1,522 +1,556 @@
-﻿aggregate.rate
-aggregateWindow
-alerta.alert
-alerta.endpoint
-anomalydetection.mad
-array.concat
-array.filter
-array.from
-array.map
-array.toBool
-array.toDuration
-array.toFloat
-array.toInt
-array.toString
-array.toTime
-array.toUInt
-bigpanda.endpoint
-bigpanda.sendAlert
-bigpanda.statusFromLevel
-bigtable.from
-bitwise.sand
-bitwise.sclear
-bitwise.slshift
-bitwise.snot
-bitwise.sor
-bitwise.srshift
-bitwise.sxor
-bitwise.uand
-bitwise.uclear
-bitwise.ulshift
-bitwise.unot
-bitwise.uor
-bitwise.urshift
-bitwise.uxor
-bool
-bottom
-boundaries.friday
-boundaries.monday
-boundaries.month
-boundaries.saturday
-boundaries.sunday
-boundaries.thursday
-boundaries.tuesday
-boundaries.wednesday
-boundaries.week
-boundaries.yesterday
-buckets
-bytes
-chandeMomentumOscillator
-clickhouse.query
-columns
-contains
-count
-cov
-covariance
-csv.from
-cumulativeSum
-date.add
-date.hour
-date.microsecond
-date.millisecond
-date.minute
-date.month
-date.monthDay
-date.nanosecond
-date.quarter
-date.scale
-date.second
-date.sub
-date.time
-date.truncate
-date.week
-date.weekDay
-date.year
-date.yearDay
-debug.feature
-debug.getOption
-debug.null
-debug.opaque
-debug.pass
-debug.sink
-debug.slurp
-derivative
-dict.fromList
-dict.get
-dict.insert
-dict.remove
-die
-difference
-discord.endpoint
-discord.send
-display
-distinct
-doubleEMA
-drop
-duplicate
-duration
-dynamic.asArray
-dynamic.dynamic
-dynamic.isType
-dynamic.jsonEncode
-dynamic.jsonParse
-elapsed
-events.duration
-expect.planner
-experimental.addDuration
-experimental.alignTime
-experimental.catch
-experimental.chain
-experimental.count
-experimental.diff
-experimental.distinct
-experimental.fill
-experimental.first
-experimental.group
-experimental.histogram
-experimental.histogramQuantile
-experimental.integral
-experimental.join
-experimental.kaufmansAMA
-experimental.last
-experimental.max
-experimental.mean
-experimental.min
-experimental.mode
-experimental.objectKeys
-experimental.preview
-experimental.quantile
-experimental.set
-experimental.skew
-experimental.spread
-experimental.stddev
-experimental.subDuration
-experimental.sum
-experimental.to
-experimental.unique
-experimental.unpivot
-experimental.window
-exponentialMovingAverage
-fill
-filter
-findColumn
-findRecord
-first
-float
-from
-gen.tables
-generate.from
-geo.ST_Contains
-geo.ST_DWithin
-geo.ST_Distance
-geo.ST_Intersects
-geo.ST_Length
-geo.ST_LineString
-geo.asTracks
-geo.filterRows
-geo.getGrid
-geo.getLevel
-geo.gridFilter
-geo.groupByArea
-geo.s2CellIDToken
-geo.s2CellLatLon
-geo.shapeData
-geo.stContains
-geo.stDistance
-geo.stLength
-geo.strictFilter
-geo.toRows
-geo.totalDistance
-getColumn
-getRecord
-group
-hash.b64
-hash.cityhash64
-hash.hmac
-hash.md5
-hash.sha1
-hash.sha256
-hash.xxhash64
-hex.bytes
-hex.int
-hex.string
-hex.uint
-highestAverage
-highestCurrent
-highestMax
-histogram
-histogramQuantile
-holtWinters
-hourSelection
-http.basicAuth
-http.endpoint
-http.get
-http.pathEscape
-http.post
-increase
-influxdb.api
-influxdb.cardinality
-influxdb.select
-influxdb.wideTo
-int
-integral
-interpolate.linear
-iox.from
-iox.sql
-iox.sqlInterval
-join
-join.full
-join.inner
-join.left
-join.right
-join.tables
-join.time
-json.encode
-json.parse
-kafka.to
-kaufmansAMA
-kaufmansER
-keep
-keyValues
-keys
-last
-length
-limit
-linearBins
-logarithmicBins
-logql.query_range
-lowestAverage
-lowestCurrent
-lowestMin
-map
-math.NaN
-math.abs
-math.acos
-math.acosh
-math.asin
-math.asinh
-math.atan
-math.atan2
-math.atanh
-math.cbrt
-math.ceil
-math.copysign
-math.cos
-math.cosh
-math.dim
-math.erf
-math.erfc
-math.erfcinv
-math.erfinv
-math.exp
-math.exp2
-math.expm1
-math.float64bits
-math.float64frombits
-math.floor
-math.frexp
-math.gamma
-math.hypot
-math.ilogb
-math.isInf
-math.isNaN
-math.j0
-math.j1
-math.jn
-math.ldexp
-math.lgamma
-math.log
-math.log10
-math.log1p
-math.log2
-math.logb
-math.mInf
-math.mMax
-math.mMin
-math.mod
-math.modf
-math.nextafter
-math.pow
-math.pow10
-math.remainder
-math.round
-math.roundtoeven
-math.signbit
-math.sin
-math.sincos
-math.sinh
-math.sqrt
-math.tan
-math.tanh
-math.trunc
-math.y0
-math.y1
-math.yn
-max
-mean
-median
-min
-mode
-monitor.check
-monitor.deadman
-monitor.from
-monitor.log
-monitor.logs
-monitor.notify
-monitor.stateChanges
-monitor.stateChangesOnly
-monitor.write
-movingAverage
-mqtt.publish
-mqtt.to
-naiveBayesClassifier.naiveBayes
-now
-oee.APQ
-oee.computeAPQ
-opsgenie.endpoint
-opsgenie.respondersToJSON
-opsgenie.sendAlert
-pagerduty.actionFromLevel
-pagerduty.actionFromSeverity
-pagerduty.dedupKey
-pagerduty.endpoint
-pagerduty.sendEvent
-pagerduty.severityFromLevel
-pearsonr
-pivot
-polyline.rdp
-prometheus.histogramQuantile
-prometheus.scrape
-promql.changes
-promql.emptyTable
-promql.extrapolatedRate
-promql.holtWinters
-promql.instantRate
-promql.join
-promql.labelReplace
-promql.linearRegression
-promql.promHistogramQuantile
-promql.promqlDayOfMonth
-promql.promqlDayOfWeek
-promql.promqlDaysInMonth
-promql.promqlHour
-promql.promqlMinute
-promql.promqlMonth
-promql.promqlYear
-promql.quantile
-promql.resets
-promql.timestamp
-pushbullet.endpoint
-pushbullet.pushData
-pushbullet.pushNote
-quantile
-query.filterFields
-query.filterMeasurement
-query.fromRange
-query.inBucket
-range
-record.get
-reduce
-regexp.compile
-regexp.findString
-regexp.findStringIndex
-regexp.getString
-regexp.matchRegexpString
-regexp.quoteMeta
-regexp.replaceAllString
-regexp.splitRegexp
-relativeStrengthIndex
-rename
-requests.do
-requests.get
-requests.peek
-requests.post
-runtime.version
-sample
-sample.alignToNow
-sample.data
-sample.list
-sampledata.bool
-sampledata.float
-sampledata.int
-sampledata.numericBool
-sampledata.string
-sampledata.uint
-schema.fieldKeys
-schema.fieldsAsCols
-schema.measurementFieldKeys
-schema.measurementTagKeys
-schema.measurementTagValues
-schema.measurements
-schema.tagKeys
-schema.tagValues
-secrets.get
-sensu.endpoint
-sensu.event
-sensu.toSensuName
-servicenow.endpoint
-servicenow.event
-set
-skew
-slack.endpoint
-slack.message
-slack.validateColorString
-socket.from
-sort
-spread
-sql.from
-sql.to
-stateCount
-stateDuration
-stateTracking
-statsmodels.linearRegression
-stddev
-string
-strings.compare
-strings.containsAny
-strings.containsStr
-strings.countStr
-strings.equalFold
-strings.hasPrefix
-strings.hasSuffix
-strings.index
-strings.indexAny
-strings.isDigit
-strings.isLetter
-strings.isLower
-strings.isUpper
-strings.joinStr
-strings.lastIndex
-strings.lastIndexAny
-strings.repeat
-strings.replace
-strings.replaceAll
-strings.split
-strings.splitAfter
-strings.splitAfterN
-strings.splitN
-strings.strlen
-strings.substring
-strings.title
-strings.toLower
-strings.toTitle
-strings.toUpper
-strings.trim
-strings.trimLeft
-strings.trimPrefix
-strings.trimRight
-strings.trimSpace
-strings.trimSuffix
-sum
-system.time
-table.fill
-tableFind
-tail
-tasks.lastSuccess
-teams.endpoint
-teams.message
-telegram.endpoint
-telegram.message
-testing.assertEmpty
-testing.assertEqualValues
-testing.assertEquals
-testing.assertMatches
-testing.diff
-testing.load
-testing.shouldError
-testing.shouldErrorWithCode
-testutil.fail
-testutil.makeAny
-testutil.makeRecord
-testutil.yield
-tickscript.alert
-tickscript.compute
-tickscript.deadman
-tickscript.defineCheck
-tickscript.groupBy
-tickscript.join
-tickscript.select
-tickscript.selectWindow
-time
-timeShift
-timeWeightedAvg
-timedMovingAverage
-timezone.fixed
-timezone.location
-to
-toBool
-toFloat
-toInt
-toString
-toTime
-toUInt
-today
-top
-tripleEMA
-tripleExponentialDerivative
-truncateTimeColumn
-types.isNumeric
-types.isType
-uint
-union
-unique
-usage.from
-usage.limits
-v1.databases
-v1.fieldKeys
-v1.fieldsAsCols
-v1.json
-v1.measurementFieldKeys
-v1.measurementTagKeys
-v1.measurementTagValues
-v1.measurements
-v1.tagKeys
-v1.tagValues
-victorops.alert
-victorops.endpoint
-webexteams.endpoint
-webexteams.message
-window
-yield
-zenoss.endpoint
-zenoss.event
+aggregate.rate(tables, every, groupColumns, unit)
+aggregateWindow(tables, every, fn, column, createEmpty, location, offset, offset, period, timeDst, timeSrc)
+alerta.alert(apiKey, attributes, event, resource, severity, url, environment, group, origin, service, tags, text, timestamp, type, value)
+alerta.endpoint(apiKey, url, environment, origin)
+anomalydetection.mad(table, threshold)
+array.concat(arr, v)
+array.concat(arr, v)
+array.filter(arr, fn)
+array.filter(arr, fn)
+array.from(rows)
+array.from(rows)
+array.map(arr, fn)
+array.map(arr, fn)
+array.toBool(arr)
+array.toDuration(arr)
+array.toFloat(arr)
+array.toInt(arr)
+array.toString(arr)
+array.toTime(arr)
+array.toUInt(arr)
+bigpanda.endpoint(appKey, token, url)
+bigpanda.sendAlert(appKey, rec, status, token, url)
+bigpanda.statusFromLevel(level)
+bigtable.from(instance, project, table, token)
+bitwise.sand(a, b)
+bitwise.sand(a, b)
+bitwise.sclear(a, b)
+bitwise.sclear(a, b)
+bitwise.slshift(a, b)
+bitwise.slshift(a, b)
+bitwise.snot(a)
+bitwise.snot(a)
+bitwise.sor(a, b)
+bitwise.sor(a, b)
+bitwise.srshift(a, b)
+bitwise.srshift(a, b)
+bitwise.sxor(a, b)
+bitwise.sxor(a, b)
+bitwise.uand(a, b)
+bitwise.uand(a, b)
+bitwise.uclear(a, b)
+bitwise.uclear(a, b)
+bitwise.ulshift(a, b)
+bitwise.ulshift(a, b)
+bitwise.unot(a)
+bitwise.unot(a)
+bitwise.uor(a, b)
+bitwise.uor(a, b)
+bitwise.urshift(a, b)
+bitwise.urshift(a, b)
+bitwise.uxor(a, b)
+bitwise.uxor(a, b)
+bool(v)
+bottom(tables, n, columns)
+boundaries.friday()
+boundaries.friday()
+boundaries.monday()
+boundaries.monday()
+boundaries.month(month_offset)
+boundaries.month(month_offset)
+boundaries.saturday()
+boundaries.saturday()
+boundaries.sunday()
+boundaries.sunday()
+boundaries.thursday()
+boundaries.thursday()
+boundaries.tuesday()
+boundaries.tuesday()
+boundaries.wednesday()
+boundaries.wednesday()
+boundaries.week(start_sunday, week_offset)
+boundaries.week(start_sunday, week_offset)
+boundaries.yesterday()
+boundaries.yesterday()
+buckets(host, org, orgID, token)
+bytes(v)
+chandeMomentumOscillator(tables, n, columns)
+clickhouse.query(query, cors, format, limit, max_bytes, url)
+columns(tables, column)
+contains(set, value)
+count(tables, column)
+cov(on, x, y, pearsonr)
+covariance(tables, columns, pearsonr, valueDst)
+csv.from(csv, file, mode)
+csv.from(url)
+cumulativeSum(tables, columns)
+date.add(d, to, location, offset)
+date.hour(t, location, offset)
+date.microsecond(t)
+date.millisecond(t)
+date.minute(t, location, offset)
+date.month(t, location, offset)
+date.monthDay(t, location, offset)
+date.nanosecond(t)
+date.quarter(t, location, offset)
+date.scale(d, n)
+date.second(t)
+date.sub(d, from, location, offset)
+date.time(t, location, offset)
+date.truncate(t, unit, location, offset)
+date.week(t, location, offset)
+date.weekDay(t, location, offset)
+date.year(t, location, offset)
+date.yearDay(t, location, offset)
+debug.feature(key)
+debug.getOption(name, pkg)
+debug.null(type)
+debug.opaque(tables)
+debug.pass(tables)
+debug.sink(tables)
+debug.slurp(tables)
+derivative(tables, columns, initialZero, nonNegative, timeColumn, unit)
+dict.fromList(pairs, key)
+dict.get(A, dict, key)
+dict.insert(dict, key, value)
+dict.remove(dict, key)
+die(msg)
+difference(tables, columns, initialZero, keepFirst, nonNegative)
+discord.endpoint(username, webhookID, webhookToken, avatar_url)
+discord.send(content, username, webhookID, webhookToken, avatar_url)
+display(v)
+distinct(tables, column)
+doubleEMA(tables, n)
+drop(tables, columns, fn)
+duplicate(tables, as, column)
+duration(v)
+dynamic.asArray(v)
+dynamic.dynamic(v)
+dynamic.isType(type, v)
+dynamic.jsonEncode(v)
+dynamic.jsonParse(data)
+elapsed(tables, columnName, timeColumn, unit)
+events.duration(tables, columnName, stop, stopColumn, timeColumn, unit)
+expect.planner(rules)
+experimental.addDuration(d, to, location, offset)
+experimental.alignTime(tables, alignTo)
+experimental.catch(fn)
+experimental.chain(first, second)
+experimental.count(tables)
+experimental.diff(got, want)
+experimental.distinct(tables)
+experimental.fill(tables, usePrevious, value)
+experimental.first(tables)
+experimental.group(tables, columns, mode)
+experimental.histogram(tables, bins, normalize)
+experimental.histogramQuantile(tables, _value, minValue, quantile)
+experimental.integral(tables, _time, interpolate, unit)
+experimental.join(fn, left, right)
+experimental.kaufmansAMA(tables, n)
+experimental.last(tables)
+experimental.max(tables)
+experimental.mean(tables)
+experimental.min(tables)
+experimental.mode(tables)
+experimental.objectKeys(o)
+experimental.preview(tables, nrows, ntables)
+experimental.quantile(tables, q, compression, method)
+experimental.set(tables, o)
+experimental.skew(tables)
+experimental.spread(tables)
+experimental.stddev(tables, mode)
+experimental.subDuration(d, from, location, offset)
+experimental.sum(tables)
+experimental.to(tables, bucket, bucketID, host, org, orgID, token)
+experimental.unique(tables)
+experimental.unpivot(tables, otherColumns)
+experimental.window(tables, _stop, _start, createEmpty, every, location, offset, offset, period)
+exponentialMovingAverage(tables, n)
+fill(tables, column, usePrevious, value)
+filter(tables, fn, onEmpty)
+findColumn(tables, column, fn)
+findRecord(tables, fn, idx)
+first(tables, column)
+float(v)
+from(bucket, bucketID, host, org, orgID, token)
+from(bucket, start, host, org, stop, token)
+gen.tables(n, nulls, seed, tags, cardinality)
+generate.from(count, fn, start, stop)
+geo.asTracks(tables, groupBy, orderBy)
+geo.filterRows(tables, lon, lat, region, level, maxSize, minSize, s2cellIDLevel, strict)
+geo.getGrid(region, units, level, maxLevel, maxSize, minSize)
+geo.getLevel(token)
+geo.gridFilter(tables, region, level, maxSize, minSize, s2cellIDLevel, units)
+geo.groupByArea(tables, lon, lat, level, newColumn, s2cellIDLevel)
+geo.s2CellIDToken(level, point, lat, token)
+geo.s2CellLatLon(token)
+geo.shapeData(tables, latField, level, lonField)
+geo.ST_Contains(geometry, region, units)
+geo.ST_Distance(geometry, region, units)
+geo.ST_DWithin(distance, geometry, region, units)
+geo.ST_Intersects(geometry, region, units)
+geo.ST_Length(geometry, units)
+geo.ST_LineString(tables, lat)
+geo.stContains(geometry, region, units)
+geo.stDistance(geometry, region, units)
+geo.stLength(geometry, units)
+geo.strictFilter(tables, lat, region)
+geo.toRows(tables)
+geo.totalDistance(tables, lat, outputColumn)
+getColumn(table, column)
+getRecord(table, idx)
+group(tables, columns, mode)
+hash.b64(v)
+hash.cityhash64(v)
+hash.hmac(k, v)
+hash.md5(v)
+hash.sha1(v)
+hash.sha256(v)
+hash.xxhash64(v)
+hex.bytes(v)
+hex.int(v)
+hex.string(v)
+hex.uint(v)
+highestAverage(tables, n, column, groupColumns)
+highestCurrent(tables, n, column, groupColumns)
+highestMax(tables, n, column, groupColumns)
+histogram(tables, bins, column, countColumn, normalize, upperBoundColumn)
+histogramQuantile(tables, countColumn, minValue, onNonmonotonic, quantile, upperBoundColumn, valueColumn)
+holtWinters(tables, interval, n, column, seasonality, timeColumn, withFit, withMinSSE)
+hourSelection(tables, start, stop, location, offset, timeColumn)
+http.basicAuth(p, u)
+http.endpoint(url)
+http.get(url, headers, timeout)
+http.pathEscape(inputString)
+http.post(url, data, headers)
+increase(tables, columns)
+influxdb.api(method, path, body, headers, host, query, timeout, token)
+influxdb.cardinality(start, bucket, bucketID, host, org, orgID, predicate, stop, token)
+influxdb.select(from, m, start, fields, host, org, stop, token, where)
+influxdb.wideTo(tables, bucket, bucketID, host, org, orgID, token)
+int(v)
+integral(tables, column, interpolate, timeColumn, unit)
+interpolate.linear(tables, _time, every)
+iox.from(bucket, measurement)
+iox.sql(bucket, query)
+iox.sqlInterval(d)
+join.full(left, as, on, right)
+join.inner(left, as, on, right)
+join.left(left, as, on, right)
+join.right(left, as, on, right)
+join.tables(left, as, method, on, right)
+join.time(left, as, right, method)
+join(tables, method, on)
+json.encode(v)
+json.parse(data)
+kafka.to(tables, brokers, topic, balancer, name, nameColumn, tagColumns, timeColumn, valueColumns)
+kaufmansAMA(tables, n, column)
+kaufmansER(tables, n)
+keep(tables, columns, fn)
+keys(tables, column)
+keyValues(tables, keyColumns)
+last(tables, column)
+length(arr)
+limit(tables, n, offset)
+linearBins(count, start, width, infinity)
+logarithmicBins(count, factor, start, infinity)
+logql.query_range(query, end, limit, orgid, path, start, step, url)
+lowestAverage(tables, n, column, groupColumns)
+lowestCurrent(tables, n, column, groupColumns)
+lowestMin(tables, n, column, groupColumns)
+map(tables, fn, mergeKey)
+math.abs(x)
+math.acos(x)
+math.acosh(x)
+math.asin(x)
+math.asinh(x)
+math.atan(x)
+math.atan2(x, y)
+math.atanh(x)
+math.cbrt(x)
+math.ceil(x)
+math.copysign(x, y)
+math.cos(x)
+math.cosh(x)
+math.dim(x, y)
+math.erf(x)
+math.erfc(x)
+math.erfcinv(x)
+math.erfinv(x)
+math.exp(x)
+math.exp2(x)
+math.expm1(x)
+math.float64bits(f)
+math.float64frombits(b)
+math.floor(x)
+math.frexp(f)
+math.gamma(x)
+math.hypot(p, q)
+math.ilogb(x)
+math.isInf(f, sign)
+math.isNaN(f)
+math.j0(x)
+math.j1(x)
+math.jn(n, x)
+math.ldexp(exp, frac)
+math.lgamma(x)
+math.log(x)
+math.log10(x)
+math.log1p(x)
+math.log2(x)
+math.logb(x)
+math.mInf(sign)
+math.mMax(x, y)
+math.mMin(x, y)
+math.mod(x, y)
+math.modf(f)
+math.NaN()
+math.nextafter(x, y)
+math.pow(x, y)
+math.pow10(n)
+math.remainder(x, y)
+math.round(x)
+math.roundtoeven(x)
+math.signbit(x)
+math.sin(x)
+math.sincos(x)
+math.sinh(x)
+math.sqrt(x)
+math.tan(x)
+math.tanh(x)
+math.trunc(x)
+math.y0(x)
+math.y1(x)
+math.yn(n, x)
+max(tables, column)
+mean(tables, column)
+median(tables, column, compression, method)
+min(tables, column)
+mode(tables, column)
+monitor.check(tables, data, _type, _check_name, _check_id, messageFn, crit, info, ok, warn)
+monitor.deadman(tables, t)
+monitor.from(start, fn, stop)
+monitor.log(tables)
+monitor.logs(fn, start, stop)
+monitor.notify(tables, data, endpoint)
+monitor.stateChanges(tables, fromLevel, toLevel)
+monitor.stateChangesOnly(tables)
+monitor.write(tables)
+movingAverage(tables, n)
+mqtt.publish(broker, message, topic, clientid, password, qos, retain, timeout, username)
+mqtt.to(tables, broker, clientid, name, password, qos, retain, tagColumns, timeColumn, timeout, topic, username, valueColumns)
+naiveBayesClassifier.naiveBayes(tables, _measurement, _field, myClass, myField, myMeasurement)
+now()
+oee.APQ(tables, idealCycleTime, plannedTime, runningState)
+oee.computeAPQ(idealCycleTime, partEvents, plannedTime, productionEvents, runningState)
+opsgenie.endpoint(apiKey, entity, url)
+opsgenie.respondersToJSON(v)
+opsgenie.sendAlert(apiKey, message, actions, alias, description, details, entity, priority, responders, tags, url, visibleTo)
+pagerduty.actionFromLevel(level)
+pagerduty.actionFromSeverity(severity)
+pagerduty.dedupKey(tables, exclude)
+pagerduty.endpoint(url)
+pagerduty.sendEvent(A, client, clientURL, dedupKey, eventAction, group, routingKey, severity, source, summary, timestamp, component, customDetails, pagerdutyURL)
+pagerduty.severityFromLevel(level)
+pearsonr(on, x, y)
+pivot(tables, columnKey, rowKey, valueColumn)
+polyline.rdp(tables, epsilon, retention, timeColumn, valColumn)
+prometheus.histogramQuantile(tables, _field, quantile, metricVersion, onNonmonotonic)
+prometheus.scrape(url)
+promql.changes(tables)
+promql.emptyTable()
+promql.extrapolatedRate(tables, _time, _stop, _start, isCounter, isRate)
+promql.holtWinters(tables, _time, smoothingFactor, trendFactor)
+promql.instantRate(tables, _time, isRate)
+promql.join(fn, left, right)
+promql.labelReplace(tables, destination, regex, replacement, source)
+promql.linearRegression(tables, _time, _stop, fromNow, predict)
+promql.promHistogramQuantile(tables, countColumn, quantile, upperBoundColumn, valueColumn)
+promql.promqlDayOfMonth(timestamp)
+promql.promqlDayOfWeek(timestamp)
+promql.promqlDaysInMonth(timestamp)
+promql.promqlHour(timestamp)
+promql.promqlMinute(timestamp)
+promql.promqlMonth(timestamp)
+promql.promqlYear(timestamp)
+promql.quantile(tables, q, method)
+promql.resets(tables)
+promql.timestamp(tables)
+pushbullet.endpoint(token, url)
+pushbullet.pushData(data, token, url)
+pushbullet.pushNote(text, title, token, url)
+quantile(tables, q, column, compression, method)
+query.filterFields(table, fields)
+query.filterMeasurement(table, measurement)
+query.fromRange(bucket, start, stop)
+query.inBucket(bucket, measurement, start, fields, predicate, stop)
+range(tables, start, stop)
+record.get(A, key, r)
+reduce(tables, fn, identity)
+regexp.compile(v)
+regexp.findString(r, v)
+regexp.findStringIndex(r, v)
+regexp.getString(r)
+regexp.matchRegexpString(r, v)
+regexp.quoteMeta(v)
+regexp.replaceAllString(r, t, v)
+regexp.splitRegexp(i, r, v)
+relativeStrengthIndex(tables, n, columns)
+rename(tables, columns, fn)
+requests.do(method, url, body, config, insecureSkipVerify, headers, params)
+requests.do(method, url, body, config, insecureSkipVerify, headers, params)
+requests.get(url, body, config, insecureSkipVerify, headers, params)
+requests.get(url, body, config, insecureSkipVerify, headers, params)
+requests.peek(response, headers, duration, body)
+requests.peek(response, headers, duration, body)
+requests.post(url, body, config, insecureSkipVerify, headers, params)
+requests.post(url, body, config, insecureSkipVerify, headers, params)
+runtime.version()
+sample.alignToNow(tables)
+sample.data(set)
+sample.list()
+sample(tables, n, column, pos)
+sampledata.bool(includeNull)
+sampledata.float(includeNull)
+sampledata.int(includeNull)
+sampledata.numericBool(includeNull)
+sampledata.string(includeNull)
+sampledata.uint(includeNull)
+schema.fieldKeys(bucket, predicate, start, stop)
+schema.fieldsAsCols(tables)
+schema.measurementFieldKeys(bucket, measurement, start, stop)
+schema.measurements(bucket, start, stop)
+schema.measurementTagKeys(bucket, measurement, start, stop)
+schema.measurementTagValues(bucket, measurement, tag, start, stop)
+schema.tagKeys(bucket, predicate, start, stop)
+schema.tagValues(bucket, tag, predicate, start, stop)
+secrets.get(key)
+sensu.endpoint(apiKey, url, entityName, handlers, namespace)
+sensu.event(apiKey, checkName, text, url, entityName, handlers, namespace, state, status)
+sensu.toSensuName(v)
+servicenow.endpoint(password, url, username, source)
+servicenow.event(description, password, severity, url, username, additionalInfo, messageKey, metricName, metricType, node, resource, source)
+set(tables, key, value)
+skew(tables, column)
+slack.endpoint(token, url)
+slack.message(channel, color, text, token, url)
+slack.validateColorString(color)
+socket.from(url, decoder)
+sort(tables, columns, desc)
+spread(tables, column)
+sql.from(dataSourceName, driverName, query)
+sql.to(tables, dataSourceName, driverName, table, batchSize)
+stateCount(tables, fn, column)
+stateDuration(tables, fn, column, timeColumn, unit)
+stateTracking(tables, fn, countColumn, durationColumn, durationUnit, timeColumn)
+statsmodels.linearRegression(tables)
+stddev(tables, column, mode)
+string(v)
+strings.compare(t, v)
+strings.containsAny(chars, v)
+strings.containsStr(substr, v)
+strings.countStr(substr, v)
+strings.equalFold(t, v)
+strings.hasPrefix(prefix, v)
+strings.hasSuffix(suffix, v)
+strings.index(substr, v)
+strings.indexAny(chars, v)
+strings.isDigit(v)
+strings.isLetter(v)
+strings.isLower(v)
+strings.isUpper(v)
+strings.joinStr(arr, v)
+strings.lastIndex(substr, v)
+strings.lastIndexAny(chars, v)
+strings.repeat(i, v)
+strings.replace(i, t, u, v)
+strings.replaceAll(t, u, v)
+strings.split(t, v)
+strings.splitAfter(t, v)
+strings.splitAfterN(i, t, v)
+strings.splitN(i, t, v)
+strings.strlen(v)
+strings.substring(end, start, v)
+strings.title(v)
+strings.toLower(v)
+strings.toTitle(v)
+strings.toUpper(v)
+strings.trim(cutset, v)
+strings.trimLeft(cutset, v)
+strings.trimPrefix(prefix, v)
+strings.trimRight(cutset, v)
+strings.trimSpace(v)
+strings.trimSuffix(suffix, v)
+sum(tables, column)
+system.time()
+table.fill(tables)
+tableFind(tables, fn)
+tail(tables, n, offset)
+tasks.lastSuccess(orTime)
+teams.endpoint(url)
+teams.message(text, title, url, summary)
+telegram.endpoint(token, disableWebPagePreview, parseMode, url)
+telegram.message(channel, text, token, disableWebPagePreview, parseMode, silent, url)
+testing.assertEmpty(tables)
+testing.assertEquals(got, name, want)
+testing.assertEqualValues(got, want)
+testing.assertMatches(got, want)
+testing.diff(got, want, epsilon, nansEqual, verbose)
+testing.load(tables)
+testing.shouldError(fn)
+testing.shouldErrorWithCode(code, fn)
+testutil.fail()
+testutil.makeAny(typ)
+testutil.makeRecord(o)
+testutil.yield(v)
+tickscript.alert(tables, check, _type, _check_name, _check_id, crit, details, id, info, message, ok, topic, warn)
+tickscript.compute(tables, as, column, fn)
+tickscript.deadman(tables, check, _type, _check_name, _check_id, measurement, id, message, threshold, topic)
+tickscript.defineCheck(id, name, type)
+tickscript.groupBy(tables, columns)
+tickscript.join(measurement, tables, on)
+tickscript.select(tables, as, column, fn)
+tickscript.selectWindow(tables, as, defaultValue, every, fn, column)
+time(v)
+timedMovingAverage(tables, every, period, column)
+timeShift(tables, duration, columns)
+timeWeightedAvg(tables, unit)
+timezone.fixed(offset)
+timezone.location(name)
+to(tables, bucket, bucketID, fieldFn, host, measurementColumn, org, orgID, tagColumns, timeColumn, token)
+toBool(tables)
+today()
+toFloat(tables)
+toInt(tables)
+top(tables, n, columns)
+toString(tables)
+toTime(tables)
+toUInt(tables)
+tripleEMA(tables, n)
+tripleExponentialDerivative(tables, n)
+truncateTimeColumn(tables, unit, timeColumn)
+types.isNumeric(v)
+types.isType(type, v)
+uint(v)
+union(tables)
+unique(tables, column)
+usage.from(start, stop, host, orgID, raw, token)
+usage.limits(host, orgID, token)
+v1.databases(host, org, orgID, token)
+v1.fieldKeys(bucket, predicate, start, stop)
+v1.fieldsAsCols(tables)
+v1.json(file, json)
+v1.measurementFieldKeys(bucket, measurement, start, stop)
+v1.measurements(bucket, start, stop)
+v1.measurementTagKeys(bucket, measurement, start, stop)
+v1.measurementTagValues(bucket, measurement, tag, start, stop)
+v1.tagKeys(bucket, predicate, start, stop)
+v1.tagValues(bucket, tag, predicate, start, stop)
+victorops.alert(messageType, url, entityDisplayName, entityID, monitoringTool, stateMessage, timestamp)
+victorops.endpoint(url, monitoringTool)
+webexteams.endpoint(token, url)
+webexteams.message(markdown, roomId, text, token, url)
+window(tables, createEmpty, every, location, offset, offset, period, startColumn, stopColumn, timeColumn)
+yield(tables, name)
+zenoss.endpoint(url, action, apiKey, method, password, tid, type, username)
+zenoss.event(severity, url, action, apiKey, collector, component, device, eventClass, eventClassKey, message, method, password, summary, tid, type, username)
