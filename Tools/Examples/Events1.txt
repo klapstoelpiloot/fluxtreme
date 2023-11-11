@@ -1,0 +1,14 @@
+import "strings"
+
+// Here we do cool stuff
+from(bucket: v.defaultBucket)
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["ss"] == "pe")
+  |> filter(fn: (r) => r["_field"] == "description")
+  |> filter(fn: (r) => r["ssindex"] == "0")
+  |> filter(fn: (r) => r["code"] =~ /[EI]_SPE_03F[234]/)	// This is a RegEx!
+  |> drop(columns: ["_start", "_stop", "_measurement"])
+  |> pivot(rowKey: ["_time"], columnKey: ["_field"], valueColumn: "_value")
+  |> group()
+  |> sort(columns: ["_time"], desc: true)
+  |> map(fn: (r) => ({r with ss: strings.toUpper(v: r.ss)}))

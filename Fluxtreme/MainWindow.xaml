@@ -1,26 +1,13 @@
-﻿<Window
+﻿<Window x:Class="Fluxtreme.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Fluxtreme"
-        xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf" x:Class="Fluxtreme.MainWindow"
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
-        Title="Fluxtreme" Height="800" Width="1024" Closing="Window_Closing">
-	<Grid Background="#FF1E1E1E">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="1*"/>
-			<RowDefinition Height="28"/>
-			<RowDefinition Height="1*"/>
-		</Grid.RowDefinitions>
-		<ScrollViewer VerticalScrollBarVisibility="Auto" Background="#FF131313" Grid.Row="0">
-			<StackPanel x:Name="tableslist" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"/>
-		</ScrollViewer>
-		<GridSplitter Grid.Row="1" Height="6" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Top" ResizeBehavior="PreviousAndNext"/>
-		<Grid Grid.Row="1" Margin="0,6,0,0">
-			<Label x:Name="queryerror" Background="#FFCC0000" Content="Error: Bla bla bla" Visibility="Hidden" Padding="5,0,0,0" Margin="0" VerticalContentAlignment="Center"/>
-		</Grid>
-		<local:FluxEditor x:Name="editor" Grid.Row="2" TextChanged="editor_TextChanged"/>
+        Title="Fluxtreme" Height="800" Width="1024" Closing="Window_Closing" Initialized="Window_Initialized">
+	<Grid>
+		<TabControl x:Name="tabs"/>
 	</Grid>
 </Window>

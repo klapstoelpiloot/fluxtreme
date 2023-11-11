@@ -12,6 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FluxFunctions", "FluxFuncti
 		Tools\FluxFunctions\FluxFunctions.py = Tools\FluxFunctions\FluxFunctions.py
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{ED0CA27F-BF13-44E1-AA12-823201509199}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Examples\Events1.txt = Tools\Examples\Events1.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +33,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9D6E2D8A-9F0E-47E3-983D-8FC48EADC5AD} = {B4E7C85B-397A-44D6-B309-6A8EC4D4015C}
+		{ED0CA27F-BF13-44E1-AA12-823201509199} = {B4E7C85B-397A-44D6-B309-6A8EC4D4015C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C426571F-46A6-4BF6-860E-83C216F812E4}

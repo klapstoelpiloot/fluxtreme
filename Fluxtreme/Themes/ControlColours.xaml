@@ -10,8 +10,9 @@
     <SolidColorBrush x:Key="PanelBackground1" Color="{DynamicResource AColour.Tone1.Background.Static}"/>
     <SolidColorBrush x:Key="PanelBackground2" Color="{DynamicResource AColour.Tone2.Background.Static}"/>
     <SolidColorBrush x:Key="PanelBackground3" Color="{DynamicResource AColour.Tone3.Background.Static}"/>
+	<SolidColorBrush x:Key="PanelBackground4" Color="{DynamicResource AColour.Tone4.Background.Static}"/>
 
-    <SolidColorBrush x:Key="Button.Static.Background"                      Color="{DynamicResource AColour.Tone5.Background.Static}"/>
+	<SolidColorBrush x:Key="Button.Static.Background"                      Color="{DynamicResource AColour.Tone5.Background.Static}"/>
     <SolidColorBrush x:Key="Button.Static.Border"                          Color="{DynamicResource AColour.Tone5.Border.Static}"/>
     <SolidColorBrush x:Key="Button.MouseOver.Background"                   Color="{DynamicResource AColour.Tone5.Background.MouseOver}"/>
     <SolidColorBrush x:Key="Button.MouseOver.Border"                       Color="{DynamicResource AColour.Tone5.Border.MouseOver}"/>
@@ -103,6 +104,7 @@
     <SolidColorBrush x:Key="ListView.GridView.Grip.Background"          Color="{DynamicResource AColour.Tone4.Border.Static}"/>
     <SolidColorBrush x:Key="ListView.GridView.HeaderItem.Background"    Color="{DynamicResource AColour.Tone7.Background.Static}"/>
 	<SolidColorBrush x:Key="ListView.GridView.HeaderItemMouseOver.Background"    Color="{DynamicResource AColour.Tone8.Background.Static}"/>
+	<SolidColorBrush x:Key="StatusBar.NormalText"                       Color="{DynamicResource AColour.Glyph.Disabled}"/>
 
 	<SolidColorBrush x:Key="OptionMark.Static.Background"           Color="{DynamicResource AColour.Tone5.Background.Static}"/>
     <SolidColorBrush x:Key="OptionMark.Static.Border"               Color="{DynamicResource AColour.Tone5.Border.Static}"/>

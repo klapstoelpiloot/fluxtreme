@@ -29,7 +29,15 @@ namespace Fluxtreme
                 int characterlength = t.Columns[c].Label.Length;
                 foreach(FluxRecord r in t.Records)
                 {
-                    characterlength = Math.Max(characterlength, r.GetValueByIndex(c).ToString().Length);
+                    object v = r.GetValueByIndex(c);
+                    if(v == null)
+                    {
+                        characterlength = Math.Max(characterlength, 5);
+                    }
+                    else
+                    {
+                        characterlength = Math.Max(characterlength, v.ToString().Length);
+                    }
                 }
                 
                 if(characterlength < 40)

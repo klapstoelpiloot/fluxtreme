@@ -78,56 +78,72 @@ namespace Fluxtreme
             editor.Font = new Font("Consolas", 11.0f);
             editor.TextChanged += Editor_TextChanged;
 
-            editor.LexerName = "python";
-
             editor.Styles[ScintillaNET.Style.Default].BackColor = GetColorResource("AColour.Tone1.Background.Static");
             editor.Styles[ScintillaNET.Style.Default].ForeColor = GetColorResource("AColour.Glyph.Static");
             editor.CaretForeColor = Color.White;
             editor.StyleClearAll();
             editor.Styles[ScintillaNET.Style.Default].BackColor = GetColorResource("AColour.Tone1.Background.Static");
             editor.Styles[ScintillaNET.Style.Default].ForeColor = GetColorResource("AColour.Glyph.Static");
-            editor.Styles[ScintillaNET.Style.LineNumber].ForeColor = GetColorResource("AColour.Tone8.Border.Static");
             editor.Styles[ScintillaNET.Style.LineNumber].BackColor = GetColorResource("AColour.Tone4.Background.Static");
+            editor.Styles[ScintillaNET.Style.LineNumber].ForeColor = GetColorResource("AColour.Tone8.Border.Static");
             editor.SetFoldMarginColor(false, GetColorResource("AColour.Tone1.Background.Static"));
             editor.EdgeColor = GetColorResource("AColour.Tone1.Background.Static");
-            editor.SetWhitespaceBackColor(false, GetColorResource("AColour.Tone1.Background.Static"));
-            editor.Margins[0].BackColor = GetColorResource("AColour.Tone1.Background.Static");
-            editor.Margins[1].BackColor = GetColorResource("AColour.Tone1.Background.Static");
-            editor.Margins[2].BackColor = GetColorResource("AColour.Tone1.Background.Static");
+            editor.SetWhitespaceBackColor(false, GetColorResource("AColour.Tone4.Background.Static"));
+            editor.Margins[0].BackColor = GetColorResource("AColour.Tone4.Background.Static");
+            editor.Margins[1].BackColor = GetColorResource("AColour.Tone4.Background.Static");
+            editor.Margins[2].BackColor = GetColorResource("AColour.Tone4.Background.Static");
+        }
+
+        public void Setup()
+        {
+            editor.LexerName = "python";
             editor.Styles[ScintillaNET.Style.Python.Character].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             //editor.Styles[ScintillaNET.Style.Python.ClassName].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[ScintillaNET.Style.Python.CommentBlock].ForeColor = Color.FromArgb(100, 100, 100);
             editor.Styles[ScintillaNET.Style.Python.CommentLine].ForeColor = Color.FromArgb(100, 100, 100);
             //editor.Styles[ScintillaNET.Style.Python.Decorator].ForeColor = Color.FromKnownColor(KnownColor.LightBlue);
             //editor.Styles[ScintillaNET.Style.Python.DefName].ForeColor = Color.FromKnownColor(KnownColor.LightBlue);
-            //editor.Styles[ScintillaNET.Style.Python.Identifier].ForeColor = Color.FromKnownColor(KnownColor.Purple);
+            editor.Styles[ScintillaNET.Style.Python.Identifier].ForeColor = Color.FromKnownColor(KnownColor.White);
             editor.Styles[ScintillaNET.Style.Python.Number].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[ScintillaNET.Style.Python.Operator].ForeColor = Color.FromKnownColor(KnownColor.LightGray);    // Braces and pipe symbols
             editor.Styles[ScintillaNET.Style.Python.String].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[ScintillaNET.Style.Python.StringEol].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            editor.Styles[ScintillaNET.Style.Python.Triple].ForeColor = Color.FromKnownColor(KnownColor.Red);
+            //editor.Styles[ScintillaNET.Style.Python.Triple].ForeColor = Color.FromKnownColor(KnownColor.Red);
             //editor.Styles[ScintillaNET.Style.Python.TripleDouble].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[ScintillaNET.Style.Python.Word].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
             editor.Styles[ScintillaNET.Style.Python.Word2].ForeColor = Color.FromKnownColor(KnownColor.PeachPuff);
             
-            List<string> functions = new List<string>();
-            Assembly asm = Assembly.GetExecutingAssembly();
-            using (Stream stream = asm.GetManifestResourceStream("Fluxtreme.FluxFunctions.txt"))
+            string[] functions = ReadResourceStrings("Fluxtreme.FluxFunctions.txt");
+            Dictionary<string, string> func_dict = new Dictionary<string, string>();
+            Dictionary<string, string> ident_dict = new Dictionary<string, string>();
+            foreach(string f in functions)
             {
-                using (StreamReader reader = new StreamReader(stream))
+                int argspos = f.IndexOf('(');
+                string fname = f.Substring(0, argspos);
+                string fargs = f.Substring(argspos + 1).TrimEnd(')');
+
+                // Because the python lexer doesn't understand the "library.function" format, we separate these.
+                int pointindex = fname.IndexOf('.');
+                if(pointindex > 0)
                 {
-                    string line = reader.ReadLine();
-                    while (line != null)
-                    {
-                        functions.Add(line);
-                        line = reader.ReadLine();
-                    }
+                    string libname = fname.Substring(0, pointindex);
+                    fname = fname.Substring(pointindex + 1);
+                    func_dict[libname] = libname;
+                }
+                
+                func_dict[fname] = fargs;
+
+                // Collect arguments
+                string[] args = fargs.Split(',');
+                foreach(string a in args)
+                {
+                    ident_dict[a.Trim()] = string.Empty;
                 }
             }
 
-            string allfunctions = string.Join(" ", functions.Select(f => f.Substring(0, f.IndexOf('('))).ToList());
-
-            editor.SetKeywords(0, allfunctions);
+            editor.SetKeywords(0, string.Join(" ", func_dict.Keys));
+            editor.SetKeywords(1, string.Join(" ", ident_dict.Keys));
+            editor.SetProperty("lexer.python.keywords2.no.sub.identifiers", "1");
         }
 
         private void Editor_TextChanged(object sender, EventArgs e)
@@ -139,6 +155,25 @@ namespace Fluxtreme
         {
             System.Windows.Media.Color c = (System.Windows.Media.Color)FindResource(resourcename);
             return Color.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
+        private static string[] ReadResourceStrings(string resourcename)
+        {
+            List<string> lines = new List<string>();
+            Assembly asm = Assembly.GetExecutingAssembly();
+            using (Stream stream = asm.GetManifestResourceStream(resourcename))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string line = reader.ReadLine();
+                    while (line != null)
+                    {
+                        lines.Add(line);
+                        line = reader.ReadLine();
+                    }
+                }
+            }
+            return lines.ToArray();
         }
     }
 }
