@@ -112,11 +112,11 @@ namespace Fluxtreme
             //editor.Styles[ScintillaNET.Style.Python.TripleDouble].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[ScintillaNET.Style.Python.Word].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
             editor.Styles[ScintillaNET.Style.Python.Word2].ForeColor = Color.FromKnownColor(KnownColor.PeachPuff);
-            
+
             string[] functions = ReadResourceStrings("Fluxtreme.FluxFunctions.txt");
             Dictionary<string, string> func_dict = new Dictionary<string, string>();
             Dictionary<string, string> ident_dict = new Dictionary<string, string>();
-            foreach(string f in functions)
+            foreach (string f in functions)
             {
                 int argspos = f.IndexOf('(');
                 string fname = f.Substring(0, argspos);
@@ -124,18 +124,18 @@ namespace Fluxtreme
 
                 // Because the python lexer doesn't understand the "library.function" format, we separate these.
                 int pointindex = fname.IndexOf('.');
-                if(pointindex > 0)
+                if (pointindex > 0)
                 {
                     string libname = fname.Substring(0, pointindex);
                     fname = fname.Substring(pointindex + 1);
                     func_dict[libname] = libname;
                 }
-                
+
                 func_dict[fname] = fargs;
 
                 // Collect arguments
                 string[] args = fargs.Split(',');
-                foreach(string a in args)
+                foreach (string a in args)
                 {
                     ident_dict[a.Trim()] = string.Empty;
                 }
@@ -148,6 +148,7 @@ namespace Fluxtreme
 
         private void Editor_TextChanged(object sender, EventArgs e)
         {
+            UpdateScrollbar();
             TextChanged?.Invoke(this, e);
         }
 
@@ -174,6 +175,32 @@ namespace Fluxtreme
                 }
             }
             return lines.ToArray();
+        }
+
+        private void ScrollBar_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+            editor.FirstVisibleLine = (int)scrollbar.Value;
+        }
+
+        private void editor_UpdateUI(object sender, UpdateUIEventArgs e)
+        {
+            UpdateScrollbar();
+        }
+
+        private void UpdateScrollbar()
+        {
+            scrollbar.Minimum = 0;
+            scrollbar.Maximum = editor.Lines.Count - editor.LinesOnScreen;
+            scrollbar.LargeChange = editor.LinesOnScreen;
+            scrollbar.ViewportSize = editor.LinesOnScreen;
+            scrollbar.Value = editor.FirstVisibleLine;
+            scrollbar.IsEnabled = (editor.Lines.Count > editor.LinesOnScreen);
+            scrollbar.Opacity = scrollbar.IsEnabled ? 1.0 : 0.2;
+        }
+
+        private void editor_Resize(object sender, EventArgs e)
+        {
+            UpdateScrollbar();
         }
     }
 }

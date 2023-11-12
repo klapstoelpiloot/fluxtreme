@@ -5,24 +5,85 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Fluxtreme"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Unloaded="UserControl_Unloaded">
 	<Grid Background="#FF1E1E1E">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="3*"/>
-			<RowDefinition Height="32"/>
+			<RowDefinition Height="40"/>
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="24"/>
 		</Grid.RowDefinitions>
+
+		<!--Viewer-->
 		<ScrollViewer VerticalScrollBarVisibility="Auto" Background="#FF131313" Grid.Row="0">
 			<StackPanel x:Name="tableslist" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"/>
 		</ScrollViewer>
+
+		<!--Middle bar-->
 		<GridSplitter Grid.Row="1" Height="6" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Top" ResizeBehavior="PreviousAndNext"/>
-		<Grid Grid.Row="1" Margin="0,6,0,0" Background="{StaticResource PanelBackground4}">
-		</Grid>
+		<StackPanel Grid.Row="1" Margin="0,6,0,0" Background="{StaticResource PanelBackground4}" Orientation="Horizontal">
+			<Button x:Name="datasourcebutton" Width="150" Margin="4,0,4,0" Height="26" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="datasourcebutton_Click">
+				<Button.Content>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="24" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="24" />
+						</Grid.ColumnDefinitions>
+						<Image Source="Images/Database.png" Grid.Column="0" Width="16" Height="16" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+						<TextBlock x:Name="datasourcetext" Grid.Column="1" Text="Data source" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="2,0,0,1"/>
+						<Image Source="Images/DownArrow.png" Grid.Column="2" Width="11" Height="11" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+					</Grid>
+				</Button.Content>
+				<Button.ContextMenu>
+					<ContextMenu x:Name="datasourcemenu">
+						<Separator/>
+						<MenuItem Header="Configure data sources..." Click="ConfigureDatasources_Click"/>
+					</ContextMenu>
+				</Button.ContextMenu>
+			</Button>
+			<Button x:Name="timebutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="timebutton_Click">
+				<Button.Content>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="24" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="24" />
+						</Grid.ColumnDefinitions>
+						<Image Source="Images/Clock.png" Grid.Column="0" Width="16" Height="16" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+						<TextBlock x:Name="timebuttontext" Grid.Column="1" Text="Time span" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="2,0,0,1"/>
+						<Image Source="Images/DownArrow.png" Grid.Column="2" Width="11" Height="11" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+					</Grid>
+				</Button.Content>
+				<Button.ContextMenu>
+					<ContextMenu x:Name="timemenu">
+						<MenuItem Header="Custom range..." Click="CustomTimeRange_Click"/>
+						<Separator/>
+						<MenuItem Header="Last 5 minutes" Tag="0.00:05:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 15 minutes" Tag="0.00:15:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 30 minutes" Tag="0.00:30:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 1 hour" Tag="0.01:00:00" Click="SetRecentTimeRange" x:Name="defaulttimerange"/>
+						<MenuItem Header="Last 3 hours" Tag="0.03:00:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 6 hours" Tag="0.06:00:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 12 hours" Tag="0.12:00:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 24 hours" Tag="1.00:00:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 2 days" Tag="2.00:00:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 7 days" Tag="7.00:00:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 30 days" Tag="30.00:00:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 6 months" Tag="183.00:00:00" Click="SetRecentTimeRange"/>
+						<MenuItem Header="Last 12 months" Tag="365.00:00:00" Click="SetRecentTimeRange"/>
+					</ContextMenu>
+				</Button.ContextMenu>
+			</Button>
+		</StackPanel>
+
+		<!--Editor-->
 		<local:FluxEditor x:Name="editor" Grid.Row="2" TextChanged="editor_TextChanged"/>
+
+		<!-- Status bar -->
 		<Grid x:Name="statusbar" Grid.Row="3" Background="{StaticResource PanelBackground4}">
-			<TextBlock x:Name="statuslabel" Padding="40,0,0,0" Foreground="{StaticResource StatusBar.NormalText}" Text="" VerticalAlignment="Center"/>
-			<ProgressBar x:Name="progressbar" Margin="4,4,0,4" IsIndeterminate="True" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Width="31"/>
+			<TextBlock x:Name="statuslabel" Margin="42,0,0,0" Foreground="{StaticResource StatusBar.NormalText}" Text="" VerticalAlignment="Center"/>
+			<ProgressBar x:Name="progressbar" Margin="4,4,0,4" IsIndeterminate="True" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Width="32"/>
 		</Grid>
 	</Grid>
 </UserControl>

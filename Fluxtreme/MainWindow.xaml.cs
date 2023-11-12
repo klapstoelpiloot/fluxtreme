@@ -1,4 +1,5 @@
-﻿using InfluxDB.Client;
+﻿using Fluxtreme.Properties;
+using InfluxDB.Client;
 using InfluxDB.Client.Core.Flux.Domain;
 using Newtonsoft.Json.Linq;
 using System;
@@ -26,7 +27,7 @@ namespace Fluxtreme
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            AppSettings.Default.Save();
+            Settings.Default.Save();
         }
 
         private void Window_Initialized(object sender, EventArgs e)
@@ -36,7 +37,7 @@ namespace Fluxtreme
             tab.Header = "Query 1";
             DocumentPanel dc = new DocumentPanel();
             dc.Setup("from(bucket: \"events\")\r\n" +
-					"\t|> range(start: 2023-11-03T00:00:00Z, stop: 2023-11-04T00:00:00Z)\r\n" +
+					"\t|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n" +
 					"\t|> filter(fn: (r) => r[\"code\"] =~ /[IE]_SPE_03F2/)\r\n" +
 					"\t|> filter(fn: (r) => r[\"_field\"] == \"p-holder\" or r[\"_field\"] == \"p-mafm\" or r[\"_field\"] == \"p-sniffle_target\" or r[\"_field\"] == \"description\")\r\n" +
 					"\t|> filter(fn: (r) => r[\"ssindex\"] == \"0\")\r\n");

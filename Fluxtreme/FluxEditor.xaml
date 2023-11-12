@@ -7,7 +7,10 @@
              xmlns:local="clr-namespace:Fluxtreme"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<WindowsFormsHost>
-		<scintilla:Scintilla x:Name="editor" BorderStyle="None" BackspaceUnindents="True" CaretWidth="2" IdleStyling="None"></scintilla:Scintilla>
-	</WindowsFormsHost>
+	<Grid>
+		<WindowsFormsHost Margin="0,0,17,0">
+			<scintilla:Scintilla x:Name="editor" BorderStyle="None" BackspaceUnindents="True" CaretWidth="2" IdleStyling="None" HScrollBar="False" VScrollBar="False" UpdateUI="editor_UpdateUI" Resize="editor_Resize"/>
+		</WindowsFormsHost>
+		<ScrollBar x:Name="scrollbar" Orientation="Vertical" Width="17" HorizontalAlignment="Right" Scroll="ScrollBar_Scroll" SmallChange="1"/>
+	</Grid>
 </UserControl>

@@ -40,11 +40,14 @@
     <Reference Include="CsvHelper, Version=30.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.30.0.1\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
-    <Reference Include="InfluxDB.Client, Version=4.13.0.0, Culture=neutral, PublicKeyToken=2ffdb0e6ebde0d3f, processorArchitecture=MSIL">
-      <HintPath>..\packages\InfluxDB.Client.4.13.0\lib\netstandard2.0\InfluxDB.Client.dll</HintPath>
+    <Reference Include="InfluxDB.Client, Version=4.14.0.0, Culture=neutral, PublicKeyToken=2ffdb0e6ebde0d3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\InfluxDB.Client.4.14.0\lib\netstandard2.0\InfluxDB.Client.dll</HintPath>
     </Reference>
-    <Reference Include="InfluxDB.Client.Core, Version=4.13.0.0, Culture=neutral, PublicKeyToken=2ffdb0e6ebde0d3f, processorArchitecture=MSIL">
-      <HintPath>..\packages\InfluxDB.Client.Core.4.13.0\lib\netstandard2.0\InfluxDB.Client.Core.dll</HintPath>
+    <Reference Include="InfluxDB.Client.Core, Version=4.14.0.0, Culture=neutral, PublicKeyToken=2ffdb0e6ebde0d3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\InfluxDB.Client.Core.4.14.0\lib\netstandard2.0\InfluxDB.Client.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="InfluxDB.Client.Linq, Version=4.14.0.0, Culture=neutral, PublicKeyToken=2ffdb0e6ebde0d3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\InfluxDB.Client.Linq.4.14.0\lib\netstandard2.0\InfluxDB.Client.Linq.dll</HintPath>
     </Reference>
     <Reference Include="JsonSubTypes, Version=2.0.1.0, Culture=neutral, PublicKeyToken=ee75fc290dbc1176, processorArchitecture=MSIL">
       <HintPath>..\packages\JsonSubTypes.2.0.1\lib\net47\JsonSubTypes.dll</HintPath>
@@ -55,8 +58,8 @@
     <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.HashCode.1.0.0\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.ObjectPool, Version=7.0.9.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.ObjectPool.7.0.9\lib\net462\Microsoft.Extensions.ObjectPool.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.ObjectPool, Version=7.0.13.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.ObjectPool.7.0.13\lib\net462\Microsoft.Extensions.ObjectPool.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Primitives, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
@@ -73,10 +76,13 @@
     <Reference Include="NodaTime, Version=3.1.9.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
       <HintPath>..\packages\NodaTime.3.1.9\lib\netstandard2.0\NodaTime.dll</HintPath>
     </Reference>
-    <Reference Include="NodaTime.Serialization.JsonNet, Version=3.0.1.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NodaTime.Serialization.JsonNet.3.0.1\lib\netstandard2.0\NodaTime.Serialization.JsonNet.dll</HintPath>
+    <Reference Include="NodaTime.Serialization.JsonNet, Version=3.1.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NodaTime.Serialization.JsonNet.3.1.0\lib\netstandard2.0\NodaTime.Serialization.JsonNet.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=110.1.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.110.1.0\lib\net471\RestSharp.dll</HintPath>
     </Reference>
@@ -165,6 +171,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DatasourceSettings.cs" />
+    <Compile Include="DatasourceSettingsCollection.cs" />
     <Compile Include="DocumentPanel.xaml.cs">
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
     </Compile>
@@ -173,12 +181,11 @@
     </Compile>
     <Compile Include="FluxRecordView.cs" />
     <Compile Include="ObservableCollectionEx.cs" />
-    <Compile Include="AppSettings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>AppSettings.settings</DependentUpon>
-    </Compile>
     <Compile Include="QueryRunner.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TableExtraData.cs" />
     <Compile Include="TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
@@ -213,6 +220,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -270,12 +281,8 @@
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="AppSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Themes\readme.md" />
   </ItemGroup>
@@ -290,6 +297,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\CollapseUpGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Clock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DownArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

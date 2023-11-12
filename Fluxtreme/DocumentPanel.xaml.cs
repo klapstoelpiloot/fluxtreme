@@ -1,7 +1,10 @@
-﻿using InfluxDB.Client.Core.Flux.Domain;
+﻿using Fluxtreme.Properties;
+using InfluxDB.Client.Core.Flux.Domain;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,19 +23,59 @@ namespace Fluxtreme
         {
             InitializeComponent();
 
-            // TODO: Dispose query
+            UpdateDatasources();
+
             query = new QueryRunner();
             query.QueryError += Query_QueryError;
             query.DataReady += Query_DataReady;
+
             queryDelay = new System.Timers.Timer(200);
             queryDelay.AutoReset = false;
             queryDelay.Elapsed += QueryDelay_Elapsed;
+
+            SetRecentTimeRange(defaulttimerange, EventArgs.Empty);
         }
 
         public void Setup(string content = "")
         {
             editor.Setup();
             editor.Text = content;
+        }
+
+        public void UpdateDatasources()
+        {
+            // Copy list of objects so that we can iterate over
+            // this list and remove the items from the control
+            List<Control> prevmenuitems = new List<Control>();
+            foreach(Control item in datasourcemenu.Items)
+                prevmenuitems.Add(item);
+
+            // Remove previous menu items
+            foreach(Control item in prevmenuitems)
+            {
+                if (item is Separator)
+                {
+                    continue;
+                }
+                else if(item is MenuItem menuitem)
+                {
+                    if(menuitem.Tag != null)
+                    {
+                        menuitem.Click -= SetDatasource;
+                        datasourcemenu.Items.Remove(menuitem);
+                    }
+                }
+            }
+
+            // Add new items
+            foreach(DatasourceSettings ds in Settings.Default.Datasources)
+            {
+                MenuItem item = new MenuItem();
+                item.Header = ds.Name;
+                item.Tag = ds;
+                item.Click += SetDatasource;
+                datasourcemenu.Items.Insert(0, item);
+            }
         }
 
         public void ShowErrorStatus(string message)
@@ -60,6 +103,28 @@ namespace Fluxtreme
             progressbar.IsIndeterminate = true;
         }
 
+        public void SetDatasource(object sender, EventArgs e)
+        {
+            MenuItem item = sender as MenuItem;
+            SetDatasource(item.Tag as DatasourceSettings);
+        }
+
+        public void SetDatasource(DatasourceSettings ds)
+        {
+            datasourcetext.Text = ds.Name;
+            query.SetDatasource(ds);
+            RunQueryAsync();
+        }
+
+        public void SetRecentTimeRange(object sender, EventArgs e)
+        {
+            MenuItem item = sender as MenuItem;
+            TimeSpan t = TimeSpan.Parse(item.Tag.ToString(), CultureInfo.InvariantCulture);
+            query.TimeRangeRecent = t;
+            timebuttontext.Text = item.Header.ToString();
+            RunQueryAsync();
+        }
+
         public void ShowQueryResults(List<FluxTable> tables, List<TableExtraData> extradata)
         {
             List<TableView> grids = new List<TableView>();
@@ -85,11 +150,22 @@ namespace Fluxtreme
 
         private void QueryDelay_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!query.IsRunning)
+            RunQuery();
+        }
+
+        private void RunQuery()
+        {
+            if (!query.IsRunning && (querystring != null))
             {
                 Dispatcher.BeginInvoke(new Action(() => ShowQueryInProgress()));
                 query.Run(querystring);
             }
+        }
+
+        private void RunQueryAsync()
+        {
+            Task task = new Task(RunQuery);
+            task.Start();
         }
 
         private void editor_TextChanged(object sender, EventArgs e)
@@ -97,6 +173,39 @@ namespace Fluxtreme
             querystring = editor.Text;
             queryDelay.Stop();
             queryDelay.Start();
+        }
+
+        private void timebutton_Click(object sender, RoutedEventArgs e)
+        {
+            timemenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            timemenu.PlacementTarget = timebutton;
+            timemenu.IsOpen = true;
+        }
+
+        private void CustomTimeRange_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void datasourcebutton_Click(object sender, RoutedEventArgs e)
+        {
+            datasourcemenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            datasourcemenu.PlacementTarget = datasourcebutton;
+            datasourcemenu.IsOpen = true;
+        }
+
+        private void ConfigureDatasources_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (query != null)
+            {
+                query.Dispose();
+                query = null;
+            }
         }
     }
 }
