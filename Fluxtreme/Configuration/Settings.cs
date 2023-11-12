@@ -1,4 +1,4 @@
-﻿namespace Fluxtreme.Properties {
+﻿namespace CodeImp.Fluxtreme.Properties {
     
     
     // This class allows you to handle specific events on the settings class:

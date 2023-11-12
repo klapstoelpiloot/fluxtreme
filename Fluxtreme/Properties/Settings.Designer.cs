@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Fluxtreme.Properties {
+namespace CodeImp.Fluxtreme.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,9 +25,9 @@ namespace Fluxtreme.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Fluxtreme.DatasourceSettingsCollection Datasources {
+        public global::CodeImp.Fluxtreme.Configuration.DatasourceSettingsCollection Datasources {
             get {
-                return ((global::Fluxtreme.DatasourceSettingsCollection)(this["Datasources"]));
+                return ((global::CodeImp.Fluxtreme.Configuration.DatasourceSettingsCollection)(this["Datasources"]));
             }
             set {
                 this["Datasources"] = value;

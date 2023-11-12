@@ -7,9 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using static ScintillaNET.Style;
 
-namespace Fluxtreme
+namespace CodeImp.Fluxtreme.Data
 {
     /// <summary>
     /// Interaction logic for TableGrid.xaml

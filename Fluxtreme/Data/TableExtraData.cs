@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fluxtreme
+namespace CodeImp.Fluxtreme.Data
 {
     public class TableExtraData
     {

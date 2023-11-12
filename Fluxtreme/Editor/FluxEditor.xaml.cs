@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Windows.Controls;
 using Keys = System.Windows.Forms.Keys;
 
-namespace Fluxtreme
+namespace CodeImp.Fluxtreme.Editor
 {
     /// <summary>
     /// Interaction logic for FluxEditor.xaml
@@ -113,7 +113,7 @@ namespace Fluxtreme
             editor.Styles[ScintillaNET.Style.Python.Word].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
             editor.Styles[ScintillaNET.Style.Python.Word2].ForeColor = Color.FromKnownColor(KnownColor.PeachPuff);
 
-            string[] functions = ReadResourceStrings("Fluxtreme.FluxFunctions.txt");
+            string[] functions = ReadResourceStrings("CodeImp.Fluxtreme.Editor.FluxFunctions.txt");
             Dictionary<string, string> func_dict = new Dictionary<string, string>();
             Dictionary<string, string> ident_dict = new Dictionary<string, string>();
             foreach (string f in functions)

@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace Fluxtreme
+namespace CodeImp.Fluxtreme.Tools
 {
     public class ObservableCollectionEx<T> : ObservableCollection<T>
     {

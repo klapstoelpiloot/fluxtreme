@@ -1,19 +1,16 @@
-﻿using InfluxDB.Client;
+﻿using CodeImp.Fluxtreme.Configuration;
+using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Core.Exceptions;
 using InfluxDB.Client.Core.Flux.Domain;
-using InfluxDB.Client.Linq;
-using Remotion.Linq;
-using Remotion.Linq.Parsing.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Web.UI;
 
-namespace Fluxtreme
+namespace CodeImp.Fluxtreme.Data
 {
     public class QueryRunner : IDisposable
     {
@@ -92,9 +89,9 @@ namespace Fluxtreme
             running = true;
             cancelsource = new CancellationTokenSource();
 
-            lock(syncObject)
+            lock (syncObject)
             {
-                if(client == null)
+                if (client == null)
                 {
                     QueryError?.Invoke(new List<string>() { "No data source selected." });
                     running = false;
@@ -167,7 +164,7 @@ namespace Fluxtreme
             // This sets up the following Flux statement:
             // option v = { timeRangeStart: -1h, timeRangeStop: now(), windowPeriod: 1s, defaultBucket: "data" }
             // They have all these classes to represent the tokens, why don't they have something like Query.ParseToTokens(...)?
-            
+
             Expression startvalue;
             Expression stopvalue;
             if (TimeRangeRecent != TimeSpan.Zero)
@@ -193,15 +190,15 @@ namespace Fluxtreme
 
             return new File("File", null, null, new List<ImportDeclaration>(), new List<Statement>() { option });
         }
-        
+
         private List<Duration> TimeSpanToDurations(TimeSpan span)
         {
             List<Duration> durations = new List<Duration>();
-            if(span.Days > 0) durations.Add(new Duration(null, span.Days, "d"));
-            if(span.Hours > 0) durations.Add(new Duration(null, span.Hours, "h"));
-            if(span.Minutes > 0) durations.Add(new Duration(null, span.Minutes, "m"));
-            if(span.Seconds > 0) durations.Add(new Duration(null, span.Seconds, "s"));
-            if(span.Milliseconds > 0) durations.Add(new Duration(null, span.Milliseconds, "ms"));
+            if (span.Days > 0) durations.Add(new Duration(null, span.Days, "d"));
+            if (span.Hours > 0) durations.Add(new Duration(null, span.Hours, "h"));
+            if (span.Minutes > 0) durations.Add(new Duration(null, span.Minutes, "m"));
+            if (span.Seconds > 0) durations.Add(new Duration(null, span.Seconds, "s"));
+            if (span.Milliseconds > 0) durations.Add(new Duration(null, span.Milliseconds, "ms"));
             return durations;
         }
     }

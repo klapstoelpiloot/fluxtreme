@@ -1,8 +1,8 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Fluxtreme.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CodeImp.Fluxtreme.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Datasources" Type="Fluxtreme.DatasourceSettingsCollection" Scope="User">
+    <Setting Name="Datasources" Type="CodeImp.Fluxtreme.Configuration.DatasourceSettingsCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

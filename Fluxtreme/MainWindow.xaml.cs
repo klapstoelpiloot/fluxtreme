@@ -1,4 +1,5 @@
-﻿using Fluxtreme.Properties;
+﻿using CodeImp.Fluxtreme.Configuration;
+using CodeImp.Fluxtreme.Properties;
 using InfluxDB.Client;
 using InfluxDB.Client.Core.Flux.Domain;
 using Newtonsoft.Json.Linq;
@@ -6,14 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Fluxtreme
+namespace CodeImp.Fluxtreme
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

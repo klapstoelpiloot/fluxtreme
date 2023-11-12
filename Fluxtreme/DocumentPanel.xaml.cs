@@ -1,4 +1,6 @@
-﻿using Fluxtreme.Properties;
+﻿using CodeImp.Fluxtreme.Configuration;
+using CodeImp.Fluxtreme.Data;
+using CodeImp.Fluxtreme.Properties;
 using InfluxDB.Client.Core.Flux.Domain;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Fluxtreme
+namespace CodeImp.Fluxtreme
 {
     public partial class DocumentPanel : UserControl
     {
@@ -68,13 +70,16 @@ namespace Fluxtreme
             }
 
             // Add new items
-            foreach(DatasourceSettings ds in Settings.Default.Datasources)
+            if(Settings.Default.Datasources != null)
             {
-                MenuItem item = new MenuItem();
-                item.Header = ds.Name;
-                item.Tag = ds;
-                item.Click += SetDatasource;
-                datasourcemenu.Items.Insert(0, item);
+                foreach(DatasourceSettings ds in Settings.Default.Datasources)
+                {
+                    MenuItem item = new MenuItem();
+                    item.Header = ds.Name;
+                    item.Tag = ds;
+                    item.Click += SetDatasource;
+                    datasourcemenu.Items.Insert(0, item);
+                }
             }
         }
 

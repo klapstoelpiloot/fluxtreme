@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B7198ED8-8595-414E-8BB1-7AE7A51A89C8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Fluxtreme</RootNamespace>
+    <RootNamespace>CodeImp.Fluxtreme</RootNamespace>
     <AssemblyName>Fluxtreme</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -171,23 +171,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DatasourceSettings.cs" />
-    <Compile Include="DatasourceSettingsCollection.cs" />
+    <Compile Include="Configuration\DatasourceSettings.cs" />
+    <Compile Include="Configuration\DatasourceSettingsCollection.cs" />
     <Compile Include="DocumentPanel.xaml.cs">
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FluxEditor.xaml.cs">
+    <Compile Include="Editor\FluxEditor.xaml.cs">
       <DependentUpon>FluxEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FluxRecordView.cs" />
-    <Compile Include="ObservableCollectionEx.cs" />
-    <Compile Include="QueryRunner.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="SettingsWindow.xaml.cs">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TableExtraData.cs" />
-    <Compile Include="TableView.xaml.cs">
+    <Compile Include="Data\FluxRecordView.cs" />
+    <Compile Include="Tools\ObservableCollectionEx.cs" />
+    <Compile Include="Data\QueryRunner.cs" />
+    <Compile Include="Configuration\Settings.cs" />
+    <Compile Include="Data\TableExtraData.cs" />
+    <Compile Include="Data\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\Attached\CornerRadiusHelper.cs" />
@@ -204,7 +201,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FluxEditor.xaml">
+    <Page Include="Editor\FluxEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -220,11 +217,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SettingsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TableView.xaml">
+    <Page Include="Data\TableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -293,7 +286,7 @@
     <Resource Include="Images\ExpandDownGroup.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FluxFunctions.txt" />
+    <EmbeddedResource Include="Editor\FluxFunctions.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\CollapseUpGroup.png" />
