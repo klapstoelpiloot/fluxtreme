@@ -25,10 +25,7 @@
 					<DynamicResource ResourceKey="expandimage"/>
 				</Button>
 			</Grid>
-			<ListView x:Name="contents" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False" Grid.IsSharedSizeScope="True" PreviewMouseWheel="contents_PreviewMouseWheel" SnapsToDevicePixels="True" Focusable="False" IsTextSearchEnabled="False">
-				<ListView.CacheMode>
-					<BitmapCache/>
-				</ListView.CacheMode>
+			<ListView x:Name="contents" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False" PreviewMouseWheel="contents_PreviewMouseWheel" SnapsToDevicePixels="True" Focusable="False" IsTextSearchEnabled="False">
 				<ListView.View>
 					<GridView x:Name="contentview" AllowsColumnReorder="False">
 					</GridView>

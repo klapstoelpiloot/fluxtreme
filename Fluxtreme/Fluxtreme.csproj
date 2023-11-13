@@ -176,6 +176,8 @@
     <Compile Include="Configuration\DatasourceSettingsPage.xaml.cs">
       <DependentUpon>DatasourceSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\IpAddressValidator.cs" />
+    <Compile Include="Configuration\NotEmptyValidator.cs" />
     <Compile Include="Configuration\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>

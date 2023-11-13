@@ -8,15 +8,15 @@
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
         Title="Fluxtreme Settings" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closed="Window_Closed">
-    <Grid>
+    <Grid Background="{StaticResource PanelBackground1}">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="150"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<ListBox x:Name="pageslist" Grid.Column="0">
+		<ListBox x:Name="pageslist" Grid.Column="0" FontWeight="SemiBold">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<TextBlock Text="{Binding}" Padding="2,1,0,1"/>
+					<TextBlock Text="{Binding}" Padding="4,2,0,2"/>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>

@@ -16,7 +16,7 @@
 
 		<!--Viewer-->
 		<ScrollViewer VerticalScrollBarVisibility="Auto" Background="#FF131313" Grid.Row="0">
-			<StackPanel x:Name="tableslist" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"/>
+			<VirtualizingStackPanel x:Name="tableslist" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"/>
 		</ScrollViewer>
 
 		<!--Middle bar-->

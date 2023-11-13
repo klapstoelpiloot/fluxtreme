@@ -7,26 +7,97 @@
              xmlns:props="clr-namespace:CodeImp.Fluxtreme.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="329" d:DesignWidth="635">
+	<UserControl.Resources>
+		<ControlTemplate x:Key="ErrorTemplate">
+			<Border BorderBrush="#FFF01428" BorderThickness="1">
+				<AdornedElementPlaceholder x:Name="AdornerPlaceholder"/>
+			</Border>
+		</ControlTemplate>
+		<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+			<Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}"/>
+			<Style.Triggers>
+				<Trigger Property="IsEnabled" Value="False">
+					<Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+				</Trigger>
+				<Trigger Property="IsEnabled" Value="True">
+					<Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+	</UserControl.Resources>
 	<Grid>
 		<TextBlock Height="52" Margin="10,10,10,0" Text="A data source is where your query is performed and where the data comes from. In this application, a data source is an InfluxDB dataabase. Configure one or more data sources for use in the editor." VerticalAlignment="Top" TextWrapping="Wrap"/>
 		<ListBox x:Name="datasourceslist" ItemsSource="{Binding Source={x:Static props:Settings.Default}, Path=Datasources}" Height="95" Margin="10,67,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="332">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<TextBlock Text="{Binding LongDescription}" />
+					<TextBlock Text="{Binding LongDescription}" Padding="2,1,0,1" />
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
 		<Button Content="New Data Source" HorizontalAlignment="Left" Height="29" Margin="359,67,0,0" VerticalAlignment="Top" Width="130" Click="NewButton_Click"/>
 		<Button Content="Remove Data Source" HorizontalAlignment="Left" Height="29" Margin="359,102,0,0" VerticalAlignment="Top" Width="130" Click="RemoveButton_Click" IsEnabled="{Binding ElementName=datasourceslist, Path=SelectedItems.Count}"/>
-		<Grid Height="135" Margin="10,183,10,0" VerticalAlignment="Top" Background="{DynamicResource PanelBackground3}">
+		<Grid Height="135" Margin="10,183,10,0" VerticalAlignment="Top" Background="{DynamicResource PanelBackground3}" IsEnabled="{Binding ElementName=datasourceslist, Path=SelectedItems.Count}">
 			<Label Content="Description:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Height="27" Margin="4,14,0,0" VerticalAlignment="Top" Width="101"/>
-			<TextBox HorizontalAlignment="Left" Height="23" Margin="110,17,0,0" Text="{Binding ElementName=datasourceslist, Path=SelectedItem.Name, Mode=TwoWay}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="180"/>
+			<TextBox x:Name="namebox" HorizontalAlignment="Left" Height="23" Margin="110,17,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="180">
+				<TextBox.Text>
+					<Binding ElementName="datasourceslist"
+							 Path="SelectedItem.Name"
+							 Mode="TwoWay"
+							 ValidatesOnNotifyDataErrors="True"
+							 ValidatesOnDataErrors="True"
+							 NotifyOnValidationError="True">
+						<Binding.ValidationRules>
+							<local:NotEmptyValidator ValidatesOnTargetUpdated="True" />
+						</Binding.ValidationRules>
+					</Binding>
+				</TextBox.Text>
+			</TextBox>
 			<Label Content="Address:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Height="27" Margin="295,14,0,0" VerticalAlignment="Top" Width="62"/>
-			<TextBox Height="23" Margin="362,17,19,0" Text="{Binding ElementName=datasourceslist, Path=SelectedItem.Address, Mode=TwoWay}" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
+			<TextBox Height="23" Margin="362,17,19,0" VerticalAlignment="Top" VerticalContentAlignment="Center">
+				<TextBox.Text>
+					<Binding ElementName="datasourceslist"
+							 Path="SelectedItem.Address"
+							 Mode="TwoWay"
+							 ValidatesOnNotifyDataErrors="True"
+							 ValidatesOnDataErrors="True"
+							 NotifyOnValidationError="True">
+						<Binding.ValidationRules>
+							<local:NotEmptyValidator ValidatesOnTargetUpdated="True" />
+							<local:IpAddressValidator ValidatesOnTargetUpdated="True" />
+						</Binding.ValidationRules>
+					</Binding>
+				</TextBox.Text>
+			</TextBox>
 			<Label Content="Access token:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Height="27" Margin="4,50,0,0" VerticalAlignment="Top" Width="101"/>
-			<TextBox Height="23" Margin="110,53,19,0" Text="{Binding ElementName=datasourceslist, Path=SelectedItem.AccessToken, Mode=TwoWay}" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
+			<TextBox Height="23" Margin="110,53,19,0" VerticalAlignment="Top" VerticalContentAlignment="Center">
+				<TextBox.Text>
+					<Binding ElementName="datasourceslist"
+							 Path="SelectedItem.AccessToken"
+							 Mode="TwoWay"
+							 ValidatesOnNotifyDataErrors="True"
+							 ValidatesOnDataErrors="True"
+							 NotifyOnValidationError="True">
+						<Binding.ValidationRules>
+							<local:NotEmptyValidator ValidatesOnTargetUpdated="True" />
+						</Binding.ValidationRules>
+					</Binding>
+				</TextBox.Text>
+			</TextBox>
 			<Label Content="Organization ID:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Height="27" Margin="4,89,0,0" VerticalAlignment="Top" Width="101"/>
-			<TextBox Height="23" Margin="110,91,325,0" Text="{Binding ElementName=datasourceslist, Path=SelectedItem.OrganizationID, Mode=TwoWay}" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
+			<TextBox Height="23" Margin="110,91,325,0" VerticalAlignment="Top" VerticalContentAlignment="Center">
+				<TextBox.Text>
+					<Binding ElementName="datasourceslist"
+							 Path="SelectedItem.OrganizationID"
+							 Mode="TwoWay"
+							 ValidatesOnNotifyDataErrors="True"
+							 ValidatesOnDataErrors="True"
+							 NotifyOnValidationError="True">
+						<Binding.ValidationRules>
+							<local:NotEmptyValidator ValidatesOnTargetUpdated="True" />
+						</Binding.ValidationRules>
+					</Binding>
+				</TextBox.Text>
+			</TextBox>
 			<Label Content="Default bucket:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Height="27" Margin="295,89,0,0" VerticalAlignment="Top" Width="101"/>
 			<TextBox Height="23" Margin="401,91,19,0" Text="{Binding ElementName=datasourceslist, Path=SelectedItem.DefaultBucket, Mode=TwoWay}" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
 		</Grid>
