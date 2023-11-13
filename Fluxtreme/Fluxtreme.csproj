@@ -173,6 +173,12 @@
     </ApplicationDefinition>
     <Compile Include="Configuration\DatasourceSettings.cs" />
     <Compile Include="Configuration\DatasourceSettingsCollection.cs" />
+    <Compile Include="Configuration\DatasourceSettingsPage.xaml.cs">
+      <DependentUpon>DatasourceSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DocumentPanel.xaml.cs">
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
     </Compile>
@@ -180,6 +186,8 @@
       <DependentUpon>FluxEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\FluxRecordView.cs" />
+    <Compile Include="IDocumentPanel.cs" />
+    <Compile Include="IMainWindow.cs" />
     <Compile Include="Tools\ObservableCollectionEx.cs" />
     <Compile Include="Data\QueryRunner.cs" />
     <Compile Include="Configuration\Settings.cs" />
@@ -197,6 +205,14 @@
     </Compile>
     <Compile Include="Themes\ThemesController.cs" />
     <Compile Include="Themes\ThemeType.cs" />
+    <Page Include="Configuration\DatasourceSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Configuration\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DocumentPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

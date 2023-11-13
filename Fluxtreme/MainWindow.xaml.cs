@@ -21,7 +21,7 @@ namespace CodeImp.Fluxtreme
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMainWindow
     {
         public MainWindow()
         {
@@ -38,14 +38,23 @@ namespace CodeImp.Fluxtreme
             // Something to test quickly
             TabItem tab = new TabItem();
             tab.Header = "Query 1";
-            DocumentPanel dc = new DocumentPanel();
-            dc.Setup("from(bucket: \"events\")\r\n" +
+            DocumentPanel dp = new DocumentPanel();
+            dp.Setup("from(bucket: \"events\")\r\n" +
 					"\t|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n" +
 					"\t|> filter(fn: (r) => r[\"code\"] =~ /[IE]_SPE_03F2/)\r\n" +
 					"\t|> filter(fn: (r) => r[\"_field\"] == \"p-holder\" or r[\"_field\"] == \"p-mafm\" or r[\"_field\"] == \"p-sniffle_target\" or r[\"_field\"] == \"description\")\r\n" +
 					"\t|> filter(fn: (r) => r[\"ssindex\"] == \"0\")\r\n");
-            tab.Content = dc;
+            tab.Content = dp;
             tabs.Items.Add(tab);
+        }
+
+        public void SettingsChanged()
+        {
+            foreach(TabItem tab in tabs.Items)
+            {
+                IDocumentPanel dp = tab.Content as IDocumentPanel;
+                dp.SettingsChanged();
+            }
         }
     }
 }

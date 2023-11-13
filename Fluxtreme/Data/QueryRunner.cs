@@ -1,9 +1,12 @@
 ﻿using CodeImp.Fluxtreme.Configuration;
+using CodeImp.Fluxtreme.Properties;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Core.Exceptions;
 using InfluxDB.Client.Core.Flux.Domain;
+using InfluxDB.Client.Core.Flux.Exceptions;
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -76,7 +79,7 @@ namespace CodeImp.Fluxtreme.Data
             lock (syncObject)
             {
                 client?.Dispose();
-                client = new InfluxDBClient($"http://{settings.Address}/", settings.AccessToken);
+                client = null;
                 datasource = settings;
             }
         }
@@ -91,15 +94,22 @@ namespace CodeImp.Fluxtreme.Data
 
             lock (syncObject)
             {
-                if (client == null)
-                {
-                    QueryError?.Invoke(new List<string>() { "No data source selected." });
-                    running = false;
-                    return;
-                }
-
                 try
                 {
+                    if (client == null)
+                    {
+                        if (datasource != null)
+                        {
+                            client = new InfluxDBClient($"http://{datasource.Address}/", datasource.AccessToken);
+                        }
+                        else
+                        {
+                            QueryError?.Invoke(new List<string>() { "No data source selected." });
+                            running = false;
+                            return;
+                        }
+                    }
+
                     // Send the query and await the result
                     File extern_ = SetupExtern();
                     Query q = new Query(extern_, query, Query.TypeEnum.Flux, null, QueryApi.Dialect);
@@ -108,10 +118,9 @@ namespace CodeImp.Fluxtreme.Data
                     result = queryapi.QuerySync(q, datasource.OrganizationID, cancelsource.Token);
                     endtime = DateTime.Now;
                 }
-                catch (HttpRequestException ex)
+                catch (FluxQueryException ex)
                 {
-                    Exception basex = ex.GetBaseException();
-                    QueryError?.Invoke(new List<string>() { basex.Message });
+                    QueryError?.Invoke(new List<string>() { ex.Message });
                     running = false;
                     return;
                 }
@@ -145,6 +154,13 @@ namespace CodeImp.Fluxtreme.Data
                         }
                     }
                     QueryError?.Invoke(errors);
+                    running = false;
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Exception basex = ex.GetBaseException();
+                    QueryError?.Invoke(new List<string>() { basex.Message });
                     running = false;
                     return;
                 }

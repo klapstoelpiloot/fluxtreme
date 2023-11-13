@@ -13,7 +13,7 @@ using System.Windows.Media;
 
 namespace CodeImp.Fluxtreme
 {
-    public partial class DocumentPanel : UserControl
+    public partial class DocumentPanel : UserControl, IDocumentPanel
     {
         private static readonly Brush StatusErrorBackground = new SolidColorBrush(Color.FromRgb(200, 0, 0));
 
@@ -34,7 +34,7 @@ namespace CodeImp.Fluxtreme
             queryDelay = new System.Timers.Timer(200);
             queryDelay.AutoReset = false;
             queryDelay.Elapsed += QueryDelay_Elapsed;
-
+            
             SetRecentTimeRange(defaulttimerange, EventArgs.Empty);
         }
 
@@ -81,6 +81,13 @@ namespace CodeImp.Fluxtreme
                     datasourcemenu.Items.Insert(0, item);
                 }
             }
+
+            // If the selected datasource is not in the list (anymore) then deselect it
+            // We don't want to automatically select the next (or another) datasource as
+            // it may accedentially query another database.
+            DatasourceSettings current = datasourcebutton.DataContext as DatasourceSettings;
+            if ((current != null) && !Settings.Default.Datasources.Contains(current))
+                SetDatasource(null);
         }
 
         public void ShowErrorStatus(string message)
@@ -116,7 +123,7 @@ namespace CodeImp.Fluxtreme
 
         public void SetDatasource(DatasourceSettings ds)
         {
-            datasourcetext.Text = ds.Name;
+            datasourcebutton.DataContext = ds;
             query.SetDatasource(ds);
             RunQueryAsync();
         }
@@ -201,7 +208,10 @@ namespace CodeImp.Fluxtreme
 
         private void ConfigureDatasources_Click(object sender, RoutedEventArgs e)
         {
-
+            SettingsWindow sw = new SettingsWindow();
+            sw.Owner = Window.GetWindow(this);
+            sw.SelectPage(typeof(DatasourceSettingsPage));
+            sw.ShowDialog();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -211,6 +221,12 @@ namespace CodeImp.Fluxtreme
                 query.Dispose();
                 query = null;
             }
+        }
+
+        public void SettingsChanged()
+        {
+            UpdateDatasources();
+
         }
     }
 }

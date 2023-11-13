@@ -31,7 +31,7 @@
 							<ColumnDefinition Width="24" />
 						</Grid.ColumnDefinitions>
 						<Image Source="Images/Database.png" Grid.Column="0" Width="16" Height="16" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
-						<TextBlock x:Name="datasourcetext" Grid.Column="1" Text="Data source" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="2,0,0,1"/>
+						<TextBlock Grid.Column="1" Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="2,0,0,1"/>
 						<Image Source="Images/DownArrow.png" Grid.Column="2" Width="11" Height="11" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
 					</Grid>
 				</Button.Content>
@@ -63,15 +63,11 @@
 						<MenuItem Header="Last 15 minutes" Tag="0.00:15:00" Click="SetRecentTimeRange"/>
 						<MenuItem Header="Last 30 minutes" Tag="0.00:30:00" Click="SetRecentTimeRange"/>
 						<MenuItem Header="Last 1 hour" Tag="0.01:00:00" Click="SetRecentTimeRange" x:Name="defaulttimerange"/>
-						<MenuItem Header="Last 3 hours" Tag="0.03:00:00" Click="SetRecentTimeRange"/>
 						<MenuItem Header="Last 6 hours" Tag="0.06:00:00" Click="SetRecentTimeRange"/>
 						<MenuItem Header="Last 12 hours" Tag="0.12:00:00" Click="SetRecentTimeRange"/>
 						<MenuItem Header="Last 24 hours" Tag="1.00:00:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 2 days" Tag="2.00:00:00" Click="SetRecentTimeRange"/>
 						<MenuItem Header="Last 7 days" Tag="7.00:00:00" Click="SetRecentTimeRange"/>
 						<MenuItem Header="Last 30 days" Tag="30.00:00:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 6 months" Tag="183.00:00:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 12 months" Tag="365.00:00:00" Click="SetRecentTimeRange"/>
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>

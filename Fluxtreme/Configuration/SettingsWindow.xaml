@@ -1,0 +1,25 @@
+﻿<Window x:Class="CodeImp.Fluxtreme.Configuration.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CodeImp.Fluxtreme.Configuration"
+		xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Style="{StaticResource CustomWindowStyle}"
+        Title="Fluxtreme Settings" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closed="Window_Closed">
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="150"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<ListBox x:Name="pageslist" Grid.Column="0">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding}" Padding="2,1,0,1"/>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+		<ContentControl Content="{Binding ElementName=pageslist, Path=SelectedItem, Mode=OneWay}" Grid.Column="1"/>
+	</Grid>
+</Window>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace CodeImp.Fluxtreme.Configuration
 {
     [Serializable]
     [SettingsSerializeAs(SettingsSerializeAs.Xml)]
-    public class DatasourceSettingsCollection : List<DatasourceSettings>
+    public class DatasourceSettingsCollection : ObservableCollection<DatasourceSettings>
     {
     }
 }
