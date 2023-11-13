@@ -38,5 +38,10 @@ namespace CodeImp.Fluxtreme.Configuration
         {
             App.Window.SettingsChanged();
         }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
