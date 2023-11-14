@@ -7,6 +7,6 @@
         Style="{StaticResource CustomWindowStyle}"
         Title="Fluxtreme" Height="800" Width="1024" Closing="Window_Closing" Initialized="Window_Initialized">
 	<Grid>
-		<TabControl x:Name="tabs"/>
+		<TabControl x:Name="tabs" Margin="2,4,2,0"/>
 	</Grid>
 </Window>

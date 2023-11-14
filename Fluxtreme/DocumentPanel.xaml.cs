@@ -151,7 +151,9 @@ namespace CodeImp.Fluxtreme
 
         private void Query_DataReady(List<FluxTable> tables, List<TableExtraData> extradata, TimeSpan duration)
         {
-            Dispatcher.BeginInvoke(new Action(() => ShowNormalStatus($"Query took {duration.TotalSeconds:0.00} seconds")));
+            int recordcount = 0;
+            tables.ForEach(t => recordcount += t.Records.Count);
+            Dispatcher.BeginInvoke(new Action(() => ShowNormalStatus($"Query took {duration.TotalSeconds:0.00} seconds. Tables: {tables.Count} Records: {recordcount}")));
             Dispatcher.BeginInvoke(new Action(() => ShowQueryResults(tables, extradata)));
         }
 
@@ -196,7 +198,26 @@ namespace CodeImp.Fluxtreme
 
         private void CustomTimeRange_Click(object sender, RoutedEventArgs e)
         {
-
+            TimeRangeWindow trw = new TimeRangeWindow();
+            if(query.TimeRangeRecent != TimeSpan.Zero)
+            {
+                trw.SetDates(DateTime.Now - query.TimeRangeRecent, DateTime.Now);
+            }
+            else
+            {
+                trw.SetDates(query.TimeRangeStart, query.TimeRangeStop);
+            }
+            trw.Owner = Window.GetWindow(this);
+            bool? result = trw.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                query.TimeRangeStart = trw.GetFromDate();
+                query.TimeRangeStop = trw.GetToDate();
+                query.TimeRangeRecent = TimeSpan.Zero;
+                timebuttontext.Text = query.TimeRangeStart.ToShortDateString() + " " + query.TimeRangeStart.ToShortTimeString() + " - " + 
+                    query.TimeRangeStop.ToShortDateString() + " " + query.TimeRangeStop.ToShortTimeString();
+                RunQueryAsync();
+            }
         }
 
         private void datasourcebutton_Click(object sender, RoutedEventArgs e)
