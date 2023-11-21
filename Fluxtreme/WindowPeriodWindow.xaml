@@ -1,0 +1,30 @@
+﻿<Window x:Class="CodeImp.Fluxtreme.WindowPeriodWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CodeImp.Fluxtreme"
+        mc:Ignorable="d"
+        Style="{StaticResource CustomWindowStyle}"
+        Title="Enter window period" Height="194" Width="332" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
+	<Window.Resources>
+		<Style TargetType="{x:Type local:IntegersOnlyTextBox}" BasedOn="{StaticResource {x:Type TextBox}}"/>
+	</Window.Resources>
+	<Grid>
+		<Label Content="Days:" HorizontalAlignment="Left" Height="30" Margin="32,28,0,0" Padding="2,0,0,0" VerticalAlignment="Top" Width="42" VerticalContentAlignment="Center"/>
+		<local:IntegersOnlyTextBox x:Name="daysbox" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="69,32,0,0" Text="00" VerticalAlignment="Top" Width="26"/>
+		<Label Content="Hours:" HorizontalAlignment="Left" Height="30" Margin="119,28,0,0" Padding="2,0,0,0" VerticalAlignment="Top" Width="45" VerticalContentAlignment="Center"/>
+		<local:IntegersOnlyTextBox x:Name="hoursbox" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="162,32,0,0" Text="00" VerticalAlignment="Top" Width="26"/>
+		<Label Content="Minutes:" HorizontalAlignment="Left" Height="30" Margin="208,28,0,0" Padding="2,0,2,0" VerticalAlignment="Top" Width="55" VerticalContentAlignment="Center"/>
+		<local:IntegersOnlyTextBox x:Name="minutesbox" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="263,32,0,0" Text="00" VerticalAlignment="Top" Width="26"/>
+		<Label Content="Seconds:" HorizontalAlignment="Left" Height="30" Margin="52,73,0,0" Padding="2,0,2,0" VerticalAlignment="Top" Width="56" VerticalContentAlignment="Center"/>
+		<local:IntegersOnlyTextBox x:Name="secondsbox" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="108,77,0,0" Text="00" VerticalAlignment="Top" Width="26"/>
+		<Label Content="Milliseconds:" HorizontalAlignment="Left" Height="30" Margin="158,73,0,0" Padding="2,0,2,0" VerticalAlignment="Top" Width="80" VerticalContentAlignment="Center"/>
+		<local:IntegersOnlyTextBox x:Name="millisecondsbox" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="237,77,0,0" Text="00" VerticalAlignment="Top" Width="26"/>
+
+		<Grid Height="43" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="266">
+			<Button Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Content="OK" Margin="0,0,138,10" Click="OkButton_Click"/>
+			<Button Grid.Column="1" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Content="Cancel" Margin="0,0,10,10" Click="CancelButton_Click"/>
+		</Grid>
+	</Grid>
+</Window>

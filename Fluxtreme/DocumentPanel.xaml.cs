@@ -20,6 +20,7 @@ namespace CodeImp.Fluxtreme
         private System.Timers.Timer queryDelay;
         private QueryRunner query;
         private string querystring;
+        private bool autoperiod = true;
 
         public DocumentPanel()
         {
@@ -34,7 +35,7 @@ namespace CodeImp.Fluxtreme
             queryDelay = new System.Timers.Timer(200);
             queryDelay.AutoReset = false;
             queryDelay.Elapsed += QueryDelay_Elapsed;
-            
+
             SetRecentTimeRange(defaulttimerange, EventArgs.Empty);
         }
 
@@ -49,19 +50,19 @@ namespace CodeImp.Fluxtreme
             // Copy list of objects so that we can iterate over
             // this list and remove the items from the control
             List<Control> prevmenuitems = new List<Control>();
-            foreach(Control item in datasourcemenu.Items)
+            foreach (Control item in datasourcemenu.Items)
                 prevmenuitems.Add(item);
 
             // Remove previous menu items
-            foreach(Control item in prevmenuitems)
+            foreach (Control item in prevmenuitems)
             {
                 if (item is Separator)
                 {
                     continue;
                 }
-                else if(item is MenuItem menuitem)
+                else if (item is MenuItem menuitem)
                 {
-                    if(menuitem.Tag != null)
+                    if (menuitem.Tag != null)
                     {
                         menuitem.Click -= SetDatasource;
                         datasourcemenu.Items.Remove(menuitem);
@@ -70,9 +71,9 @@ namespace CodeImp.Fluxtreme
             }
 
             // Add new items
-            if(Settings.Default.Datasources != null)
+            if (Settings.Default.Datasources != null)
             {
-                foreach(DatasourceSettings ds in Settings.Default.Datasources)
+                foreach (DatasourceSettings ds in Settings.Default.Datasources)
                 {
                     MenuItem item = new MenuItem();
                     item.Header = ds.Name;
@@ -171,6 +172,7 @@ namespace CodeImp.Fluxtreme
         {
             if (!query.IsRunning && (querystring != null))
             {
+                DetermineAutoPeriod();
                 Dispatcher.BeginInvoke(new Action(() => ShowQueryInProgress()));
                 query.Run(querystring);
             }
@@ -199,7 +201,7 @@ namespace CodeImp.Fluxtreme
         private void CustomTimeRange_Click(object sender, RoutedEventArgs e)
         {
             TimeRangeWindow trw = new TimeRangeWindow();
-            if(query.TimeRangeRecent != TimeSpan.Zero)
+            if (query.TimeRangeRecent != TimeSpan.Zero)
             {
                 trw.SetDates(DateTime.Now - query.TimeRangeRecent, DateTime.Now);
             }
@@ -214,7 +216,7 @@ namespace CodeImp.Fluxtreme
                 query.TimeRangeStart = trw.GetFromDate();
                 query.TimeRangeStop = trw.GetToDate();
                 query.TimeRangeRecent = TimeSpan.Zero;
-                timebuttontext.Text = query.TimeRangeStart.ToShortDateString() + " " + query.TimeRangeStart.ToShortTimeString() + " - " + 
+                timebuttontext.Text = query.TimeRangeStart.ToShortDateString() + " " + query.TimeRangeStart.ToShortTimeString() + " - " +
                     query.TimeRangeStop.ToShortDateString() + " " + query.TimeRangeStop.ToShortTimeString();
                 RunQueryAsync();
             }
@@ -247,7 +249,99 @@ namespace CodeImp.Fluxtreme
         public void SettingsChanged()
         {
             UpdateDatasources();
+        }
 
+        private void Periodbutton_Click(object sender, RoutedEventArgs e)
+        {
+            periodmenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            periodmenu.PlacementTarget = periodbutton;
+            periodmenu.IsOpen = true;
+        }
+
+        private void AutomaticPeriod_Click(object sender, RoutedEventArgs e)
+        {
+            autoperiod = true;
+            periodbuttontext.Text = "Auto";
+            RunQueryAsync();
+        }
+
+        private void CustomPeriod_Click(object sender, RoutedEventArgs e)
+        {
+            WindowPeriodWindow wpw = new WindowPeriodWindow();
+            wpw.SetPeriod(query.WindowPeriod);
+            wpw.Owner = Window.GetWindow(this);
+            bool? result = wpw.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                autoperiod = false;
+                query.WindowPeriod = wpw.GetPeriod();
+                periodbuttontext.Text = $"Custom ({TimeSpanToShortString(query.WindowPeriod)})";
+                RunQueryAsync();
+            }
+        }
+
+        private void SetWindowPeriod(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = sender as MenuItem;
+            TimeSpan t = TimeSpan.Parse(item.Tag.ToString(), CultureInfo.InvariantCulture);
+            query.WindowPeriod = t;
+            autoperiod = false;
+            periodbuttontext.Text = item.Header.ToString();
+            RunQueryAsync();
+        }
+
+        private void DetermineAutoPeriod()
+        {
+            if (autoperiod)
+            {
+                TimeSpan range;
+                if (query.TimeRangeRecent == TimeSpan.Zero)
+                {
+                    range = query.TimeRangeStop - query.TimeRangeStart;
+                }
+                else
+                {
+                    range = query.TimeRangeRecent;
+                }
+
+                // Divide the time range over the width of the window.
+                // By this logic, the window period is chosen to provide just enough data for every pixel on the screen.
+                TimeSpan period = new TimeSpan(range.Ticks / (long)ActualWidth);
+                query.WindowPeriod = period;
+
+                Dispatcher.BeginInvoke(new Action(() => { periodbuttontext.Text = $"Auto ({TimeSpanToShortString(period)})"; }));
+            }
+        }
+
+        private string TimeSpanToShortString(TimeSpan t)
+        {
+            string desc = "";
+            if (t.Days > 0)
+            {
+                desc += t.Days + "d ";
+            }
+            if (t.Hours > 0)
+            {
+                desc += t.Hours + "h ";
+            }
+            if ((t.Days == 0) && (t.Minutes > 0))
+            {
+                desc += t.Minutes + "m ";
+            }
+            if ((t.Hours == 0) && (t.Days == 0) && (t.Seconds > 0))
+            {
+                desc += t.Seconds + "s ";
+            }
+            if ((t.Minutes == 0) && (t.Hours == 0) && (t.Days == 0) && (t.Milliseconds > 0))
+            {
+                desc += t.Milliseconds + "ms";
+            }
+            return desc.Trim();
+        }
+
+        private void DisableContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
         Title="Select time range" Height="358" Width="488" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
+	<Window.Resources>
+		<Style TargetType="{x:Type local:IntegersOnlyTextBox}" BasedOn="{StaticResource {x:Type TextBox}}"/>
+	</Window.Resources>
 	<Grid>
 		<Label Content="From:" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" Padding="8,4,4,4" VerticalAlignment="Top" Width="188" VerticalContentAlignment="Center"/>
 		<Viewbox Margin="10,40,0,0" HorizontalAlignment="Left" Width="220" Height="200" VerticalAlignment="Top" UseLayoutRounding="True" SnapsToDevicePixels="True">
@@ -14,8 +17,8 @@
 		</Viewbox>
 		<Label Content="Time:" HorizontalAlignment="Left" Height="30" Margin="15,245,0,0" Padding="8,4,4,4" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center"/>
 		<Label Content=":" HorizontalAlignment="Left" Height="30" Margin="104,245,0,0" Padding="2,0,2,0" VerticalAlignment="Top" Width="12" VerticalContentAlignment="Center"/>
-		<TextBox x:Name="fromhour" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="64,250,0,0" Text="00" VerticalAlignment="Top" Width="35" PreviewTextInput="PreviewNumericTextInput" DataObject.Pasting="PreviewNumericPasting"/>
-		<TextBox x:Name="fromminute" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="117,250,0,0" Text="00" VerticalAlignment="Top" Width="35" PreviewTextInput="PreviewNumericTextInput" DataObject.Pasting="PreviewNumericPasting"/>
+		<local:IntegersOnlyTextBox x:Name="fromhour" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="64,250,0,0" Text="00" VerticalAlignment="Top" Width="35"/>
+		<local:IntegersOnlyTextBox x:Name="fromminute" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="117,250,0,0" Text="00" VerticalAlignment="Top" Width="35"/>
 
 		<Label Content="To:" HorizontalAlignment="Left" Height="30" Margin="254,10,0,0" Padding="8,4,4,4" VerticalAlignment="Top" Width="188" VerticalContentAlignment="Center"/>
 		<Viewbox Margin="254,40,0,0" HorizontalAlignment="Left" Width="220" Height="200" VerticalAlignment="Top" UseLayoutRounding="True" SnapsToDevicePixels="True">
@@ -23,8 +26,8 @@
 		</Viewbox>
 		<Label Content="Time:" HorizontalAlignment="Left" Height="30" Margin="259,245,0,0" Padding="8,4,4,4" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center"/>
 		<Label Content=":" HorizontalAlignment="Left" Height="30" Margin="348,245,0,0" Padding="2,0,2,0" VerticalAlignment="Top" Width="12" VerticalContentAlignment="Center"/>
-		<TextBox x:Name="tohour" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="308,250,0,0" Text="00" VerticalAlignment="Top" Width="35" PreviewTextInput="PreviewNumericTextInput" DataObject.Pasting="PreviewNumericPasting"/>
-		<TextBox x:Name="tominute" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="361,250,0,0" Text="00" VerticalAlignment="Top" Width="35" PreviewTextInput="PreviewNumericTextInput" DataObject.Pasting="PreviewNumericPasting"/>
+		<local:IntegersOnlyTextBox x:Name="tohour" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="308,250,0,0" Text="00" VerticalAlignment="Top" Width="35"/>
+		<local:IntegersOnlyTextBox x:Name="tominute" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="361,250,0,0" Text="00" VerticalAlignment="Top" Width="35"/>
 
 		<Grid Height="43" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="266">
 			<Button Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Content="OK" Margin="0,0,138,10" Click="OkButton_Click"/>

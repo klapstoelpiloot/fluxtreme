@@ -22,7 +22,7 @@
 		<!--Middle bar-->
 		<GridSplitter Grid.Row="1" Height="6" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Top" ResizeBehavior="PreviousAndNext"/>
 		<StackPanel Grid.Row="1" Margin="0,6,0,0" Background="{StaticResource PanelBackground4}" Orientation="Horizontal">
-			<Button x:Name="datasourcebutton" Width="150" Margin="4,0,4,0" Height="26" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="datasourcebutton_Click">
+			<Button x:Name="datasourcebutton" Width="150" Margin="4,0,4,0" Height="26" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="datasourcebutton_Click" ClickMode="Press" ContextMenuOpening="DisableContextMenuOpening" ToolTip="Data source from which to query the data.">
 				<Button.Content>
 					<Grid>
 						<Grid.ColumnDefinitions>
@@ -42,7 +42,7 @@
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>
-			<Button x:Name="timebutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="timebutton_Click">
+			<Button x:Name="timebutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="timebutton_Click" ClickMode="Press" ContextMenuOpening="DisableContextMenuOpening" ToolTip="Time range for the v.timeRangeStart and v.timeRangeStop variables. Commonly used in queries for the range function.">
 				<Button.Content>
 					<Grid>
 						<Grid.ColumnDefinitions>
@@ -68,6 +68,35 @@
 						<MenuItem Header="Last 24 hours" Tag="1.00:00:00" Click="SetRecentTimeRange"/>
 						<MenuItem Header="Last 7 days" Tag="7.00:00:00" Click="SetRecentTimeRange"/>
 						<MenuItem Header="Last 30 days" Tag="30.00:00:00" Click="SetRecentTimeRange"/>
+					</ContextMenu>
+				</Button.ContextMenu>
+			</Button>
+			<Button x:Name="periodbutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="Periodbutton_Click" ClickMode="Press" ContextMenuOpening="DisableContextMenuOpening" ToolTip="Window period used for the v.windowPeriod variable. Commonly used in queries for the aggregateWindow function.">
+				<Button.Content>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="24" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="24" />
+						</Grid.ColumnDefinitions>
+						<Image Source="Images/WindowPeriod.png" Grid.Column="0" Width="16" Height="16" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+						<TextBlock x:Name="periodbuttontext" Grid.Column="1" Text="Auto" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="2,0,0,1"/>
+						<Image Source="Images/DownArrow.png" Grid.Column="2" Width="11" Height="11" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+					</Grid>
+				</Button.Content>
+				<Button.ContextMenu>
+					<ContextMenu x:Name="periodmenu">
+						<MenuItem Header="Automatic period" Click="AutomaticPeriod_Click"/>
+						<MenuItem Header="Custom period..." Click="CustomPeriod_Click"/>
+						<Separator/>
+						<MenuItem Header="1 millisecond" Tag="0.00:00:00.001" Click="SetWindowPeriod"/>
+						<MenuItem Header="10 milliseconds" Tag="0.00:00:00.010" Click="SetWindowPeriod"/>
+						<MenuItem Header="100 milliseconds" Tag="0.00:00:00.100" Click="SetWindowPeriod"/>
+						<MenuItem Header="1 second" Tag="0.00:00:01" Click="SetWindowPeriod"/>
+						<MenuItem Header="10 seconds" Tag="0.00:00:10" Click="SetWindowPeriod"/>
+						<MenuItem Header="1 minute" Tag="0.00:01:00" Click="SetWindowPeriod"/>
+						<MenuItem Header="10 minutes" Tag="0.00:10:00" Click="SetWindowPeriod"/>
+						<MenuItem Header="1 hour" Tag="0.01:00:00" Click="SetWindowPeriod"/>
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>

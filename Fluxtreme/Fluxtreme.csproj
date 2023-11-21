@@ -172,6 +172,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AutoSelectTextBox.cs" />
     <Compile Include="Configuration\DatasourceSettings.cs" />
     <Compile Include="Configuration\DatasourceSettingsCollection.cs" />
     <Compile Include="Configuration\DatasourceSettingsPage.xaml.cs">
@@ -191,6 +192,7 @@
     <Compile Include="Data\FluxRecordView.cs" />
     <Compile Include="IDocumentPanel.cs" />
     <Compile Include="IMainWindow.cs" />
+    <Compile Include="IntegersOnlyTextBox.cs" />
     <Compile Include="TimeRangeWindow.xaml.cs">
       <DependentUpon>TimeRangeWindow.xaml</DependentUpon>
     </Compile>
@@ -211,6 +213,9 @@
     </Compile>
     <Compile Include="Themes\ThemesController.cs" />
     <Compile Include="Themes\ThemeType.cs" />
+    <Compile Include="WindowPeriodWindow.xaml.cs">
+      <DependentUpon>WindowPeriodWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Configuration\DatasourceSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -279,6 +284,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WindowPeriodWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -325,6 +334,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Database.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\WindowPeriod.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

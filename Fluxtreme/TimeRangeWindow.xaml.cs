@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Input;
 
 namespace CodeImp.Fluxtreme
 {
@@ -42,29 +41,13 @@ namespace CodeImp.Fluxtreme
             return d + t;
         }
 
-        private void PreviewNumericTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !NumericInputRegex.IsMatch(e.Text);
-        }
-
-        private void PreviewNumericPasting(object sender, DataObjectPastingEventArgs e)
-        {
-            if (e.DataObject.GetDataPresent(typeof(string)))
-            {
-                string text = (string)e.DataObject.GetData(typeof(string));
-                if (!NumericInputRegex.IsMatch(text))
-                {
-                    e.CancelCommand();
-                }
-            }
-            else
-            {
-                e.CancelCommand();
-            }
-        }
-
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
+            if(string.IsNullOrWhiteSpace(fromhour.Text)) fromhour.Text = "0";
+            if(string.IsNullOrWhiteSpace(fromminute.Text)) fromminute.Text = "0";
+            if(string.IsNullOrWhiteSpace(tohour.Text)) tohour.Text = "0";
+            if(string.IsNullOrWhiteSpace(tominute.Text)) tominute.Text = "0";
+
             // Check that the input is valid
 
 
