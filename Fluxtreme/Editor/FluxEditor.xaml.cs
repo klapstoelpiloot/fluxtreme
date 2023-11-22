@@ -228,7 +228,7 @@ namespace CodeImp.Fluxtreme.Editor
                 if ((editor.Lines[line].MarkerGet() & (1 << (int)FluxEditorImage.DisabledMarker)) != 0)
                 {
                     editor.Lines[line].MarkerDelete((int)FluxEditorImage.DisabledMarker);
-                    
+
                 }
                 else
                 {
@@ -243,9 +243,9 @@ namespace CodeImp.Fluxtreme.Editor
         {
             editor.IndicatorCurrent = 0;
             disabledlines.Clear();
-            foreach(Line l in editor.Lines)
+            foreach (Line l in editor.Lines)
             {
-                if((l.MarkerGet() & (1 << (int)FluxEditorImage.DisabledMarker)) != 0)
+                if ((l.MarkerGet() & (1 << (int)FluxEditorImage.DisabledMarker)) != 0)
                 {
                     disabledlines.Add(l.Index);
                     editor.IndicatorFillRange(l.Position, l.EndPosition);
@@ -260,7 +260,7 @@ namespace CodeImp.Fluxtreme.Editor
         public void ShowErrorIndicator(TextRange range)
         {
             ClearErrorIndiciator();
-            
+
             int startpos = editor.Lines[range.StartLine].Position + range.StartColumn;
             if (startpos < editor.TextLength)
             {

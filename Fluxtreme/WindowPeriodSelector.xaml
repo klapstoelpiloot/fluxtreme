@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="CodeImp.Fluxtreme.WindowPeriodSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CodeImp.Fluxtreme"
+             mc:Ignorable="d" 
+             d:DesignHeight="26" d:DesignWidth="150">
+	<Button x:Name="periodbutton" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="Periodbutton_Click" ClickMode="Press" ContextMenuOpening="DisableContextMenuOpening">
+		<Button.Content>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="24" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="24" />
+				</Grid.ColumnDefinitions>
+				<Image Source="Images/WindowPeriod.png" Grid.Column="0" Width="16" Height="16" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+				<TextBlock x:Name="periodbuttontext" Grid.Column="1" Text="Auto" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="2,0,0,1"/>
+				<Image Source="Images/DownArrow.png" Grid.Column="2" Width="11" Height="11" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+			</Grid>
+		</Button.Content>
+		<Button.ContextMenu>
+			<ContextMenu x:Name="periodmenu">
+				<MenuItem Header="Automatic period" Click="AutomaticPeriod_Click"/>
+				<MenuItem Header="Custom period..." Click="CustomPeriod_Click"/>
+				<Separator/>
+				<MenuItem Header="1 millisecond" Tag="0.00:00:00.001" Click="SetWindowPeriod"/>
+				<MenuItem Header="10 milliseconds" Tag="0.00:00:00.010" Click="SetWindowPeriod"/>
+				<MenuItem Header="100 milliseconds" Tag="0.00:00:00.100" Click="SetWindowPeriod"/>
+				<MenuItem Header="1 second" Tag="0.00:00:01" Click="SetWindowPeriod"/>
+				<MenuItem Header="10 seconds" Tag="0.00:00:10" Click="SetWindowPeriod"/>
+				<MenuItem Header="1 minute" Tag="0.00:01:00" Click="SetWindowPeriod"/>
+				<MenuItem Header="10 minutes" Tag="0.00:10:00" Click="SetWindowPeriod"/>
+				<MenuItem Header="1 hour" Tag="0.01:00:00" Click="SetWindowPeriod"/>
+			</ContextMenu>
+		</Button.ContextMenu>
+	</Button>
+</UserControl>

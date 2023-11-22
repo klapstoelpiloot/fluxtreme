@@ -191,6 +191,7 @@
       <DependentUpon>FluxEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\FluxEditorImage.cs" />
+    <Compile Include="Tools\TimeSpanExtensions.cs" />
     <Compile Include="Viewers\FluxRecordView.cs" />
     <Compile Include="IDocumentPanel.cs" />
     <Compile Include="IMainWindow.cs" />
@@ -218,6 +219,9 @@
     </Compile>
     <Compile Include="Themes\ThemesController.cs" />
     <Compile Include="Themes\ThemeType.cs" />
+    <Compile Include="WindowPeriodSelector.xaml.cs">
+      <DependentUpon>WindowPeriodSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowPeriodWindow.xaml.cs">
       <DependentUpon>WindowPeriodWindow.xaml</DependentUpon>
     </Compile>
@@ -290,6 +294,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TimeRangeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowPeriodSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

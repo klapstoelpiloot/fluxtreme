@@ -265,48 +265,9 @@ namespace CodeImp.Fluxtreme
             UpdateDatasources();
         }
 
-        private void Periodbutton_Click(object sender, RoutedEventArgs e)
-        {
-            periodmenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-            periodmenu.PlacementTarget = periodbutton;
-            periodmenu.IsOpen = true;
-        }
-
-        private void AutomaticPeriod_Click(object sender, RoutedEventArgs e)
-        {
-            autoperiod = true;
-            periodbuttontext.Text = "Auto";
-            RunQueryAsync();
-        }
-
-        private void CustomPeriod_Click(object sender, RoutedEventArgs e)
-        {
-            WindowPeriodWindow wpw = new WindowPeriodWindow();
-            wpw.SetPeriod(query.WindowPeriod);
-            wpw.Owner = Window.GetWindow(this);
-            bool? result = wpw.ShowDialog();
-            if (result.HasValue && result.Value)
-            {
-                autoperiod = false;
-                query.WindowPeriod = wpw.GetPeriod();
-                periodbuttontext.Text = $"Custom ({TimeSpanToShortString(query.WindowPeriod)})";
-                RunQueryAsync();
-            }
-        }
-
-        private void SetWindowPeriod(object sender, RoutedEventArgs e)
-        {
-            MenuItem item = sender as MenuItem;
-            TimeSpan t = TimeSpan.Parse(item.Tag.ToString(), CultureInfo.InvariantCulture);
-            query.WindowPeriod = t;
-            autoperiod = false;
-            periodbuttontext.Text = item.Header.ToString();
-            RunQueryAsync();
-        }
-
         private void DetermineAutoPeriod()
         {
-            if (autoperiod)
+            if (periodbutton.Automatic)
             {
                 TimeSpan range;
                 if (query.TimeRangeRecent == TimeSpan.Zero)
@@ -323,39 +284,19 @@ namespace CodeImp.Fluxtreme
                 TimeSpan period = new TimeSpan(range.Ticks / (long)ActualWidth);
                 query.WindowPeriod = period;
 
-                Dispatcher.BeginInvoke(new Action(() => { periodbuttontext.Text = $"Auto ({TimeSpanToShortString(period)})"; }));
+                Dispatcher.BeginInvoke(new Action(() => { periodbutton.Value = period; }));
             }
-        }
-
-        private string TimeSpanToShortString(TimeSpan t)
-        {
-            string desc = "";
-            if (t.Days > 0)
-            {
-                desc += t.Days + "d ";
-            }
-            if (t.Hours > 0)
-            {
-                desc += t.Hours + "h ";
-            }
-            if ((t.Days == 0) && (t.Minutes > 0))
-            {
-                desc += t.Minutes + "m ";
-            }
-            if ((t.Hours == 0) && (t.Days == 0) && (t.Seconds > 0))
-            {
-                desc += t.Seconds + "s ";
-            }
-            if ((t.Minutes == 0) && (t.Hours == 0) && (t.Days == 0) && (t.Milliseconds > 0))
-            {
-                desc += t.Milliseconds + "ms";
-            }
-            return desc.Trim();
         }
 
         private void DisableContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void Period_ValueChanged(object sender, EventArgs e)
+        {
+            query.WindowPeriod = periodbutton.Value;
+            RunQueryAsync();
         }
     }
 }

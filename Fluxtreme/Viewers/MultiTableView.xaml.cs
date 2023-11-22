@@ -1,8 +1,6 @@
 ﻿using CodeImp.Fluxtreme.Data;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -43,14 +41,14 @@ namespace CodeImp.Fluxtreme.Viewers
         {
             lock (addqueue)
             {
-                for(int i = 0; i < NumTablesPerIteration; i++)
+                for (int i = 0; i < NumTablesPerIteration; i++)
                 {
                     if (addqueue.Count > 0)
                     {
                         TableView t = addqueue.Dequeue();
                         int tindex = tableslist.Children.Count;
                         Grid.SetRow(t, tindex);
-                        if(tableslist.RowDefinitions.Count <= tindex)
+                        if (tableslist.RowDefinitions.Count <= tindex)
                         {
                             tableslist.RowDefinitions.Add(new RowDefinition());
                         }
