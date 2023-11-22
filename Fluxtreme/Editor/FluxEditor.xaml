@@ -9,7 +9,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
 	<Grid>
 		<WindowsFormsHost Margin="0,0,17,0">
-			<scintilla:Scintilla x:Name="editor" BorderStyle="None" BackspaceUnindents="True" CaretWidth="2" IdleStyling="None" HScrollBar="False" VScrollBar="False" UpdateUI="editor_UpdateUI" Resize="editor_Resize"/>
+			<scintilla:Scintilla x:Name="editor" BorderStyle="None" BackspaceUnindents="True" CaretWidth="2" IdleStyling="None" HScrollBar="False" VScrollBar="False"
+								 UpdateUI="Editor_UpdateUI" TextChanged="Editor_TextChanged" MarginClick="Editor_MarginClick" Resize="Editor_Resize"/>
 		</WindowsFormsHost>
 		<ScrollBar x:Name="scrollbar" Orientation="Vertical" Width="17" HorizontalAlignment="Right" Scroll="ScrollBar_Scroll" SmallChange="1"/>
 	</Grid>

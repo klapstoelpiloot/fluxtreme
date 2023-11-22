@@ -1,11 +1,13 @@
 ﻿using CodeImp.Fluxtreme.Configuration;
 using CodeImp.Fluxtreme.Data;
 using CodeImp.Fluxtreme.Properties;
+using CodeImp.Fluxtreme.Viewers;
 using InfluxDB.Client.Core.Flux.Domain;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +22,8 @@ namespace CodeImp.Fluxtreme
         private System.Timers.Timer queryDelay;
         private QueryRunner query;
         private string querystring;
+        private List<int> disablesquerylines;
+        private object syncobj = new object();
         private bool autoperiod = true;
 
         public DocumentPanel()
@@ -91,8 +95,9 @@ namespace CodeImp.Fluxtreme
                 SetDatasource(null);
         }
 
-        public void ShowErrorStatus(string message)
+        public void ShowErrorStatus(string message, TextRange range)
         {
+            editor.ShowErrorIndicator(range);
             statuslabel.Text = message;
             statusbar.ToolTip = message;
             statusbar.Background = StatusErrorBackground;
@@ -102,6 +107,7 @@ namespace CodeImp.Fluxtreme
 
         public void ShowNormalStatus(string message)
         {
+            editor.ClearErrorIndiciator();
             statuslabel.Text = message;
             statusbar.ToolTip = message;
             statusbar.Background = (Brush)FindResource("PanelBackground4");
@@ -138,29 +144,17 @@ namespace CodeImp.Fluxtreme
             RunQueryAsync();
         }
 
-        public void ShowQueryResults(List<FluxTable> tables, List<TableExtraData> extradata)
-        {
-            List<TableView> grids = new List<TableView>();
-            for (int i = 0; i < tables.Count; i++)
-            {
-                TableView t = new TableView(tables[i], extradata[i]);
-                grids.Add(t);
-            }
-            tableslist.Children.Clear();
-            grids.ForEach(t => tableslist.Children.Add(t));
-        }
-
-        private void Query_DataReady(List<FluxTable> tables, List<TableExtraData> extradata, TimeSpan duration)
+        private void Query_DataReady(List<FluxTableEx> result, TimeSpan duration)
         {
             int recordcount = 0;
-            tables.ForEach(t => recordcount += t.Records.Count);
-            Dispatcher.BeginInvoke(new Action(() => ShowNormalStatus($"Query took {duration.TotalSeconds:0.00} seconds. Tables: {tables.Count} Records: {recordcount}")));
-            Dispatcher.BeginInvoke(new Action(() => ShowQueryResults(tables, extradata)));
+            result.ForEach(t => recordcount += t.Data.Records.Count);
+            Dispatcher.BeginInvoke(new Action(() => ShowNormalStatus($"Query took {duration.TotalSeconds:0.00} seconds. Tables: {result.Count} Records: {recordcount}")));
+            Dispatcher.BeginInvoke(new Action(() => tableview.ShowTables(result)));
         }
 
-        private void Query_QueryError(List<string> messages)
+        private void Query_QueryError(List<string> messages, List<TextRange> ranges)
         {
-            Dispatcher.BeginInvoke(new Action(() => ShowErrorStatus(messages.First())));
+            Dispatcher.BeginInvoke(new Action(() => ShowErrorStatus(messages.First(), ranges.First())));
         }
 
         private void QueryDelay_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -170,23 +164,43 @@ namespace CodeImp.Fluxtreme
 
         private void RunQuery()
         {
-            if (!query.IsRunning && (querystring != null))
+            if (!query.IsRunning)
             {
                 DetermineAutoPeriod();
                 Dispatcher.BeginInvoke(new Action(() => ShowQueryInProgress()));
-                query.Run(querystring);
+
+                StringBuilder finalquery = new StringBuilder();
+                lock (syncobj)
+                {
+                    string[] lines = querystring.Split('\n');
+                    for(int i = 0; i < lines.Length; i++)
+                    {
+                        if(!disablesquerylines.Contains(i))
+                        {
+                            finalquery.AppendLine(lines[i].Trim());
+                        }
+                    }
+                }
+                query.Run(finalquery.ToString());
             }
         }
 
         private void RunQueryAsync()
         {
-            Task task = new Task(RunQuery);
-            task.Start();
+            if (IsLoaded)
+            {
+                Task task = new Task(RunQuery);
+                task.Start();
+            }
         }
 
         private void editor_TextChanged(object sender, EventArgs e)
         {
-            querystring = editor.Text;
+            lock (syncobj)
+            {
+                querystring = editor.Text;
+                disablesquerylines = new List<int>(editor.DisabledLines);
+            }
             queryDelay.Stop();
             queryDelay.Start();
         }

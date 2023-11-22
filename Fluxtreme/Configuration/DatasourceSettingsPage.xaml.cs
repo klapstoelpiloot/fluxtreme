@@ -16,6 +16,11 @@ namespace CodeImp.Fluxtreme.Configuration
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Settings.Default.Datasources == null)
+            {
+                Settings.Default.Datasources = new DatasourceSettingsCollection();
+            }
+
             DatasourceSettings ds = new DatasourceSettings();
             Settings.Default.Datasources.Add(ds);
             datasourceslist.SelectedItem = ds;

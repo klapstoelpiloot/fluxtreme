@@ -1,15 +1,12 @@
 ﻿using CodeImp.Fluxtreme.Configuration;
-using CodeImp.Fluxtreme.Properties;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Core.Exceptions;
 using InfluxDB.Client.Core.Flux.Domain;
 using InfluxDB.Client.Core.Flux.Exceptions;
 using System;
-using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -18,7 +15,7 @@ namespace CodeImp.Fluxtreme.Data
     public class QueryRunner : IDisposable
     {
         private const string CompilerMessage = "compilation failed: ";
-        private static readonly Regex CompileErrorRegex = new Regex("^error @(\\d+):(\\d+)-(\\d+):(\\d+)");
+        private static readonly Regex CompileErrorRegex = new Regex("@(\\d+):(\\d+)-(\\d+):(\\d+)");
 
         private DatasourceSettings datasource;
         private InfluxDBClient client;
@@ -26,8 +23,8 @@ namespace CodeImp.Fluxtreme.Data
         private volatile bool running;
         private object syncObject = new object();
 
-        public event Action<List<FluxTable>, List<TableExtraData>, TimeSpan> DataReady;
-        public event Action<List<string>> QueryError;
+        public event Action<List<FluxTableEx>, TimeSpan> DataReady;
+        public event Action<List<string>, List<TextRange>> QueryError;
 
         /// <summary>
         /// Returns True when a query is still running.
@@ -87,7 +84,7 @@ namespace CodeImp.Fluxtreme.Data
         public void Run(string query)
         {
             List<FluxTable> result;
-            List<TableExtraData> extradata;
+            List<FluxTableEx> extraresult;
             DateTime starttime, endtime;
             running = true;
             cancelsource = new CancellationTokenSource();
@@ -104,7 +101,7 @@ namespace CodeImp.Fluxtreme.Data
                         }
                         else
                         {
-                            QueryError?.Invoke(new List<string>() { "No data source selected." });
+                            QueryError?.Invoke(new List<string>() { "No data source selected." }, new List<TextRange>() { TextRange.Empty });
                             running = false;
                             return;
                         }
@@ -120,13 +117,14 @@ namespace CodeImp.Fluxtreme.Data
                 }
                 catch (FluxQueryException ex)
                 {
-                    QueryError?.Invoke(new List<string>() { ex.Message });
+                    QueryError?.Invoke(new List<string>() { ex.Message }, new List<TextRange>() { TextRange.Empty });
                     running = false;
                     return;
                 }
                 catch (BadRequestException ex)
                 {
                     List<string> errors = new List<string>();
+                    List<TextRange> ranges = new List<TextRange>();
                     foreach (string er in ex.Message.Split('\n'))
                     {
                         if (!string.IsNullOrWhiteSpace(er))
@@ -140,37 +138,38 @@ namespace CodeImp.Fluxtreme.Data
                             }
 
                             // Get the line number for this error message
+                            TextRange range = TextRange.Empty;
                             Match coordinates = CompileErrorRegex.Match(error);
                             if ((coordinates.Captures.Count > 0) && (coordinates.Groups.Count > 4))
                             {
-                                int lineFrom = int.Parse(coordinates.Groups[1].Value);
-                                int colFrom = int.Parse(coordinates.Groups[2].Value);
-                                int lineTo = int.Parse(coordinates.Groups[3].Value);
-                                int colTo = int.Parse(coordinates.Groups[4].Value);
-                                // TODO: Pass these to the event
+                                range.StartLine = int.Parse(coordinates.Groups[1].Value) - 1;
+                                range.StartColumn = int.Parse(coordinates.Groups[2].Value);
+                                range.EndLine = int.Parse(coordinates.Groups[3].Value) - 1;
+                                range.EndColumn = int.Parse(coordinates.Groups[4].Value);
                             }
 
                             errors.Add(er.Trim());
+                            ranges.Add(range);
                         }
                     }
-                    QueryError?.Invoke(errors);
+                    QueryError?.Invoke(errors, ranges);
                     running = false;
                     return;
                 }
                 catch (Exception ex)
                 {
                     Exception basex = ex.GetBaseException();
-                    QueryError?.Invoke(new List<string>() { basex.Message });
+                    QueryError?.Invoke(new List<string>() { basex.Message }, new List<TextRange>() { TextRange.Empty });
                     running = false;
                     return;
                 }
 
                 // Calculate extra data for all tables received
-                extradata = result.Select(t => TableExtraData.CalculateFor(t)).ToList();
+                extraresult = result.Select(t => new FluxTableEx(t)).ToList();
             }
 
             // Callback
-            DataReady?.Invoke(result, extradata, endtime - starttime);
+            DataReady?.Invoke(extraresult, endtime - starttime);
             running = false;
         }
 

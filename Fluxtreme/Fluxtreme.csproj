@@ -183,24 +183,29 @@
     <Compile Include="Configuration\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\TextRange.cs" />
     <Compile Include="DocumentPanel.xaml.cs">
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\FluxEditor.xaml.cs">
       <DependentUpon>FluxEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\FluxRecordView.cs" />
+    <Compile Include="Editor\FluxEditorImage.cs" />
+    <Compile Include="Viewers\FluxRecordView.cs" />
     <Compile Include="IDocumentPanel.cs" />
     <Compile Include="IMainWindow.cs" />
     <Compile Include="IntegersOnlyTextBox.cs" />
+    <Compile Include="Viewers\MultiTableView.xaml.cs">
+      <DependentUpon>MultiTableView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TimeRangeWindow.xaml.cs">
       <DependentUpon>TimeRangeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\ObservableCollectionEx.cs" />
     <Compile Include="Data\QueryRunner.cs" />
     <Compile Include="Configuration\Settings.cs" />
-    <Compile Include="Data\TableExtraData.cs" />
-    <Compile Include="Data\TableView.xaml.cs">
+    <Compile Include="Data\FluxTableEx.cs" />
+    <Compile Include="Viewers\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\Attached\CornerRadiusHelper.cs" />
@@ -244,7 +249,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Data\TableView.xaml">
+    <Page Include="Viewers\TableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewers\MultiTableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -337,6 +346,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\WindowPeriod.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SmallCross.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
