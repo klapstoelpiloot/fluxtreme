@@ -42,35 +42,7 @@
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>
-			<Button x:Name="timebutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="timebutton_Click" ClickMode="Press" ContextMenuOpening="DisableContextMenuOpening" ToolTip="Time range for the v.timeRangeStart and v.timeRangeStop variables. Commonly used in queries for the range function.">
-				<Button.Content>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="24" />
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="24" />
-						</Grid.ColumnDefinitions>
-						<Image Source="Images/Clock.png" Grid.Column="0" Width="16" Height="16" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
-						<TextBlock x:Name="timebuttontext" Grid.Column="1" Text="Time span" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="2,0,0,1"/>
-						<Image Source="Images/DownArrow.png" Grid.Column="2" Width="11" Height="11" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
-					</Grid>
-				</Button.Content>
-				<Button.ContextMenu>
-					<ContextMenu x:Name="timemenu">
-						<MenuItem Header="Custom range..." Click="CustomTimeRange_Click"/>
-						<Separator/>
-						<MenuItem Header="Last 5 minutes" Tag="0.00:05:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 15 minutes" Tag="0.00:15:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 30 minutes" Tag="0.00:30:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 1 hour" Tag="0.01:00:00" Click="SetRecentTimeRange" x:Name="defaulttimerange"/>
-						<MenuItem Header="Last 6 hours" Tag="0.06:00:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 12 hours" Tag="0.12:00:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 24 hours" Tag="1.00:00:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 7 days" Tag="7.00:00:00" Click="SetRecentTimeRange"/>
-						<MenuItem Header="Last 30 days" Tag="30.00:00:00" Click="SetRecentTimeRange"/>
-					</ContextMenu>
-				</Button.ContextMenu>
-			</Button>
+			<local:TimeRangeSelector x:Name="timebutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" ValueChanged="TimeRange_ValueChanged" ToolTip="Time range for the v.timeRangeStart and v.timeRangeStop variables. Commonly used in queries for the range function."/>
 			<local:WindowPeriodSelector x:Name="periodbutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" ValueChanged="Period_ValueChanged" ToolTip="Window period used for the v.windowPeriod variable. Commonly used in queries for the aggregateWindow function." />
 		</StackPanel>
 

@@ -1,11 +1,8 @@
 ﻿using CodeImp.Fluxtreme.Configuration;
 using CodeImp.Fluxtreme.Data;
 using CodeImp.Fluxtreme.Properties;
-using CodeImp.Fluxtreme.Viewers;
-using InfluxDB.Client.Core.Flux.Domain;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +21,6 @@ namespace CodeImp.Fluxtreme
         private string querystring;
         private List<int> disablesquerylines;
         private object syncobj = new object();
-        private bool autoperiod = true;
 
         public DocumentPanel()
         {
@@ -39,8 +35,6 @@ namespace CodeImp.Fluxtreme
             queryDelay = new System.Timers.Timer(200);
             queryDelay.AutoReset = false;
             queryDelay.Elapsed += QueryDelay_Elapsed;
-
-            SetRecentTimeRange(defaulttimerange, EventArgs.Empty);
         }
 
         public void Setup(string content = "")
@@ -137,11 +131,6 @@ namespace CodeImp.Fluxtreme
 
         public void SetRecentTimeRange(object sender, EventArgs e)
         {
-            MenuItem item = sender as MenuItem;
-            TimeSpan t = TimeSpan.Parse(item.Tag.ToString(), CultureInfo.InvariantCulture);
-            query.TimeRangeRecent = t;
-            timebuttontext.Text = item.Header.ToString();
-            RunQueryAsync();
         }
 
         private void Query_DataReady(List<FluxTableEx> result, TimeSpan duration)
@@ -173,9 +162,9 @@ namespace CodeImp.Fluxtreme
                 lock (syncobj)
                 {
                     string[] lines = querystring.Split('\n');
-                    for(int i = 0; i < lines.Length; i++)
+                    for (int i = 0; i < lines.Length; i++)
                     {
-                        if(!disablesquerylines.Contains(i))
+                        if (!disablesquerylines.Contains(i))
                         {
                             finalquery.AppendLine(lines[i].Trim());
                         }
@@ -207,33 +196,10 @@ namespace CodeImp.Fluxtreme
 
         private void timebutton_Click(object sender, RoutedEventArgs e)
         {
-            timemenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-            timemenu.PlacementTarget = timebutton;
-            timemenu.IsOpen = true;
         }
 
         private void CustomTimeRange_Click(object sender, RoutedEventArgs e)
         {
-            TimeRangeWindow trw = new TimeRangeWindow();
-            if (query.TimeRangeRecent != TimeSpan.Zero)
-            {
-                trw.SetDates(DateTime.Now - query.TimeRangeRecent, DateTime.Now);
-            }
-            else
-            {
-                trw.SetDates(query.TimeRangeStart, query.TimeRangeStop);
-            }
-            trw.Owner = Window.GetWindow(this);
-            bool? result = trw.ShowDialog();
-            if (result.HasValue && result.Value)
-            {
-                query.TimeRangeStart = trw.GetFromDate();
-                query.TimeRangeStop = trw.GetToDate();
-                query.TimeRangeRecent = TimeSpan.Zero;
-                timebuttontext.Text = query.TimeRangeStart.ToShortDateString() + " " + query.TimeRangeStart.ToShortTimeString() + " - " +
-                    query.TimeRangeStop.ToShortDateString() + " " + query.TimeRangeStop.ToShortTimeString();
-                RunQueryAsync();
-            }
         }
 
         private void datasourcebutton_Click(object sender, RoutedEventArgs e)
@@ -296,6 +262,14 @@ namespace CodeImp.Fluxtreme
         private void Period_ValueChanged(object sender, EventArgs e)
         {
             query.WindowPeriod = periodbutton.Value;
+            RunQueryAsync();
+        }
+
+        private void TimeRange_ValueChanged(object sender, EventArgs e)
+        {
+            query.TimeRangeStart = timebutton.RangeStart;
+            query.TimeRangeStop = timebutton.RangeStop;
+            query.TimeRangeRecent = timebutton.RecentRange;
             RunQueryAsync();
         }
     }
