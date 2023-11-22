@@ -22,32 +22,13 @@
 		<!--Middle bar-->
 		<GridSplitter Grid.Row="1" Height="6" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Top" ResizeBehavior="PreviousAndNext"/>
 		<StackPanel Grid.Row="1" Margin="0,6,0,0" Background="{StaticResource PanelBackground4}" Orientation="Horizontal">
-			<Button x:Name="datasourcebutton" Width="150" Margin="4,0,4,0" Height="26" SnapsToDevicePixels="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="datasourcebutton_Click" ClickMode="Press" ContextMenuOpening="DisableContextMenuOpening" ToolTip="Data source from which to query the data.">
-				<Button.Content>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="24" />
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="24" />
-						</Grid.ColumnDefinitions>
-						<Image Source="Images/Database.png" Grid.Column="0" Width="16" Height="16" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
-						<TextBlock Grid.Column="1" Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="2,0,0,1"/>
-						<Image Source="Images/DownArrow.png" Grid.Column="2" Width="11" Height="11" Opacity="0.9" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
-					</Grid>
-				</Button.Content>
-				<Button.ContextMenu>
-					<ContextMenu x:Name="datasourcemenu">
-						<Separator/>
-						<MenuItem Header="Configure data sources..." Click="ConfigureDatasources_Click"/>
-					</ContextMenu>
-				</Button.ContextMenu>
-			</Button>
+			<local:DataSourceSelector x:Name="datasourcebutton" Width="150" Margin="4,0,4,0" Height="26" SnapsToDevicePixels="True" ValueChanged="DataSource_ValueChanged" ToolTip="Data source from which to query the data."/>
 			<local:TimeRangeSelector x:Name="timebutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" ValueChanged="TimeRange_ValueChanged" ToolTip="Time range for the v.timeRangeStart and v.timeRangeStop variables. Commonly used in queries for the range function."/>
 			<local:WindowPeriodSelector x:Name="periodbutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" ValueChanged="Period_ValueChanged" ToolTip="Window period used for the v.windowPeriod variable. Commonly used in queries for the aggregateWindow function." />
 		</StackPanel>
 
 		<!--Editor-->
-		<editor:FluxEditor x:Name="editor" Grid.Row="2" TextChanged="editor_TextChanged"/>
+		<editor:FluxEditor x:Name="editor" Grid.Row="2" TextChanged="Editor_TextChanged"/>
 
 		<!-- Status bar -->
 		<Grid x:Name="statusbar" Grid.Row="3" Background="{StaticResource PanelBackground4}">

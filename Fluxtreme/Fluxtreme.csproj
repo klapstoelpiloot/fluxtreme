@@ -183,6 +183,9 @@
     <Compile Include="Configuration\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataSourceSelector.xaml.cs">
+      <DependentUpon>DataSourceSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Data\TextRange.cs" />
     <Compile Include="DocumentPanel.xaml.cs">
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
@@ -233,6 +236,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Configuration\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataSourceSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -26,7 +26,7 @@ namespace CodeImp.Fluxtreme
         {
             InitializeComponent();
 
-            UpdateDatasources();
+            datasourcebutton.Update();
 
             query = new QueryRunner();
             query.QueryError += Query_QueryError;
@@ -41,52 +41,6 @@ namespace CodeImp.Fluxtreme
         {
             editor.Setup();
             editor.Text = content;
-        }
-
-        public void UpdateDatasources()
-        {
-            // Copy list of objects so that we can iterate over
-            // this list and remove the items from the control
-            List<Control> prevmenuitems = new List<Control>();
-            foreach (Control item in datasourcemenu.Items)
-                prevmenuitems.Add(item);
-
-            // Remove previous menu items
-            foreach (Control item in prevmenuitems)
-            {
-                if (item is Separator)
-                {
-                    continue;
-                }
-                else if (item is MenuItem menuitem)
-                {
-                    if (menuitem.Tag != null)
-                    {
-                        menuitem.Click -= SetDatasource;
-                        datasourcemenu.Items.Remove(menuitem);
-                    }
-                }
-            }
-
-            // Add new items
-            if (Settings.Default.Datasources != null)
-            {
-                foreach (DatasourceSettings ds in Settings.Default.Datasources)
-                {
-                    MenuItem item = new MenuItem();
-                    item.Header = ds.Name;
-                    item.Tag = ds;
-                    item.Click += SetDatasource;
-                    datasourcemenu.Items.Insert(0, item);
-                }
-            }
-
-            // If the selected datasource is not in the list (anymore) then deselect it
-            // We don't want to automatically select the next (or another) datasource as
-            // it may accedentially query another database.
-            DatasourceSettings current = datasourcebutton.DataContext as DatasourceSettings;
-            if ((current != null) && !Settings.Default.Datasources.Contains(current))
-                SetDatasource(null);
         }
 
         public void ShowErrorStatus(string message, TextRange range)
@@ -114,23 +68,6 @@ namespace CodeImp.Fluxtreme
             progressbar.IsIndeterminate = false;
             progressbar.Visibility = Visibility.Visible;
             progressbar.IsIndeterminate = true;
-        }
-
-        public void SetDatasource(object sender, EventArgs e)
-        {
-            MenuItem item = sender as MenuItem;
-            SetDatasource(item.Tag as DatasourceSettings);
-        }
-
-        public void SetDatasource(DatasourceSettings ds)
-        {
-            datasourcebutton.DataContext = ds;
-            query.SetDatasource(ds);
-            RunQueryAsync();
-        }
-
-        public void SetRecentTimeRange(object sender, EventArgs e)
-        {
         }
 
         private void Query_DataReady(List<FluxTableEx> result, TimeSpan duration)
@@ -183,7 +120,7 @@ namespace CodeImp.Fluxtreme
             }
         }
 
-        private void editor_TextChanged(object sender, EventArgs e)
+        private void Editor_TextChanged(object sender, EventArgs e)
         {
             lock (syncobj)
             {
@@ -192,29 +129,6 @@ namespace CodeImp.Fluxtreme
             }
             queryDelay.Stop();
             queryDelay.Start();
-        }
-
-        private void timebutton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void CustomTimeRange_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void datasourcebutton_Click(object sender, RoutedEventArgs e)
-        {
-            datasourcemenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-            datasourcemenu.PlacementTarget = datasourcebutton;
-            datasourcemenu.IsOpen = true;
-        }
-
-        private void ConfigureDatasources_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsWindow sw = new SettingsWindow();
-            sw.Owner = Window.GetWindow(this);
-            sw.SelectPage(typeof(DatasourceSettingsPage));
-            sw.ShowDialog();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -228,7 +142,7 @@ namespace CodeImp.Fluxtreme
 
         public void SettingsChanged()
         {
-            UpdateDatasources();
+            datasourcebutton.Update();
         }
 
         private void DetermineAutoPeriod()
@@ -254,11 +168,6 @@ namespace CodeImp.Fluxtreme
             }
         }
 
-        private void DisableContextMenuOpening(object sender, ContextMenuEventArgs e)
-        {
-            e.Handled = true;
-        }
-
         private void Period_ValueChanged(object sender, EventArgs e)
         {
             query.WindowPeriod = periodbutton.Value;
@@ -270,6 +179,12 @@ namespace CodeImp.Fluxtreme
             query.TimeRangeStart = timebutton.RangeStart;
             query.TimeRangeStop = timebutton.RangeStop;
             query.TimeRangeRecent = timebutton.RecentRange;
+            RunQueryAsync();
+        }
+
+        private void DataSource_ValueChanged(object sender, EventArgs e)
+        {
+            query.SetDatasource(datasourcebutton.Value);
             RunQueryAsync();
         }
     }
