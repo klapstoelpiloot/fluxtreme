@@ -9,5 +9,6 @@ namespace CodeImp.Fluxtreme
     public interface IMainWindow
     {
         void SettingsChanged();
+        void ShowSettings(Type page = null);
     }
 }

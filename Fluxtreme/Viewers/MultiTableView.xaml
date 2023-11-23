@@ -7,6 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" UseLayoutRounding="True" SnapsToDevicePixels="True">
 	<ScrollViewer VerticalScrollBarVisibility="Auto" Background="#FF131313" Grid.Row="0">
-		<Grid x:Name="tableslist" Margin="0,6,0,6"/>
+		<Grid x:Name="tableslist" Margin="0,6,0,6">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+		</Grid>
 	</ScrollViewer>
 </UserControl>

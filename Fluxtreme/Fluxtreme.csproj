@@ -190,6 +190,7 @@
     <Compile Include="DocumentPanel.xaml.cs">
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DocumentTab.cs" />
     <Compile Include="Editor\FluxEditor.xaml.cs">
       <DependentUpon>FluxEditor.xaml</DependentUpon>
     </Compile>

@@ -12,7 +12,7 @@ using System.Windows.Media;
 
 namespace CodeImp.Fluxtreme
 {
-    public partial class DocumentPanel : UserControl, IDocumentPanel
+    public partial class DocumentPanel : UserControl, IDocumentPanel, IDisposable
     {
         private static readonly Brush StatusErrorBackground = new SolidColorBrush(Color.FromRgb(200, 0, 0));
 
@@ -21,6 +21,8 @@ namespace CodeImp.Fluxtreme
         private string querystring;
         private List<int> disablesquerylines;
         private object syncobj = new object();
+
+        public string Query { get => editor.Text; set => editor.Text = value; }
 
         public DocumentPanel()
         {
@@ -37,10 +39,27 @@ namespace CodeImp.Fluxtreme
             queryDelay.Elapsed += QueryDelay_Elapsed;
         }
 
+        public void Dispose()
+        {
+            if (query != null)
+            {
+                query.Dispose();
+                query = null;
+            }
+        }
+
         public void Setup(string content = "")
         {
             editor.Setup();
             editor.Text = content;
+        }
+
+        public void CopyTo(DocumentPanel other)
+        {
+            other.editor.Text = this.editor.Text;
+            this.datasourcebutton.CopyTo(other.datasourcebutton);
+            this.timebutton.CopyTo(other.timebutton);
+            this.periodbutton.CopyTo(other.periodbutton);
         }
 
         public void ShowErrorStatus(string message, TextRange range)
@@ -98,12 +117,15 @@ namespace CodeImp.Fluxtreme
                 StringBuilder finalquery = new StringBuilder();
                 lock (syncobj)
                 {
-                    string[] lines = querystring.Split('\n');
-                    for (int i = 0; i < lines.Length; i++)
+                    if (!string.IsNullOrWhiteSpace(querystring))
                     {
-                        if (!disablesquerylines.Contains(i))
+                        string[] lines = querystring.Split('\n');
+                        for (int i = 0; i < lines.Length; i++)
                         {
-                            finalquery.AppendLine(lines[i].Trim());
+                            if (!disablesquerylines.Contains(i))
+                            {
+                                finalquery.AppendLine(lines[i].Trim());
+                            }
                         }
                     }
                 }
@@ -131,15 +153,6 @@ namespace CodeImp.Fluxtreme
             queryDelay.Start();
         }
 
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            if (query != null)
-            {
-                query.Dispose();
-                query = null;
-            }
-        }
-
         public void SettingsChanged()
         {
             datasourcebutton.Update();
@@ -161,6 +174,12 @@ namespace CodeImp.Fluxtreme
 
                 // Divide the time range over the width of the window.
                 // By this logic, the window period is chosen to provide just enough data for every pixel on the screen.
+                long windowwidth = (long)ActualWidth;
+                if (windowwidth == 0)
+                {
+                    windowwidth = 800;
+                }
+
                 TimeSpan period = new TimeSpan(range.Ticks / (long)ActualWidth);
                 query.WindowPeriod = period;
 

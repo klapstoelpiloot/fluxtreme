@@ -48,6 +48,7 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Margins[2].BackColor = GetColorResource("AColour.Tone1.Background.Static");
 
             // These key combinations put odd characters in the script. Let's disable them
+            editor.AssignCmdKey(Keys.Control | Keys.D, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Q, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.W, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.E, Command.Null);
@@ -162,6 +163,19 @@ namespace CodeImp.Fluxtreme.Editor
             editor.SetProperty("lexer.python.keywords2.no.sub.identifiers", "1");
         }
 
+        public void CopyTo(FluxEditor other)
+        {
+            other.editor.Text = this.editor.Text;
+            other.disabledlines.AddRange(this.disabledlines);
+            other.editor.IndicatorCurrent = 0;
+            foreach(int line in disabledlines)
+            {
+                Line l = this.editor.Lines[line];
+                other.editor.Lines[line].MarkerAdd((int)FluxEditorImage.DisabledMarker);
+                other.editor.IndicatorFillRange(l.Position, l.EndPosition);
+            }
+        }
+
         private void Editor_TextChanged(object sender, EventArgs e)
         {
             UpdateScrollbar();
@@ -228,7 +242,6 @@ namespace CodeImp.Fluxtreme.Editor
                 if ((editor.Lines[line].MarkerGet() & (1 << (int)FluxEditorImage.DisabledMarker)) != 0)
                 {
                     editor.Lines[line].MarkerDelete((int)FluxEditorImage.DisabledMarker);
-
                 }
                 else
                 {

@@ -19,6 +19,16 @@ namespace CodeImp.Fluxtreme
         public TimeRangeSelector()
         {
             InitializeComponent();
+            SetRecentTimeRange(defaulttimerange, new RoutedEventArgs());
+        }
+
+        public void CopyTo(TimeRangeSelector other)
+        {
+            other.RangeStart = this.RangeStart;
+            other.RangeStop = this.RangeStop;
+            other.RecentRange = this.RecentRange;
+            other.timebuttontext.Text = this.timebuttontext.Text;
+            other.ValueChanged?.Invoke(other, EventArgs.Empty);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

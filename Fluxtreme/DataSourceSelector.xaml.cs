@@ -12,13 +12,30 @@ namespace CodeImp.Fluxtreme
     /// </summary>
     public partial class DataSourceSelector : UserControl
     {
-        public DatasourceSettings Value { get; private set; }
+        private DatasourceSettings selected = null;
+
+        public DatasourceSettings Value
+        {
+            get => selected;
+            set
+            {
+                selected = value;
+                datasourcebutton.DataContext = selected;
+            }
+        }
 
         public event EventHandler ValueChanged;
 
         public DataSourceSelector()
         {
             InitializeComponent();
+        }
+
+        public void CopyTo(DataSourceSelector other)
+        {
+            other.selected = this.selected;
+            other.datasourcebutton.DataContext = other.selected;
+            other.ValueChanged?.Invoke(other, EventArgs.Empty);
         }
 
         public void Update()
@@ -62,10 +79,9 @@ namespace CodeImp.Fluxtreme
             // If the selected datasource is not in the list (anymore) then deselect it
             // We don't want to automatically select the next (or another) datasource as
             // it may accedentially query another database.
-            DatasourceSettings current = datasourcebutton.DataContext as DatasourceSettings;
-            if ((current != null) && !Settings.Default.Datasources.Contains(current))
+            if ((selected != null) && !Settings.Default.Datasources.Contains(selected))
             {
-                Value = null;
+                selected = null;
                 datasourcebutton.DataContext = null;
                 ValueChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -82,8 +98,8 @@ namespace CodeImp.Fluxtreme
         {
             if (sender is MenuItem menuitem)
             {
-                Value = menuitem.Tag as DatasourceSettings;
-                datasourcebutton.DataContext = Value;
+                selected = menuitem.Tag as DatasourceSettings;
+                datasourcebutton.DataContext = selected;
                 ValueChanged?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -95,10 +111,7 @@ namespace CodeImp.Fluxtreme
 
         private void ConfigureDatasources_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow sw = new SettingsWindow();
-            sw.Owner = Window.GetWindow(this);
-            sw.SelectPage(typeof(DatasourceSettingsPage));
-            sw.ShowDialog();
+            App.Window.ShowSettings(typeof(DatasourceSettingsPage));
             Update();
         }
     }

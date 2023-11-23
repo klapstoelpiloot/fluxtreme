@@ -33,6 +33,14 @@ namespace CodeImp.Fluxtreme
             InitializeComponent();
         }
 
+        public void CopyTo(WindowPeriodSelector other)
+        {
+            other.period = this.period;
+            other.Automatic = this.Automatic;
+            other.periodbuttontext.Text = this.periodbuttontext.Text;
+            other.ValueChanged?.Invoke(other, EventArgs.Empty);
+        }
+
         private void Periodbutton_Click(object sender, RoutedEventArgs e)
         {
             periodmenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;

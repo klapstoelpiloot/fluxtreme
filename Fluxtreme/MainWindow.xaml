@@ -3,10 +3,37 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:CodeImp.Fluxtreme"
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
         Title="Fluxtreme" Height="800" Width="1024" Closing="Window_Closing" Initialized="Window_Initialized">
-	<Grid>
+	<Window.Resources>
+		<Style TargetType="{x:Type local:DocumentTab}" BasedOn="{StaticResource {x:Type TabItem}}"/>
+	</Window.Resources>
+	<Window.CommandBindings>
+		<CommandBinding Command="{x:Static local:MainWindow.NewFileCommand}" Executed="NewFile"/>
+		<CommandBinding Command="{x:Static local:MainWindow.OpenFileCommand}" Executed="OpenFile"/>
+		<CommandBinding Command="{x:Static local:MainWindow.DuplicateFileCommand}" Executed="DuplicateFile"/>
+		<CommandBinding Command="{x:Static local:MainWindow.ShowSettingsCommand}" Executed="ShowSettings"/>
+	</Window.CommandBindings>
+	<DockPanel>
+		<Menu DockPanel.Dock="Top" Padding="2,1,2,1">
+			<MenuItem Header="_File" Padding="12,2,12,2">
+				<MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding NewFileCommand}"/>
+				<MenuItem Header="_Open..." InputGestureText="Ctrl+O"/>
+				<MenuItem Header="_Duplicate" InputGestureText="Ctrl+D" Command="{Binding DuplicateFileCommand}"/>
+				<Separator/>
+				<MenuItem Header="_Close"/>
+				<Separator/>
+				<MenuItem Header="_Save" InputGestureText="Ctrl+S"/>
+				<MenuItem Header="_Save As..."/>
+				<Separator/>
+				<MenuItem Header="E_xit"/>
+			</MenuItem>
+			<MenuItem Header="_Tools" Padding="12,2,12,2">
+				<MenuItem Header="_Settings..." Command="{Binding ShowSettingsCommand}"/>
+			</MenuItem>
+		</Menu>
 		<TabControl x:Name="tabs" Margin="2,4,2,0"/>
-	</Grid>
+	</DockPanel>
 </Window>

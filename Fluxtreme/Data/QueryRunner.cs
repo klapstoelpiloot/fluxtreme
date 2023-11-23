@@ -51,11 +51,6 @@ namespace CodeImp.Fluxtreme.Data
         /// </summary>
         public TimeSpan WindowPeriod { get; set; } = TimeSpan.FromSeconds(1);
 
-        /// <summary>
-        /// Bucket name for the query variable v.defaultBucket
-        /// </summary>
-        public string DefaultBucket { get; set; } = string.Empty;
-
         public QueryRunner()
         {
         }
@@ -108,6 +103,7 @@ namespace CodeImp.Fluxtreme.Data
                     }
 
                     // Send the query and await the result
+                    Console.WriteLine($"Query with WindowPeriod {WindowPeriod}");
                     File extern_ = SetupExtern();
                     Query q = new Query(extern_, query, Query.TypeEnum.Flux, null, QueryApi.Dialect);
                     QueryApiSync queryapi = client.GetQueryApiSync();
@@ -192,7 +188,7 @@ namespace CodeImp.Fluxtreme.Data
                 startvalue = new DateTimeLiteral("DateTimeLiteral", TimeRangeStart.ToUniversalTime());
                 stopvalue = new DateTimeLiteral("DateTimeLiteral", TimeRangeStop.ToUniversalTime());
             }
-            StringLiteral defaultbucket = new StringLiteral("StringLiteral", DefaultBucket);
+            StringLiteral defaultbucket = new StringLiteral("StringLiteral", datasource.DefaultBucket);
             DurationLiteral windowperiod = new DurationLiteral("DurationLiteral", TimeSpanToDurations(WindowPeriod));
 
             Property p_timeRangeStart = new Property("Property", new Identifier("Identifier", "timeRangeStart"), startvalue);
