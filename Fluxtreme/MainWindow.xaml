@@ -6,29 +6,32 @@
 		xmlns:local="clr-namespace:CodeImp.Fluxtreme"
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
-        Title="Fluxtreme" Height="800" Width="1024" Closing="Window_Closing" Initialized="Window_Initialized">
+        Title="Fluxtreme" Height="800" Width="1024" Initialized="Window_Initialized" Closing="Window_Closing">
 	<Window.Resources>
 		<Style TargetType="{x:Type local:DocumentTab}" BasedOn="{StaticResource {x:Type TabItem}}"/>
 	</Window.Resources>
 	<Window.CommandBindings>
 		<CommandBinding Command="{x:Static local:MainWindow.NewFileCommand}" Executed="NewFile"/>
 		<CommandBinding Command="{x:Static local:MainWindow.OpenFileCommand}" Executed="OpenFile"/>
+		<CommandBinding Command="{x:Static local:MainWindow.SaveFileCommand}" Executed="SaveFile"/>
+		<CommandBinding Command="{x:Static local:MainWindow.SaveFileAsCommand}" Executed="SaveFileAs"/>
 		<CommandBinding Command="{x:Static local:MainWindow.DuplicateFileCommand}" Executed="DuplicateFile"/>
 		<CommandBinding Command="{x:Static local:MainWindow.ShowSettingsCommand}" Executed="ShowSettings"/>
+		<CommandBinding Command="{x:Static local:MainWindow.ExitCommand}" Executed="Exit"/>
 	</Window.CommandBindings>
 	<DockPanel>
 		<Menu DockPanel.Dock="Top" Padding="2,1,2,1">
 			<MenuItem Header="_File" Padding="12,2,12,2">
 				<MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding NewFileCommand}"/>
-				<MenuItem Header="_Open..." InputGestureText="Ctrl+O"/>
+				<MenuItem Header="_Open..." InputGestureText="Ctrl+O" Command="{Binding OpenFileCommand}"/>
 				<MenuItem Header="_Duplicate" InputGestureText="Ctrl+D" Command="{Binding DuplicateFileCommand}"/>
 				<Separator/>
 				<MenuItem Header="_Close"/>
 				<Separator/>
-				<MenuItem Header="_Save" InputGestureText="Ctrl+S"/>
-				<MenuItem Header="_Save As..."/>
+				<MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}"/>
+				<MenuItem Header="_Save As..." Command="{Binding SaveFileAsCommand}"/>
 				<Separator/>
-				<MenuItem Header="E_xit"/>
+				<MenuItem Header="E_xit" Command="{Binding ExitCommand}"/>
 			</MenuItem>
 			<MenuItem Header="_Tools" Padding="12,2,12,2">
 				<MenuItem Header="_Settings..." Command="{Binding ShowSettingsCommand}"/>

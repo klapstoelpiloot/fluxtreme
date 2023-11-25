@@ -24,6 +24,8 @@ namespace CodeImp.Fluxtreme
 
         public string Query { get => editor.Text; set => editor.Text = value; }
 
+        public event EventHandler QueryChanged;
+
         public DocumentPanel()
         {
             InitializeComponent();
@@ -151,6 +153,7 @@ namespace CodeImp.Fluxtreme
             }
             queryDelay.Stop();
             queryDelay.Start();
+            QueryChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void SettingsChanged()
@@ -180,7 +183,7 @@ namespace CodeImp.Fluxtreme
                     windowwidth = 800;
                 }
 
-                TimeSpan period = new TimeSpan(range.Ticks / (long)ActualWidth);
+                TimeSpan period = new TimeSpan(range.Ticks / windowwidth);
                 query.WindowPeriod = period;
 
                 Dispatcher.BeginInvoke(new Action(() => { periodbutton.Value = period; }));

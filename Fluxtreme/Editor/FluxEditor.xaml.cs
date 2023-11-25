@@ -60,6 +60,7 @@ namespace CodeImp.Fluxtreme.Editor
             editor.AssignCmdKey(Keys.Control | Keys.K, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.B, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.N, Command.Null);
+            editor.AssignCmdKey(Keys.Control | Keys.S, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Shift | Keys.Q, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Shift | Keys.W, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Shift | Keys.E, Command.Null);

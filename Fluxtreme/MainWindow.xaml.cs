@@ -1,5 +1,6 @@
 ﻿using CodeImp.Fluxtreme.Configuration;
 using CodeImp.Fluxtreme.Properties;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace CodeImp.Fluxtreme
         public static RoutedCommand OpenFileCommand { get; private set; } = new RoutedCommand();
         public static RoutedCommand DuplicateFileCommand { get; private set; } = new RoutedCommand();
         public static RoutedCommand ShowSettingsCommand { get; private set; } = new RoutedCommand();
+        public static RoutedCommand SaveFileCommand { get; private set; } = new RoutedCommand();
+        public static RoutedCommand SaveFileAsCommand { get; private set; } = new RoutedCommand();
+        public static RoutedCommand ExitCommand { get; private set; } = new RoutedCommand();
 
         public DocumentTab CurrentTab => tabs.SelectedItem as DocumentTab;
 
@@ -32,19 +36,14 @@ namespace CodeImp.Fluxtreme
             // Shortcut keys for commands
             NewFileCommand.InputGestures.Add(new KeyGesture(Key.N, ModifierKeys.Control));
             OpenFileCommand.InputGestures.Add(new KeyGesture(Key.O, ModifierKeys.Control));
+            SaveFileCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
             DuplicateFileCommand.InputGestures.Add(new KeyGesture(Key.D, ModifierKeys.Control));
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Settings.Default.Save();
         }
 
         private void Window_Initialized(object sender, EventArgs e)
         {
             // Something to test quickly
-            DocumentTab tab = new DocumentTab();
-            tab.Header = MakeNewFileName(NewFileName);
+            DocumentTab tab = DocumentTab.New(MakeNewFileName(NewFileName));
             tab.Panel.Query = "from(bucket: \"events\")\r\n" +
                     "\t|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n" +
                     "\t|> filter(fn: (r) => r[\"code\"] =~ /[IE]_SPE_03F2/)\r\n" +
@@ -64,8 +63,7 @@ namespace CodeImp.Fluxtreme
 
         public void NewFile(object sender, ExecutedRoutedEventArgs e)
         {
-            DocumentTab newtab = new DocumentTab();
-            newtab.Header = MakeNewFileName(NewFileName);
+            DocumentTab newtab = DocumentTab.New(MakeNewFileName(NewFileName));
             tabs.Items.Add(newtab);
             tabs.SelectedItem = newtab;
         }
@@ -73,7 +71,7 @@ namespace CodeImp.Fluxtreme
         private List<DocumentTab> GetTabs()
         {
             List<DocumentTab> tabitems = new List<DocumentTab>(tabs.Items.Count);
-            for(int i = 0; i < tabs.Items.Count; i++)
+            for (int i = 0; i < tabs.Items.Count; i++)
             {
                 tabitems.Add(tabs.Items[i] as DocumentTab);
             }
@@ -82,14 +80,25 @@ namespace CodeImp.Fluxtreme
 
         private void OpenFile(object sender, ExecutedRoutedEventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            // Show a file browser to open a file
+            openFileDialog.Title = "Open File";
+            openFileDialog.Filter = "Flux Query files (*.flux)|*.flux|Text files (*.txt)|*.txt|All Files (*.*)|*.*";
+            bool? result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                DocumentTab newtab = DocumentTab.FromFile(openFileDialog.FileName);
+                tabs.Items.Add(newtab);
+                tabs.SelectedItem = newtab;
+            }
         }
 
         private void DuplicateFile(object sender, ExecutedRoutedEventArgs e)
         {
             if (CurrentTab != null)
             {
-                DocumentTab newtab = new DocumentTab();
-                newtab.Header = MakeNewFileName(CurrentTab.Header.ToString());
+                DocumentTab newtab = DocumentTab.New(MakeNewFileName(CurrentTab.Header.ToString()));
                 tabs.Items.Add(newtab);
                 CurrentTab.Panel.CopyTo(newtab.Panel);
                 tabs.SelectedItem = newtab;
@@ -142,9 +151,93 @@ namespace CodeImp.Fluxtreme
                 number++;
                 newfilename = filename + number + ext;
             }
-            while(tabitems.Any(t => t.Header.ToString() == newfilename));
+            while (tabitems.Any(t => t.Header.ToString() == newfilename));
 
             return newfilename;
+        }
+
+        private void SaveFile(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveTabToFile(CurrentTab);
+        }
+
+        private void SaveFileAs(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveTabToFileAs(CurrentTab);
+        }
+
+        private void SaveTabToFile(DocumentTab t)
+        {
+            if (string.IsNullOrEmpty(t.FilePathName))
+            {
+                SaveTabToFileAs(t);
+            }
+            else
+            {
+                try
+                {
+                    t.SaveToFile(t.FilePathName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, $"Unable to write the file \"{t.FilePathName}\".\n{ex.Message}", "Save file", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SaveTabToFileAs(DocumentTab t)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName = t.FilePathName;
+            saveFileDialog.Title = "Save File As";
+            saveFileDialog.Filter = "Flux Query files (*.flux)|*.flux|Text files (*.txt)|*.txt|All Files (*.*)|*.*";
+            bool? result = saveFileDialog.ShowDialog();
+            if (result == true)
+            {
+                try
+                {
+                    t.SaveToFile(saveFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, $"Unable to write the file \"{t.FilePathName}\".\n{ex.Message}", "Save file", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void Exit(object sender, ExecutedRoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            List<DocumentTab> changedtabs = GetTabs().Where(t => t.HasChanged).ToList();
+            if(changedtabs.Count > 0)
+            {
+                string filelist = changedtabs.Aggregate(string.Empty, (list, t) => list + t.Title + "\n", list => list.Trim());
+                MessageBoxResult result = MessageBox.Show(this, $"The following files have unsaved changes:\n\n{filelist}\n\nDo you want to save changes to the files?", "Exit", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
+                switch(result)
+                {
+                    case MessageBoxResult.Yes:
+                        // Save files, then continue to exit
+                        changedtabs.ForEach(t => SaveTabToFile(t));
+                        break;
+
+                    case MessageBoxResult.No:
+                        // Continue with exit
+                        break;
+
+                    case MessageBoxResult.Cancel:
+                        e.Cancel = true;
+                        return;
+
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            Settings.Default.Save();
         }
     }
 }
