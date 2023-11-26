@@ -10,6 +10,9 @@ namespace CodeImp.Fluxtreme.Editor
     {
         Unknown,
         None,
-        Comment
+        Comment,
+        String,
+        StringEscaped,
+        Number
     }
 }

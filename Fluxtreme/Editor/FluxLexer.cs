@@ -25,6 +25,7 @@ namespace CodeImp.Fluxtreme.Editor
             // Parse text in range and apply styling
             FluxContext context = FluxContext.None;
             editor.StartStyling(startPos);
+            int stylebegin = 0;
             int pos = startPos;
             while(pos < endPos)
             {
@@ -45,10 +46,40 @@ namespace CodeImp.Fluxtreme.Editor
                             }
                             else
                             {
-                                //
+                                // TODO
+                                editor.SetStyling(1, (int)FluxStyles.Default);
                             }
                         }
-                        editor.SetStyling(1, (int)FluxStyles.Default);
+                        else if(c == '"')
+                        {
+                            stylebegin = pos;
+                            context = FluxContext.String;
+                        }
+                        else
+                        {
+                            editor.SetStyling(1, (int)FluxStyles.Default);
+                        }
+                        pos++;
+                        break;
+
+                    case FluxContext.String:
+                        if(c == '\\')
+                        {
+                            // The next charatcer must be considered as part of the string as well
+                            context = FluxContext.StringEscaped;
+                        }
+                        else if(c == '"')
+                        {
+                            editor.SetStyling(pos - stylebegin + 1, (int)FluxStyles.String);
+                            context = FluxContext.None;
+                        }
+                        pos++;
+                        break;
+
+                    case FluxContext.StringEscaped:
+                        // This is just used to ignore one character,
+                        // go back to the string context for the next character.
+                        context = FluxContext.String;
                         pos++;
                         break;
 

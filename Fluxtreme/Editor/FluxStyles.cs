@@ -11,6 +11,7 @@ namespace CodeImp.Fluxtreme.Editor
         // See https://www.scintilla.org/ScintillaDoc.html#Styling
         Default = 0,
         Comment = 1,                // Starts with // and continue to the end of the line
+        String = 2,
 
     }
 }
