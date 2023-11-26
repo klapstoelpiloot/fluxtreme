@@ -55,11 +55,28 @@ namespace CodeImp.Fluxtreme.Editor
                             stylebegin = pos;
                             context = FluxContext.String;
                         }
+                        else if((c >= '0') && (c <= '9'))
+                        {
+                            stylebegin = pos;
+                            context = FluxContext.Number;
+                        }
                         else
                         {
                             editor.SetStyling(1, (int)FluxStyles.Default);
                         }
-                        pos++;
+                        break;
+
+                    case FluxContext.Number:
+                        // This includes floating points and durations
+                        // TODO: Add date/time support to this?
+                        if (((c < '0') || (c > '9')) && (c != '.') && (c != 'y') && (c != 'm') && (c != 'o') &&
+                            (c != 'w') && (c != 'd') && (c != 'h') && (c != 's') && (c != 'u') && (c != 'µ') && (c != 'n'))
+                        {
+                            // Number/duration ends here
+                            editor.SetStyling(pos - stylebegin, (int)FluxStyles.Number);
+                            context = FluxContext.None;
+                            goto REPROCESS;
+                        }
                         break;
 
                     case FluxContext.String:
@@ -73,14 +90,12 @@ namespace CodeImp.Fluxtreme.Editor
                             editor.SetStyling(pos - stylebegin + 1, (int)FluxStyles.String);
                             context = FluxContext.None;
                         }
-                        pos++;
                         break;
 
                     case FluxContext.StringEscaped:
                         // This is just used to ignore one character,
                         // go back to the string context for the next character.
                         context = FluxContext.String;
-                        pos++;
                         break;
 
                     case FluxContext.Comment:
@@ -89,10 +104,12 @@ namespace CodeImp.Fluxtreme.Editor
                         int numchars = editor.Lines[line].EndPosition - pos;
                         editor.SetStyling(numchars, (int)FluxStyles.Comment);
                         context = FluxContext.None;
-                        pos += numchars;
+                        pos += numchars - 1;
                         break;
 
                 }
+
+                pos++;
             }
         }
     }

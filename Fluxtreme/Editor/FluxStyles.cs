@@ -12,6 +12,7 @@ namespace CodeImp.Fluxtreme.Editor
         Default = 0,
         Comment = 1,                // Starts with // and continue to the end of the line
         String = 2,
+        Number = 3,
 
     }
 }

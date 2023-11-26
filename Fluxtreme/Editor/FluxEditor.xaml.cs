@@ -121,6 +121,7 @@ namespace CodeImp.Fluxtreme.Editor
 
             editor.Styles[(int)FluxStyles.Comment].ForeColor = Color.FromArgb(100, 100, 100);
             editor.Styles[(int)FluxStyles.String].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
+            editor.Styles[(int)FluxStyles.Number].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             /*
             editor.Styles[ScintillaNET.Style.Python.Character].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[ScintillaNET.Style.Python.CommentBlock].ForeColor = Color.FromArgb(100, 100, 100);
