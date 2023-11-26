@@ -191,10 +191,13 @@
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="DocumentTab.cs" />
+    <Compile Include="Editor\FluxContext.cs" />
     <Compile Include="Editor\FluxEditor.xaml.cs">
       <DependentUpon>FluxEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\FluxEditorImage.cs" />
+    <Compile Include="Editor\FluxLexer.cs" />
+    <Compile Include="Editor\FluxStyles.cs" />
     <Compile Include="TimeRangeSelector.xaml.cs">
       <DependentUpon>TimeRangeSelector.xaml</DependentUpon>
     </Compile>
