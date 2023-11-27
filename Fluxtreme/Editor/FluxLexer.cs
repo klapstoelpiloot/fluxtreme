@@ -10,10 +10,14 @@ namespace CodeImp.Fluxtreme.Editor
     public class FluxLexer
     {
         private Scintilla editor;
+        private FluxFunctionsDictionary functions;
 
         public FluxLexer(Scintilla editor)
         {
             this.editor = editor;
+            editor.WordChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+            editor.WhitespaceChars = " \t\n\r";
+            functions = FluxFunctionsDictionary.FromResource();
         }
 
         /// <summary>

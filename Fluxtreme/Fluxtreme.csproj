@@ -196,6 +196,7 @@
       <DependentUpon>FluxEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\FluxEditorImage.cs" />
+    <Compile Include="Editor\FluxFunctionsDictionary.cs" />
     <Compile Include="Editor\FluxLexer.cs" />
     <Compile Include="Editor\FluxStyles.cs" />
     <Compile Include="TimeRangeSelector.xaml.cs">
