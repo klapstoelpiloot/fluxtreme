@@ -122,6 +122,7 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Styles[(int)FluxStyles.Comment].ForeColor = Color.FromArgb(100, 100, 100);
             editor.Styles[(int)FluxStyles.String].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[(int)FluxStyles.Number].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
+            editor.Styles[(int)FluxStyles.Function].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
             /*
             editor.Styles[ScintillaNET.Style.Python.Character].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[ScintillaNET.Style.Python.CommentBlock].ForeColor = Color.FromArgb(100, 100, 100);
@@ -281,14 +282,14 @@ namespace CodeImp.Fluxtreme.Editor
             }
         }
 
-        public void ShowErrorIndicator(TextRange range)
+        public void ShowErrorIndicator(QueryError error)
         {
             ClearErrorIndiciator();
 
-            int startpos = editor.Lines[range.StartLine].Position + range.StartColumn;
+            int startpos = editor.Lines[error.StartLine].Position + error.StartColumn;
             if (startpos < editor.TextLength)
             {
-                int endpos = editor.Lines[range.EndLine].Position + range.EndColumn;
+                int endpos = editor.Lines[error.EndLine].Position + error.EndColumn;
                 if (endpos > editor.TextLength)
                 {
                     endpos = editor.TextLength;
