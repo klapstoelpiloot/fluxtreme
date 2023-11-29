@@ -16,6 +16,8 @@ namespace CodeImp.Fluxtreme.Editor
         Function = 4,
         Parameter = 5,
         Keyword = 6,
-        Variable = 7
+        Variable = 7,
+        Operator = 8,
+        RegEx = 9
     }
 }

@@ -126,18 +126,8 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Styles[(int)FluxStyles.Parameter].ForeColor = Color.FromKnownColor(KnownColor.SteelBlue);
             editor.Styles[(int)FluxStyles.Keyword].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
             editor.Styles[(int)FluxStyles.Variable].ForeColor = Color.FromKnownColor(KnownColor.WhiteSmoke);
-            /*
-            editor.Styles[ScintillaNET.Style.Python.Character].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            editor.Styles[ScintillaNET.Style.Python.CommentBlock].ForeColor = Color.FromArgb(100, 100, 100);
-            editor.Styles[ScintillaNET.Style.Python.CommentLine].ForeColor = Color.FromArgb(100, 100, 100);
-            editor.Styles[ScintillaNET.Style.Python.Identifier].ForeColor = Color.FromKnownColor(KnownColor.White);
-            editor.Styles[ScintillaNET.Style.Python.Number].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            editor.Styles[ScintillaNET.Style.Python.Operator].ForeColor = Color.FromKnownColor(KnownColor.LightGray);    // Braces and pipe symbols
-            editor.Styles[ScintillaNET.Style.Python.String].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            editor.Styles[ScintillaNET.Style.Python.StringEol].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            editor.Styles[ScintillaNET.Style.Python.Word].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
-            editor.Styles[ScintillaNET.Style.Python.Word2].ForeColor = Color.FromKnownColor(KnownColor.PeachPuff);
-            */
+            editor.Styles[(int)FluxStyles.Operator].ForeColor = Color.FromKnownColor(KnownColor.BurlyWood);
+            editor.Styles[(int)FluxStyles.RegEx].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
 
             string[] functions = ReadResourceStrings("CodeImp.Fluxtreme.Editor.FluxFunctions.txt");
             Dictionary<string, string> func_dict = new Dictionary<string, string>();

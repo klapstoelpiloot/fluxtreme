@@ -1,9 +1,11 @@
 ﻿using CodeImp.Fluxtreme.Tools;
+using CsvHelper.Configuration.Attributes;
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
+using System.Web.UI;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace CodeImp.Fluxtreme.Editor
@@ -12,7 +14,10 @@ namespace CodeImp.Fluxtreme.Editor
     {
         private const string IdentifierChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
         private const string WhitspaceChars = " \t\n\r";
-        private static readonly List<string> Keywords = new List<string>() { "and", "import", "option", "if", "or", "package", "builtin", "then", "not", "return", "testcase", "else", "exists" };
+        private static readonly string[] Keywords = new []{ "and", "import", "option", "if", "or", "package", "builtin", "then", "not", "return", "testcase", "else", "exists" };
+        private static readonly string[] Operators = new []{ "+", "==", "!=", "=>", "-", "<", "!~", "^", "*", ">", "=~", "/", "<=", "=", "%", ">=", "<-", "|>" };
+        private static readonly string OperatorChars = new string(string.Concat(Operators).Distinct().ToArray());
+        private enum SearchDirection { Forward = 1, Backward = -1 };
 
         private Scintilla editor;
         private FluxFunctionsDictionary functions;
@@ -46,8 +51,8 @@ namespace CodeImp.Fluxtreme.Editor
                     case FluxContext.None:
                         if (c == '/')
                         {
-                            // This can be a divide operator or a comment...
-                            // We must peek ahead to see the difference
+                            // This can be a divide, regex or a comment.
+                            // Double forward slash is easy, that is the start of a comment.
                             if (editor.GetCharAt(pos + 1) == '/')
                             {
                                 context = FluxContext.Comment;
@@ -55,8 +60,23 @@ namespace CodeImp.Fluxtreme.Editor
                             }
                             else
                             {
-                                // TODO
-                                editor.SetStyling(1, (int)FluxStyles.Default);
+                                // Requirements for regex:
+                                // On the left is an operator or ':'
+                                // On the right is a valid regex character: a-z, A-Z, 0-9, [, \, ^, (, . or whitespace
+                                int prev = WalkWhileCharacterMatch(pos, SearchDirection.Backward, WhitspaceChars) - 1;
+                                int prevc = editor.GetCharAt(prev);
+                                if ((prevc == ':') || OperatorChars.Contains((char)prevc))
+                                {
+                                    // Begin regular expression
+                                    stylebegin = pos;
+                                    context = FluxContext.RegEx;
+                                }
+                                else
+                                {
+                                    // Divide operator
+                                    stylebegin = pos;
+                                    context = FluxContext.Operator;
+                                }
                             }
                         }
                         else if (c == '"')
@@ -74,9 +94,52 @@ namespace CodeImp.Fluxtreme.Editor
                             stylebegin = pos;
                             context = FluxContext.Identifier;
                         }
+                        else if (OperatorChars.Contains((char)c))
+                        {
+                            stylebegin = pos;
+                            context = FluxContext.Operator;
+                        }
                         else
                         {
                             editor.SetStyling(1, (int)FluxStyles.Default);
+                        }
+                        break;
+
+                    case FluxContext.RegEx:
+                        if (c == '\\')
+                        {
+                            // The next charatcer must be considered as part of the regex as well
+                            context = FluxContext.RegExEscaped;
+                        }
+                        else if (c == '/')
+                        {
+                            editor.SetStyling(pos - stylebegin + 1, (int)FluxStyles.RegEx);
+                            context = FluxContext.None;
+                        }
+                        break;
+
+                    case FluxContext.RegExEscaped:
+                        // This is just used to ignore one character,
+                        // go back to the RegEx context for the next character.
+                        context = FluxContext.RegEx;
+                        break;
+
+                    case FluxContext.Operator:
+                        if (!OperatorChars.Contains((char)c))
+                        {
+                            TextRange opr = OperatorFromPosition((stylebegin + pos) / 2);
+                            string op = editor.GetTextRange(opr);
+                            if (Operators.Contains(op))
+                            {
+                                editor.SetStyling(pos - stylebegin, (int)FluxStyles.Operator);
+                            }
+                            else
+                            {
+                                editor.SetStyling(pos - stylebegin, (int)FluxStyles.Default);
+                            }
+
+                            context = FluxContext.None;
+                            goto REPROCESS;
                         }
                         break;
 
@@ -85,7 +148,7 @@ namespace CodeImp.Fluxtreme.Editor
                         {
                             TextRange idr = IdentifierFromPosition((stylebegin + pos) / 2);
                             string id = editor.GetTextRange(idr);
-                            int next = NextNonWhitespace(idr.End);
+                            int next = WalkWhileCharacterMatch(idr.End - 1, SearchDirection.Forward, WhitspaceChars) + 1;
                             int nextc = editor.GetCharAt(next);
 
                             // Check if the identifier is a function call (function name)
@@ -180,30 +243,27 @@ namespace CodeImp.Fluxtreme.Editor
             }
         }
 
-        // Returns the next position (forward) that is not a whitespace character, starting from the given position.
-        // The start position does not have to be a whitespace character. This method starts checking at the NEXT character.
-        // If the next character after the given position is not a whitespace character, this returns pos + 1.
-        private int NextNonWhitespace(int pos)
+        // Moves the position into the given direction while the charcter at that position matches the given set of characters
+        // The start position is not checked. The returned position is the last character that matches the given set of characters.
+        private int WalkWhileCharacterMatch(int pos, SearchDirection direction, string characters)
         {
-            do
+            int nextpos = pos + (int)direction;
+            while((nextpos >= 0) && (nextpos < editor.TextLength) && characters.Contains((char)editor.GetCharAt(nextpos)))
             {
-                pos++;
+                pos = nextpos;
+                nextpos += (int)direction;
             }
-            while(WhitspaceChars.Contains((char)editor.GetCharAt(pos)));
             return pos;
         }
 
-        // Returns the previous position (backwards) that is not a whitespace character, starting from the given position.
-        // The start position does not have to be a whitespace character. This method starts checking at the PREVIOUS character.
-        // If the previous character before the given position is not a whitespace character, this returns pos - 1.
-        private int PrevNonWhitespace(int pos)
+        // Returns the text range that covers the whole operator at the given position.
+        // This method assumes that the character at pos is an operator character and should be included.
+        private TextRange OperatorFromPosition(int pos)
         {
-            do
-            {
-                pos--;
-            }
-            while(WhitspaceChars.Contains((char)editor.GetCharAt(pos)));
-            return pos;
+            TextRange r = new TextRange();
+            r.Start = WalkWhileCharacterMatch(pos, SearchDirection.Backward, OperatorChars);
+            r.End = WalkWhileCharacterMatch(pos, SearchDirection.Forward, OperatorChars) + 1;
+            return r;
         }
 
         // Returns the text range that covers the whole identifier name at the given position.
@@ -211,23 +271,11 @@ namespace CodeImp.Fluxtreme.Editor
         private TextRange IdentifierFromPosition(int pos)
         {
             TextRange r = new TextRange();
-            r.Start = editor.WordStartPosition(pos, true);
-            r.End = editor.WordEndPosition(pos, true) - 1;
-
-            // Dot and identifier before the start? Then include it.
-            if((editor.GetCharAt(r.Start - 1) == '.') && IdentifierChars.Contains((char)editor.GetCharAt(r.Start - 2)))
-            {
-                r.Start = editor.WordStartPosition(r.Start - 2, true);
-            }
-
-            // Dot and identifier after the end? Then include it.
-            if((editor.GetCharAt(r.End + 1) == '.') && IdentifierChars.Contains((char)editor.GetCharAt(r.End + 2)))
-            {
-                r.End = editor.WordEndPosition(r.End + 2, true) - 1;
-            }
-
+            r.Start = WalkWhileCharacterMatch(pos, SearchDirection.Backward, IdentifierChars + ".");
+            r.End = WalkWhileCharacterMatch(pos, SearchDirection.Forward, IdentifierChars + ".") + 1;
             return r;
         }
+        
 
         // This finds out in which function call the given position is.
         // Returns null when it was not able to find the function name.

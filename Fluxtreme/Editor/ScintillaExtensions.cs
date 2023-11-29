@@ -12,7 +12,7 @@ namespace CodeImp.Fluxtreme.Editor
     {
         public static string GetTextRange(this Scintilla editor, TextRange range)
         {
-            return editor.GetTextRange(range.Start, range.End - range.Start + 1);
+            return editor.GetTextRange(range.Start, range.Length);
         }
     }
 }

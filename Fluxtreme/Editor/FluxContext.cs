@@ -26,7 +26,7 @@ namespace CodeImp.Fluxtreme.Editor
         String,
 
         /// <summary>
-        /// Only used to prevent ending the String contect on the next character
+        /// Only used to prevent ending the String context on the next character
         /// </summary>
         StringEscaped,
 
@@ -38,6 +38,21 @@ namespace CodeImp.Fluxtreme.Editor
         /// <summary>
         /// Keyword, variable, function or parameter
         /// </summary>
-        Identifier
+        Identifier,
+
+        /// <summary>
+        /// Usually 1 or 2 special characters
+        /// </summary>
+        Operator,
+
+        /// <summary>
+        /// Regular expression. Starts and ends with /
+        /// </summary>
+        RegEx,
+
+        /// <summary>
+        /// Only used to prevent ending the RegEx context on the next character
+        /// </summary>
+        RegExEscaped
     }
 }
