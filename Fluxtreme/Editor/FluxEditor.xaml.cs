@@ -86,11 +86,11 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Font = new Font("Consolas", 11.0f);
 
             editor.Styles[ScintillaNET.Style.Default].BackColor = GetColorResource("AColour.Tone1.Background.Static");
-            editor.Styles[ScintillaNET.Style.Default].ForeColor = GetColorResource("AColour.Glyph.Static");
+            editor.Styles[ScintillaNET.Style.Default].ForeColor = Color.FromKnownColor(KnownColor.Silver);
             editor.CaretForeColor = Color.White;
             editor.StyleClearAll();
             editor.Styles[ScintillaNET.Style.Default].BackColor = GetColorResource("AColour.Tone1.Background.Static");
-            editor.Styles[ScintillaNET.Style.Default].ForeColor = GetColorResource("AColour.Glyph.Static");
+            editor.Styles[ScintillaNET.Style.Default].ForeColor = Color.FromKnownColor(KnownColor.Silver);
             editor.Styles[ScintillaNET.Style.LineNumber].BackColor = GetColorResource("AColour.Tone4.Background.Static");
             editor.Styles[ScintillaNET.Style.LineNumber].ForeColor = GetColorResource("AColour.Tone8.Border.Static");
             editor.SetFoldMarginColor(false, GetColorResource("AColour.Tone1.Background.Static"));
@@ -123,6 +123,9 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Styles[(int)FluxStyles.String].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[(int)FluxStyles.Number].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[(int)FluxStyles.Function].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
+            editor.Styles[(int)FluxStyles.Parameter].ForeColor = Color.FromKnownColor(KnownColor.SteelBlue);
+            editor.Styles[(int)FluxStyles.Keyword].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
+            editor.Styles[(int)FluxStyles.Variable].ForeColor = Color.FromKnownColor(KnownColor.WhiteSmoke);
             /*
             editor.Styles[ScintillaNET.Style.Python.Character].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
             editor.Styles[ScintillaNET.Style.Python.CommentBlock].ForeColor = Color.FromArgb(100, 100, 100);

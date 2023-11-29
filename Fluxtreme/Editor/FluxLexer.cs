@@ -1,7 +1,10 @@
 ﻿using CodeImp.Fluxtreme.Tools;
 using ScintillaNET;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CodeImp.Fluxtreme.Editor
 {
@@ -9,6 +12,7 @@ namespace CodeImp.Fluxtreme.Editor
     {
         private const string IdentifierChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
         private const string WhitspaceChars = " \t\n\r";
+        private static readonly List<string> Keywords = new List<string>() { "and", "import", "option", "if", "or", "package", "builtin", "then", "not", "return", "testcase", "else", "exists" };
 
         private Scintilla editor;
         private FluxFunctionsDictionary functions;
@@ -81,16 +85,49 @@ namespace CodeImp.Fluxtreme.Editor
                         {
                             TextRange idr = IdentifierFromPosition((stylebegin + pos) / 2);
                             string id = editor.GetTextRange(idr);
+                            int next = NextNonWhitespace(idr.End);
+                            int nextc = editor.GetCharAt(next);
 
-                            // Check if the identifier is a function call
-                            if (functions.ContainsKey(id) && (editor.GetCharAt(NextNonWhitespace(idr.End)) == '('))
+                            // Check if the identifier is a function call (function name)
+                            if ((nextc == '(') && functions.ContainsKey(id))
                             {
                                 editor.SetStyling(pos - stylebegin, (int)FluxStyles.Function);
                             }
+                            // Check if it is a parameter
+                            else if(nextc == ':')
+                            {
+                                // To check if this is a valid parameter, we need to know the function call
+                                string func = GetFunctionFromPosition(idr.Start);
+                                if(func != null)
+                                {
+                                    IReadOnlyList<string> args = functions[func];
+                                    if(args.Contains(id))
+                                    {
+                                        editor.SetStyling(pos - stylebegin, (int)FluxStyles.Parameter);
+                                    }
+                                    else
+                                    {
+                                        // Don't know
+                                        editor.SetStyling(pos - stylebegin, (int)FluxStyles.Default);
+                                    }
+                                }
+                                else
+                                {
+                                    // Don't know, possibly a key in a key-value pair for a record/dictionary
+                                    editor.SetStyling(pos - stylebegin, (int)FluxStyles.Default);
+                                }
+                            }
+                            // Check if this is a language keyword
+                            else if(Keywords.Contains(id))
+                            {
+                                editor.SetStyling(pos - stylebegin, (int)FluxStyles.Keyword);
+                            }
                             else
                             {
-                                editor.SetStyling(pos - stylebegin, (int)FluxStyles.Default);
+                                // Most likely a variable then
+                                editor.SetStyling(pos - stylebegin, (int)FluxStyles.Variable);
                             }
+
                             context = FluxContext.None;
                             goto REPROCESS;
                         }
@@ -199,24 +236,25 @@ namespace CodeImp.Fluxtreme.Editor
             // Find the first function identifier before the pos.
             // There should be an opening brace ( before the pos where we can find the function name.
             // If we find a closing brace ) then we have to skip over that scope/function.
-            int nestcount = 0;
+            int functionnestcount = 0;
+            int recordnestcount = 0;
             do
             {
                 pos--;
                 int c = editor.GetCharAt(pos);
                 FluxStyles style = (FluxStyles)editor.GetStyleAt(pos);
 
-                // This relys on syntax highlighting to be correct and up-to-date.
-                // Maybe not the best idea, but easier than determining this from the current position.
+                // This relies on syntax highlighting to be correct and up-to-date.
+                // Maybe not the best idea, but easier than determining this by parsing backwards.
                 if ((style != FluxStyles.Comment) && (style != FluxStyles.String))
                 {
                     if (c == ')')
                     {
-                        nestcount++;
+                        functionnestcount++;
                     }
                     else if (c == '(')
                     {
-                        if (nestcount == 0)
+                        if (functionnestcount == 0)
                         {
                             // Now we expect the next to be the function identifier
                             TextRange idr = IdentifierFromPosition(pos - 1);
@@ -233,7 +271,24 @@ namespace CodeImp.Fluxtreme.Editor
                         }
                         else
                         {
-                            nestcount--;
+                            functionnestcount--;
+                        }
+                    }
+                    else if (c == '}')
+                    {
+                        recordnestcount++;
+                    }
+                    else if (c == '{')
+                    {
+                        if (recordnestcount == 0)
+                        {
+                            // We're in a dictionary/record
+                            // This is not part of the function call
+                            return null;
+                        }
+                        else
+                        {
+                            recordnestcount--;
                         }
                     }
                 }
