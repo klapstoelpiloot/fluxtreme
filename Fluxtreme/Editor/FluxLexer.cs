@@ -1,12 +1,8 @@
 ﻿using CodeImp.Fluxtreme.Tools;
-using CsvHelper.Configuration.Attributes;
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using System.Linq;
-using System.Web.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CodeImp.Fluxtreme.Editor
 {
@@ -17,7 +13,6 @@ namespace CodeImp.Fluxtreme.Editor
         private static readonly string[] Keywords = new []{ "and", "import", "option", "if", "or", "package", "builtin", "then", "not", "return", "testcase", "else", "exists" };
         private static readonly string[] Operators = new []{ "+", "==", "!=", "=>", "-", "<", "!~", "^", "*", ">", "=~", "/", "<=", "=", "%", ">=", "<-", "|>" };
         private static readonly string OperatorChars = new string(string.Concat(Operators).Distinct().ToArray());
-        private enum SearchDirection { Forward = 1, Backward = -1 };
 
         private Scintilla editor;
         private FluxFunctionsDictionary functions;
@@ -63,7 +58,7 @@ namespace CodeImp.Fluxtreme.Editor
                                 // Requirements for regex:
                                 // On the left is an operator or ':'
                                 // On the right is a valid regex character: a-z, A-Z, 0-9, [, \, ^, (, . or whitespace
-                                int prev = WalkWhileCharacterMatch(pos, SearchDirection.Backward, WhitspaceChars) - 1;
+                                int prev = editor.WalkWhileCharacterMatch(pos, SearchDirection.Backward, WhitspaceChars) - 1;
                                 int prevc = editor.GetCharAt(prev);
                                 if ((prevc == ':') || OperatorChars.Contains((char)prevc))
                                 {
@@ -148,7 +143,7 @@ namespace CodeImp.Fluxtreme.Editor
                         {
                             TextRange idr = IdentifierFromPosition((stylebegin + pos) / 2);
                             string id = editor.GetTextRange(idr);
-                            int next = WalkWhileCharacterMatch(idr.End - 1, SearchDirection.Forward, WhitspaceChars) + 1;
+                            int next = editor.WalkWhileCharacterMatch(idr.End - 1, SearchDirection.Forward, WhitspaceChars) + 1;
                             int nextc = editor.GetCharAt(next);
 
                             // Check if the identifier is a function call (function name)
@@ -157,14 +152,14 @@ namespace CodeImp.Fluxtreme.Editor
                                 editor.SetStyling(pos - stylebegin, (int)FluxStyles.Function);
                             }
                             // Check if it is a parameter
-                            else if(nextc == ':')
+                            else if (nextc == ':')
                             {
                                 // To check if this is a valid parameter, we need to know the function call
                                 string func = GetFunctionFromPosition(idr.Start);
-                                if(func != null)
+                                if (func != null)
                                 {
                                     IReadOnlyList<string> args = functions[func];
-                                    if(args.Contains(id))
+                                    if (args.Contains(id))
                                     {
                                         editor.SetStyling(pos - stylebegin, (int)FluxStyles.Parameter);
                                     }
@@ -181,7 +176,7 @@ namespace CodeImp.Fluxtreme.Editor
                                 }
                             }
                             // Check if this is a language keyword
-                            else if(Keywords.Contains(id))
+                            else if (Keywords.Contains(id))
                             {
                                 editor.SetStyling(pos - stylebegin, (int)FluxStyles.Keyword);
                             }
@@ -243,26 +238,13 @@ namespace CodeImp.Fluxtreme.Editor
             }
         }
 
-        // Moves the position into the given direction while the charcter at that position matches the given set of characters
-        // The start position is not checked. The returned position is the last character that matches the given set of characters.
-        private int WalkWhileCharacterMatch(int pos, SearchDirection direction, string characters)
-        {
-            int nextpos = pos + (int)direction;
-            while((nextpos >= 0) && (nextpos < editor.TextLength) && characters.Contains((char)editor.GetCharAt(nextpos)))
-            {
-                pos = nextpos;
-                nextpos += (int)direction;
-            }
-            return pos;
-        }
-
         // Returns the text range that covers the whole operator at the given position.
         // This method assumes that the character at pos is an operator character and should be included.
         private TextRange OperatorFromPosition(int pos)
         {
             TextRange r = new TextRange();
-            r.Start = WalkWhileCharacterMatch(pos, SearchDirection.Backward, OperatorChars);
-            r.End = WalkWhileCharacterMatch(pos, SearchDirection.Forward, OperatorChars) + 1;
+            r.Start = editor.WalkWhileCharacterMatch(pos, SearchDirection.Backward, OperatorChars);
+            r.End = editor.WalkWhileCharacterMatch(pos, SearchDirection.Forward, OperatorChars) + 1;
             return r;
         }
 
@@ -271,14 +253,15 @@ namespace CodeImp.Fluxtreme.Editor
         private TextRange IdentifierFromPosition(int pos)
         {
             TextRange r = new TextRange();
-            r.Start = WalkWhileCharacterMatch(pos, SearchDirection.Backward, IdentifierChars + ".");
-            r.End = WalkWhileCharacterMatch(pos, SearchDirection.Forward, IdentifierChars + ".") + 1;
+            r.Start = editor.WalkWhileCharacterMatch(pos, SearchDirection.Backward, IdentifierChars + ".");
+            r.End = editor.WalkWhileCharacterMatch(pos, SearchDirection.Forward, IdentifierChars + ".") + 1;
             return r;
         }
-        
 
-        // This finds out in which function call the given position is.
-        // Returns null when it was not able to find the function name.
+        /// <summary>
+        /// This finds out in which function call the given position is.
+        /// Returns null when it was not able to find the function name.
+        /// </summary>
         public string GetFunctionFromPosition(int pos)
         {
             // Find the first function identifier before the pos.
@@ -341,7 +324,7 @@ namespace CodeImp.Fluxtreme.Editor
                     }
                 }
             }
-            while(pos > 0);
+            while (pos > 0);
 
             // Can't find the function
             return null;
