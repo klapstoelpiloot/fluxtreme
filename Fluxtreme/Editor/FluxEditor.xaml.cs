@@ -16,7 +16,7 @@ namespace CodeImp.Fluxtreme.Editor
     public partial class FluxEditor : UserControl
     {
         public event EventHandler TextChanged;
-        private FluxLexer lexer;
+        private IStyler styler;
         private List<int> disabledlines = new List<int>();
 
         public string Text { get { return editor.Text; } set { editor.Text = value; } }
@@ -26,7 +26,7 @@ namespace CodeImp.Fluxtreme.Editor
         public FluxEditor()
         {
             InitializeComponent();
-
+            
             // Symbol margin
             editor.Margins[0].Type = MarginType.Symbol;
             editor.Margins[0].Width = 20;
@@ -93,6 +93,8 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Styles[ScintillaNET.Style.Default].ForeColor = Color.FromKnownColor(KnownColor.Silver);
             editor.Styles[ScintillaNET.Style.LineNumber].BackColor = GetColorResource("AColour.Tone4.Background.Static");
             editor.Styles[ScintillaNET.Style.LineNumber].ForeColor = GetColorResource("AColour.Tone8.Border.Static");
+            editor.SetSelectionBackColor(true, Color.FromArgb(15, 66, 117));
+            editor.SetSelectionForeColor(false, GetColorResource("AColour.Tone1.Background.Static"));
             editor.SetFoldMarginColor(false, GetColorResource("AColour.Tone1.Background.Static"));
             editor.EdgeColor = GetColorResource("AColour.Tone1.Background.Static");
             editor.SetWhitespaceBackColor(false, GetColorResource("AColour.Tone4.Background.Static"));
@@ -115,7 +117,7 @@ namespace CodeImp.Fluxtreme.Editor
 
         public void Setup()
         {
-            lexer = new FluxLexer(editor);
+            styler = new FluxStyler(editor);
             editor.LexerName = null;
             editor.StyleNeeded += Editor_StyleNeeded;
 
@@ -165,7 +167,7 @@ namespace CodeImp.Fluxtreme.Editor
         {
             int stylend = editor.GetEndStyled();
             int line = editor.LineFromPosition(stylend);
-            lexer.ApplyStyles(editor.Lines[line].Position, e.Position);
+            styler.ApplyStyles(editor.Lines[line].Position, e.Position);
         }
 
         public void CopyTo(FluxEditor other)

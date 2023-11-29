@@ -198,7 +198,9 @@
     <Compile Include="Editor\FluxEditorImage.cs" />
     <Compile Include="Editor\FluxFunctionsDictionary.cs" />
     <Compile Include="Editor\FluxLexer.cs" />
+    <Compile Include="Editor\FluxStyler.cs" />
     <Compile Include="Editor\FluxStyles.cs" />
+    <Compile Include="Editor\IStyler.cs" />
     <Compile Include="Editor\ScintillaExtensions.cs" />
     <Compile Include="Editor\SearchDirection.cs" />
     <Compile Include="TimeRangeSelector.xaml.cs">
