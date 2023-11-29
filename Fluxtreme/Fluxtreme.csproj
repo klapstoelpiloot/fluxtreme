@@ -186,18 +186,25 @@
     <Compile Include="DataSourceSelector.xaml.cs">
       <DependentUpon>DataSourceSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\TextRange.cs" />
+    <Compile Include="Data\QueryError.cs" />
     <Compile Include="DocumentPanel.xaml.cs">
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="DocumentTab.cs" />
+    <Compile Include="Editor\FluxContext.cs" />
     <Compile Include="Editor\FluxEditor.xaml.cs">
       <DependentUpon>FluxEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\FluxEditorImage.cs" />
+    <Compile Include="Editor\FluxFunctionsDictionary.cs" />
+    <Compile Include="Editor\FluxLexer.cs" />
+    <Compile Include="Editor\FluxStyles.cs" />
+    <Compile Include="Editor\ScintillaExtensions.cs" />
+    <Compile Include="Editor\SearchDirection.cs" />
     <Compile Include="TimeRangeSelector.xaml.cs">
       <DependentUpon>TimeRangeSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tools\TextRange.cs" />
     <Compile Include="Tools\TimeSpanExtensions.cs" />
     <Compile Include="Viewers\FluxRecordView.cs" />
     <Compile Include="IDocumentPanel.cs" />

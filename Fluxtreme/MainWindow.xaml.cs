@@ -46,6 +46,7 @@ namespace CodeImp.Fluxtreme
             DocumentTab tab = DocumentTab.New(MakeNewFileName(NewFileName));
             tab.Panel.Query = "from(bucket: \"events\")\r\n" +
                     "\t|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n" +
+                    "\t// The lines above are very common. The lines below are very specific.\r\n" +
                     "\t|> filter(fn: (r) => r[\"code\"] =~ /[IE]_SPE_03F2/)\r\n" +
                     "\t|> filter(fn: (r) => r[\"_field\"] == \"p-holder\" or r[\"_field\"] == \"p-mafm\" or r[\"_field\"] == \"p-sniffle_target\" or r[\"_field\"] == \"description\")\r\n" +
                     "\t|> filter(fn: (r) => r[\"ssindex\"] == \"0\")\r\n";

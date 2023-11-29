@@ -64,11 +64,11 @@ namespace CodeImp.Fluxtreme
             this.periodbutton.CopyTo(other.periodbutton);
         }
 
-        public void ShowErrorStatus(string message, TextRange range)
+        public void ShowErrorStatus(QueryError error)
         {
-            editor.ShowErrorIndicator(range);
-            statuslabel.Text = message;
-            statusbar.ToolTip = message;
+            editor.ShowErrorIndicator(error);
+            statuslabel.Text = error.Description;
+            statusbar.ToolTip = error.Description;
             statusbar.Background = StatusErrorBackground;
             statuslabel.Foreground = (Brush)FindResource("Button.Static.Foreground");
             progressbar.Visibility = Visibility.Hidden;
@@ -99,9 +99,9 @@ namespace CodeImp.Fluxtreme
             Dispatcher.BeginInvoke(new Action(() => tableview.ShowTables(result)));
         }
 
-        private void Query_QueryError(List<string> messages, List<TextRange> ranges)
+        private void Query_QueryError(List<QueryError> errors)
         {
-            Dispatcher.BeginInvoke(new Action(() => ShowErrorStatus(messages.First(), ranges.First())));
+            Dispatcher.BeginInvoke(new Action(() => ShowErrorStatus(errors.First())));
         }
 
         private void QueryDelay_Elapsed(object sender, System.Timers.ElapsedEventArgs e)

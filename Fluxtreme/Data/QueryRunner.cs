@@ -24,7 +24,7 @@ namespace CodeImp.Fluxtreme.Data
         private object syncObject = new object();
 
         public event Action<List<FluxTableEx>, TimeSpan> DataReady;
-        public event Action<List<string>, List<TextRange>> QueryError;
+        public event Action<List<QueryError>> QueryError;
 
         /// <summary>
         /// Returns True when a query is still running.
@@ -96,7 +96,7 @@ namespace CodeImp.Fluxtreme.Data
                         }
                         else
                         {
-                            QueryError?.Invoke(new List<string>() { "No data source selected." }, new List<TextRange>() { TextRange.Empty });
+                            QueryError?.Invoke(new List<QueryError>() { new QueryError("No data source selected.") });
                             running = false;
                             return;
                         }
@@ -113,14 +113,13 @@ namespace CodeImp.Fluxtreme.Data
                 }
                 catch (FluxQueryException ex)
                 {
-                    QueryError?.Invoke(new List<string>() { ex.Message }, new List<TextRange>() { TextRange.Empty });
+                    QueryError?.Invoke(new List<QueryError>() { new QueryError(ex.Message) });
                     running = false;
                     return;
                 }
                 catch (BadRequestException ex)
                 {
-                    List<string> errors = new List<string>();
-                    List<TextRange> ranges = new List<TextRange>();
+                    List<QueryError> errors = new List<QueryError>();
                     foreach (string er in ex.Message.Split('\n'))
                     {
                         if (!string.IsNullOrWhiteSpace(er))
@@ -134,28 +133,27 @@ namespace CodeImp.Fluxtreme.Data
                             }
 
                             // Get the line number for this error message
-                            TextRange range = TextRange.Empty;
+                            QueryError e = new QueryError(error);
                             Match coordinates = CompileErrorRegex.Match(error);
                             if ((coordinates.Captures.Count > 0) && (coordinates.Groups.Count > 4))
                             {
-                                range.StartLine = int.Parse(coordinates.Groups[1].Value) - 1;
-                                range.StartColumn = int.Parse(coordinates.Groups[2].Value);
-                                range.EndLine = int.Parse(coordinates.Groups[3].Value) - 1;
-                                range.EndColumn = int.Parse(coordinates.Groups[4].Value);
+                                e.StartLine = int.Parse(coordinates.Groups[1].Value) - 1;
+                                e.StartColumn = int.Parse(coordinates.Groups[2].Value);
+                                e.EndLine = int.Parse(coordinates.Groups[3].Value) - 1;
+                                e.EndColumn = int.Parse(coordinates.Groups[4].Value);
                             }
 
-                            errors.Add(er.Trim());
-                            ranges.Add(range);
+                            errors.Add(e);
                         }
                     }
-                    QueryError?.Invoke(errors, ranges);
+                    QueryError?.Invoke(errors);
                     running = false;
                     return;
                 }
                 catch (Exception ex)
                 {
                     Exception basex = ex.GetBaseException();
-                    QueryError?.Invoke(new List<string>() { basex.Message }, new List<TextRange>() { TextRange.Empty });
+                    QueryError?.Invoke(new List<QueryError>() { new QueryError(basex.Message) });
                     running = false;
                     return;
                 }

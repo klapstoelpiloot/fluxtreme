@@ -16,6 +16,7 @@ namespace CodeImp.Fluxtreme.Editor
     public partial class FluxEditor : UserControl
     {
         public event EventHandler TextChanged;
+        private FluxLexer lexer;
         private List<int> disabledlines = new List<int>();
 
         public string Text { get { return editor.Text; } set { editor.Text = value; } }
@@ -85,11 +86,11 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Font = new Font("Consolas", 11.0f);
 
             editor.Styles[ScintillaNET.Style.Default].BackColor = GetColorResource("AColour.Tone1.Background.Static");
-            editor.Styles[ScintillaNET.Style.Default].ForeColor = GetColorResource("AColour.Glyph.Static");
+            editor.Styles[ScintillaNET.Style.Default].ForeColor = Color.FromKnownColor(KnownColor.Silver);
             editor.CaretForeColor = Color.White;
             editor.StyleClearAll();
             editor.Styles[ScintillaNET.Style.Default].BackColor = GetColorResource("AColour.Tone1.Background.Static");
-            editor.Styles[ScintillaNET.Style.Default].ForeColor = GetColorResource("AColour.Glyph.Static");
+            editor.Styles[ScintillaNET.Style.Default].ForeColor = Color.FromKnownColor(KnownColor.Silver);
             editor.Styles[ScintillaNET.Style.LineNumber].BackColor = GetColorResource("AColour.Tone4.Background.Static");
             editor.Styles[ScintillaNET.Style.LineNumber].ForeColor = GetColorResource("AColour.Tone8.Border.Static");
             editor.SetFoldMarginColor(false, GetColorResource("AColour.Tone1.Background.Static"));
@@ -114,22 +115,19 @@ namespace CodeImp.Fluxtreme.Editor
 
         public void Setup()
         {
-            editor.LexerName = "python";
-            editor.Styles[ScintillaNET.Style.Python.Character].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            //editor.Styles[ScintillaNET.Style.Python.ClassName].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            editor.Styles[ScintillaNET.Style.Python.CommentBlock].ForeColor = Color.FromArgb(100, 100, 100);
-            editor.Styles[ScintillaNET.Style.Python.CommentLine].ForeColor = Color.FromArgb(100, 100, 100);
-            //editor.Styles[ScintillaNET.Style.Python.Decorator].ForeColor = Color.FromKnownColor(KnownColor.LightBlue);
-            //editor.Styles[ScintillaNET.Style.Python.DefName].ForeColor = Color.FromKnownColor(KnownColor.LightBlue);
-            editor.Styles[ScintillaNET.Style.Python.Identifier].ForeColor = Color.FromKnownColor(KnownColor.White);
-            editor.Styles[ScintillaNET.Style.Python.Number].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            editor.Styles[ScintillaNET.Style.Python.Operator].ForeColor = Color.FromKnownColor(KnownColor.LightGray);    // Braces and pipe symbols
-            editor.Styles[ScintillaNET.Style.Python.String].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            editor.Styles[ScintillaNET.Style.Python.StringEol].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            //editor.Styles[ScintillaNET.Style.Python.Triple].ForeColor = Color.FromKnownColor(KnownColor.Red);
-            //editor.Styles[ScintillaNET.Style.Python.TripleDouble].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-            editor.Styles[ScintillaNET.Style.Python.Word].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
-            editor.Styles[ScintillaNET.Style.Python.Word2].ForeColor = Color.FromKnownColor(KnownColor.PeachPuff);
+            lexer = new FluxLexer(editor);
+            editor.LexerName = null;
+            editor.StyleNeeded += Editor_StyleNeeded;
+
+            editor.Styles[(int)FluxStyles.Comment].ForeColor = Color.FromArgb(100, 100, 100);
+            editor.Styles[(int)FluxStyles.String].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
+            editor.Styles[(int)FluxStyles.Number].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
+            editor.Styles[(int)FluxStyles.Function].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
+            editor.Styles[(int)FluxStyles.Parameter].ForeColor = Color.FromKnownColor(KnownColor.SteelBlue);
+            editor.Styles[(int)FluxStyles.Keyword].ForeColor = Color.FromKnownColor(KnownColor.DeepSkyBlue);
+            editor.Styles[(int)FluxStyles.Variable].ForeColor = Color.FromKnownColor(KnownColor.WhiteSmoke);
+            editor.Styles[(int)FluxStyles.Operator].ForeColor = Color.FromKnownColor(KnownColor.BurlyWood);
+            editor.Styles[(int)FluxStyles.RegEx].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
 
             string[] functions = ReadResourceStrings("CodeImp.Fluxtreme.Editor.FluxFunctions.txt");
             Dictionary<string, string> func_dict = new Dictionary<string, string>();
@@ -161,7 +159,13 @@ namespace CodeImp.Fluxtreme.Editor
 
             editor.SetKeywords(0, string.Join(" ", func_dict.Keys));
             editor.SetKeywords(1, string.Join(" ", ident_dict.Keys));
-            editor.SetProperty("lexer.python.keywords2.no.sub.identifiers", "1");
+        }
+
+        private void Editor_StyleNeeded(object sender, StyleNeededEventArgs e)
+        {
+            int stylend = editor.GetEndStyled();
+            int line = editor.LineFromPosition(stylend);
+            lexer.ApplyStyles(editor.Lines[line].Position, e.Position);
         }
 
         public void CopyTo(FluxEditor other)
@@ -271,14 +275,14 @@ namespace CodeImp.Fluxtreme.Editor
             }
         }
 
-        public void ShowErrorIndicator(TextRange range)
+        public void ShowErrorIndicator(QueryError error)
         {
             ClearErrorIndiciator();
 
-            int startpos = editor.Lines[range.StartLine].Position + range.StartColumn;
+            int startpos = editor.Lines[error.StartLine].Position + error.StartColumn;
             if (startpos < editor.TextLength)
             {
-                int endpos = editor.Lines[range.EndLine].Position + range.EndColumn;
+                int endpos = editor.Lines[error.EndLine].Position + error.EndColumn;
                 if (endpos > editor.TextLength)
                 {
                     endpos = editor.TextLength;
