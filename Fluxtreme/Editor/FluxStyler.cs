@@ -99,7 +99,7 @@ namespace CodeImp.Fluxtreme.Editor
                             // The next charatcer must be considered as part of the regex as well
                             context = FluxContext.RegExEscaped;
                         }
-                        else if (c == '/')
+                        else if ((c == '/') || (c == '\n'))
                         {
                             editor.SetStyling(pos - stylebegin + 1, (int)FluxStyles.RegEx);
                             context = FluxContext.None;
@@ -148,7 +148,7 @@ namespace CodeImp.Fluxtreme.Editor
                             else if (nextc == ':')
                             {
                                 // To check if this is a valid parameter, we need to know the function call
-                                string func = FluxLexer.GetFunctionFromPosition(editor, idr.Start);
+                                string func = FluxLexer.FunctionFromPosition(editor, idr.Start);
                                 if (func != null)
                                 {
                                     IReadOnlyList<string> args = FluxLexer.Functions[func];
@@ -200,7 +200,7 @@ namespace CodeImp.Fluxtreme.Editor
                             // The next charatcer must be considered as part of the string as well
                             context = FluxContext.StringEscaped;
                         }
-                        else if (c == '"')
+                        else if ((c == '"') || (c == '\n'))
                         {
                             editor.SetStyling(pos - stylebegin + 1, (int)FluxStyles.String);
                             context = FluxContext.None;

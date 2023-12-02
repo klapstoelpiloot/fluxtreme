@@ -191,6 +191,7 @@
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="DocumentTab.cs" />
+    <Compile Include="Editor\FluxAssistant.cs" />
     <Compile Include="Editor\FluxContext.cs" />
     <Compile Include="Editor\FluxEditor.xaml.cs">
       <DependentUpon>FluxEditor.xaml</DependentUpon>
@@ -200,6 +201,7 @@
     <Compile Include="Editor\FluxLexer.cs" />
     <Compile Include="Editor\FluxStyler.cs" />
     <Compile Include="Editor\FluxStyles.cs" />
+    <Compile Include="Editor\IAssistant.cs" />
     <Compile Include="Editor\IStyler.cs" />
     <Compile Include="Editor\ScintillaExtensions.cs" />
     <Compile Include="Editor\SearchDirection.cs" />
@@ -381,6 +383,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\SmallCross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Function.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Label.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Variable.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

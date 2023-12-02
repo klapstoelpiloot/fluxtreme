@@ -26,7 +26,7 @@
 		</Style>
 	</UserControl.Resources>
 	<Grid>
-		<TextBlock Height="52" Margin="10,10,10,0" Text="A data source is where your query is performed and where the data comes from. In this application, a data source is an InfluxDB dataabase. Configure one or more data sources for use in the editor." VerticalAlignment="Top" TextWrapping="Wrap"/>
+		<TextBlock Height="52" Margin="10,10,10,0" Text="A data source is where your query is performed and where the data comes from. In this application, a data source is an InfluxDB database. Configure one or more data sources for use in the editor." VerticalAlignment="Top" TextWrapping="Wrap"/>
 		<ListBox x:Name="datasourceslist" ItemsSource="{Binding Source={x:Static props:Settings.Default}, Path=Datasources}" Height="95" Margin="10,67,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="332">
 			<ListBox.ItemTemplate>
 				<DataTemplate>

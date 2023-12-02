@@ -1,12 +1,29 @@
 ﻿using CodeImp.Fluxtreme.Tools;
 using ScintillaNET;
 using System;
+using System.Drawing;
 using System.Linq;
 
 namespace CodeImp.Fluxtreme.Editor
 {
     public static class ScintillaExtensions
     {
+        /// <summary>
+        /// Alternate arguments for DirectMessage
+        /// </summary>
+        public static IntPtr DirectMessage(this Scintilla editor, int msg, int wParam, Color lParam)
+        {
+            return editor.DirectMessage(msg, new IntPtr(wParam), new IntPtr(lParam.ToArgb()));
+        }
+
+        /// <summary>
+        /// Alternate arguments for DirectMessage
+        /// </summary>
+        public static IntPtr DirectMessage(this Scintilla editor, int msg, int wParam, int lParam)
+        {
+            return editor.DirectMessage(msg, new IntPtr(wParam), new IntPtr(lParam));
+        }
+
         /// <summary>
         /// Get a range of text by TextRange
         /// </summary>

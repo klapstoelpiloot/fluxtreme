@@ -33,7 +33,7 @@
 		<!-- Status bar -->
 		<Grid x:Name="statusbar" Grid.Row="3" Background="{StaticResource PanelBackground4}">
 			<TextBlock x:Name="statuslabel" Margin="42,0,0,0" Foreground="{StaticResource StatusBar.NormalText}" Text="" VerticalAlignment="Center"/>
-			<ProgressBar x:Name="progressbar" Margin="4,4,0,4" IsIndeterminate="True" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Width="32"/>
+			<ProgressBar x:Name="progressbar" Margin="4,4,0,4" IsIndeterminate="True" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Width="32" Visibility="Hidden"/>
 		</Grid>
 	</Grid>
 </UserControl>

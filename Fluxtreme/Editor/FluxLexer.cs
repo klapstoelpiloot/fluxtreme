@@ -45,7 +45,7 @@ namespace CodeImp.Fluxtreme.Editor
         /// This finds out in which function call the given position is.
         /// Returns null when it was not able to find the function name.
         /// </summary>
-        public static string GetFunctionFromPosition(Scintilla editor, int pos)
+        public static string FunctionFromPosition(Scintilla editor, int pos)
         {
             // Find the first function identifier before the pos.
             // There should be an opening brace ( before the pos where we can find the function name.
@@ -111,6 +111,37 @@ namespace CodeImp.Fluxtreme.Editor
 
             // Can't find the function
             return null;
+        }
+
+        /// <summary>
+        /// Returns a list of all identifiers styled as 'variable'.
+        /// This requires all text to be styled.
+        /// </summary>
+        public static List<string> FindAllVariables(Scintilla editor, bool ignoreAtCursor)
+        {
+            List<string> vars = new List<string>();
+
+            int pos = 0;
+            while (pos < editor.TextLength)
+            {
+                if (editor.GetStyleAt(pos) == (int)FluxStyles.Variable)
+                {
+                    TextRange r = IdentifierFromPosition(editor, pos);
+                    if (!ignoreAtCursor || (editor.CurrentPosition < r.Start) || (editor.CurrentPosition > r.End))
+                    {
+                        string v = editor.GetTextRange(r);
+                        if (!vars.Contains(v))
+                        {
+                            vars.Add(v);
+                        }
+                    }
+                    pos += r.Length;
+                }
+
+                pos++;
+            }
+
+            return vars;
         }
     }
 }

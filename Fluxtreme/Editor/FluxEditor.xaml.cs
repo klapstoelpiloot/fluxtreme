@@ -15,8 +15,35 @@ namespace CodeImp.Fluxtreme.Editor
     /// </summary>
     public partial class FluxEditor : UserControl
     {
+        private const int SCI_SETELEMENTCOLOUR = 2753;
+        private const int SCI_AUTOCSETOPTIONS = 2638;
+        private const int SC_AUTOCOMPLETE_NORMAL = 0;
+        private const int SC_AUTOCOMPLETE_FIXED_SIZE = 1;
+        private const int SC_ELEMENT_LIST = 0;
+        private const int SC_ELEMENT_LIST_BACK = 1;
+        private const int SC_ELEMENT_LIST_SELECTED = 2;
+        private const int SC_ELEMENT_LIST_SELECTED_BACK = 3;
+        private const int SC_ELEMENT_SELECTION_TEXT = 10;
+        private const int SC_ELEMENT_SELECTION_BACK = 11;
+        private const int SC_ELEMENT_SELECTION_ADDITIONAL_TEXT = 12;
+        private const int SC_ELEMENT_SELECTION_ADDITIONAL_BACK = 13;
+        private const int SC_ELEMENT_SELECTION_SECONDARY_TEXT = 14;
+        private const int SC_ELEMENT_SELECTION_SECONDARY_BACK = 15;
+        private const int SC_ELEMENT_SELECTION_INACTIVE_TEXT = 16;
+        private const int SC_ELEMENT_SELECTION_INACTIVE_BACK = 17;
+        private const int SC_ELEMENT_CARET = 40;
+        private const int SC_ELEMENT_CARET_ADDITIONAL = 41;
+        private const int SC_ELEMENT_CARET_LINE_BACK = 50;
+        private const int SC_ELEMENT_WHITE_SPACE = 60;
+        private const int SC_ELEMENT_WHITE_SPACE_BACK = 61;
+        private const int SC_ELEMENT_HOT_SPOT_ACTIVE = 70;
+        private const int SC_ELEMENT_HOT_SPOT_ACTIVE_BACK = 71;
+        private const int SC_ELEMENT_FOLD_LINE = 80;
+        private const int SC_ELEMENT_HIDDEN_LINE = 81;
+
         public event EventHandler TextChanged;
         private IStyler styler;
+        private IAssistant assistant;
         private List<int> disabledlines = new List<int>();
 
         public string Text { get { return editor.Text; } set { editor.Text = value; } }
@@ -26,6 +53,16 @@ namespace CodeImp.Fluxtreme.Editor
         public FluxEditor()
         {
             InitializeComponent();
+            
+            // Editor settings
+            editor.DirectMessage(SCI_AUTOCSETOPTIONS, SC_AUTOCOMPLETE_FIXED_SIZE, 0);
+            editor.DirectMessage(SCI_SETELEMENTCOLOUR, SC_ELEMENT_LIST_BACK, GetColorResource("AColour.Tone1.Background.Static"));
+            editor.DirectMessage(SCI_SETELEMENTCOLOUR, SC_ELEMENT_LIST, GetColorResource("AColour.Glyph.Static"));
+            editor.DirectMessage(SCI_SETELEMENTCOLOUR, SC_ELEMENT_WHITE_SPACE_BACK, GetColorResource("AColour.Tone1.Background.Static"));
+            editor.DirectMessage(SCI_SETELEMENTCOLOUR, SC_ELEMENT_WHITE_SPACE, GetColorResource("AColour.Glyph.Static"));
+            editor.IdleStyling = IdleStyling.AfterVisible;
+            editor.BackspaceUnindents = true;
+            editor.TabIndents = true;
             
             // Symbol margin
             editor.Margins[0].Type = MarginType.Symbol;
@@ -62,6 +99,7 @@ namespace CodeImp.Fluxtreme.Editor
             editor.AssignCmdKey(Keys.Control | Keys.B, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.N, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.S, Command.Null);
+            editor.AssignCmdKey(Keys.Control | Keys.Space, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Shift | Keys.Q, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Shift | Keys.W, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Shift | Keys.E, Command.Null);
@@ -117,6 +155,7 @@ namespace CodeImp.Fluxtreme.Editor
 
         public void Setup()
         {
+            assistant = new FluxAssistant(editor);
             styler = new FluxStyler(editor);
             editor.LexerName = null;
             editor.StyleNeeded += Editor_StyleNeeded;
@@ -130,37 +169,6 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Styles[(int)FluxStyles.Variable].ForeColor = Color.FromKnownColor(KnownColor.WhiteSmoke);
             editor.Styles[(int)FluxStyles.Operator].ForeColor = Color.FromKnownColor(KnownColor.BurlyWood);
             editor.Styles[(int)FluxStyles.RegEx].ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
-
-            string[] functions = ReadResourceStrings("CodeImp.Fluxtreme.Editor.FluxFunctions.txt");
-            Dictionary<string, string> func_dict = new Dictionary<string, string>();
-            Dictionary<string, string> ident_dict = new Dictionary<string, string>();
-            foreach (string f in functions)
-            {
-                int argspos = f.IndexOf('(');
-                string fname = f.Substring(0, argspos);
-                string fargs = f.Substring(argspos + 1).TrimEnd(')');
-
-                // Because the python lexer doesn't understand the "library.function" format, we separate these.
-                int pointindex = fname.IndexOf('.');
-                if (pointindex > 0)
-                {
-                    string libname = fname.Substring(0, pointindex);
-                    fname = fname.Substring(pointindex + 1);
-                    func_dict[libname] = libname;
-                }
-
-                func_dict[fname] = fargs;
-
-                // Collect arguments
-                string[] args = fargs.Split(',');
-                foreach (string a in args)
-                {
-                    ident_dict[a.Trim()] = string.Empty;
-                }
-            }
-
-            editor.SetKeywords(0, string.Join(" ", func_dict.Keys));
-            editor.SetKeywords(1, string.Join(" ", ident_dict.Keys));
         }
 
         private void Editor_StyleNeeded(object sender, StyleNeededEventArgs e)
