@@ -4,9 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CodeImp.Fluxtreme.Editor
 {
@@ -65,7 +62,7 @@ namespace CodeImp.Fluxtreme.Editor
                         ShowAutoComplete(false, false, FluxLexer.Functions[func]);
                     }
                 }
-                
+
                 // When identifier characters are typed and we are not inside
                 // a string, comment or regex, then show all identifiers...
                 if (FluxLexer.IdentifierChars.Contains((char)e.Char) || (e.Char == '.'))
@@ -84,17 +81,25 @@ namespace CodeImp.Fluxtreme.Editor
 
             if (parameters != null)
             {
-                items.AddRange(parameters.Select(p => p + ":?" + parametericon));
+                items.AddRange(parameters.Select(p => p + $":?{parametericon}"));
             }
 
             if (functions)
             {
-                items.AddRange(FluxLexer.Functions.Keys.Select(f => f + "?" + functionicon));
+                items.AddRange(FluxLexer.Functions.Keys.Select(f => f + $"?{functionicon}"));
             }
 
             if (variables)
             {
-                items.AddRange(FluxLexer.FindAllVariables(editor, true).Select(v => v + "?" + variableicon));
+                items.AddRange(FluxLexer.FindAllVariables(editor, true).Select(v => v + $"?{variableicon}"));
+
+                // The query runner adds these variables:
+                // option v = { timeRangeStart: -1h, timeRangeStop: now(), windowPeriod: 1s, defaultBucket: "data" }
+                // So we want them in this list as well...
+                AddIfNotExists(items, $"v.timeRangeStart?{variableicon}");
+                AddIfNotExists(items, $"v.timeRangeStop?{variableicon}");
+                AddIfNotExists(items, $"v.windowPeriod?{variableicon}");
+                AddIfNotExists(items, $"v.defaultBucket?{variableicon}");
             }
 
             TextRange r = FluxLexer.IdentifierFromPosition(editor, editor.CurrentPosition);
@@ -105,6 +110,14 @@ namespace CodeImp.Fluxtreme.Editor
             filtered.Sort();
 
             editor.AutoCShow(editor.CurrentPosition - r.Start, string.Join(" ", filtered));
+        }
+
+        private static void AddIfNotExists<T>(IList<T> items, T newitem)
+        {
+            if (!items.Contains(newitem))
+            {
+                items.Add(newitem);
+            }
         }
     }
 }
