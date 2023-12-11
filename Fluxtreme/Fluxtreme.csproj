@@ -214,6 +214,7 @@
     <Compile Include="IDocumentPanel.cs" />
     <Compile Include="IMainWindow.cs" />
     <Compile Include="IntegersOnlyTextBox.cs" />
+    <Compile Include="Viewers\FluxTableView.cs" />
     <Compile Include="Viewers\MultiTableView.xaml.cs">
       <DependentUpon>MultiTableView.xaml</DependentUpon>
     </Compile>
@@ -223,10 +224,6 @@
     <Compile Include="Tools\ObservableCollectionEx.cs" />
     <Compile Include="Data\QueryRunner.cs" />
     <Compile Include="Configuration\Settings.cs" />
-    <Compile Include="Data\FluxTableEx.cs" />
-    <Compile Include="Viewers\TableView.xaml.cs">
-      <DependentUpon>TableView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Themes\Attached\CornerRadiusHelper.cs" />
     <Compile Include="Themes\Attached\MenuHelper.cs" />
     <Compile Include="Themes\Attached\PasswordBoxHelper.cs" />
@@ -276,10 +273,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="TimeRangeSelector.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Viewers\TableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -23,7 +23,7 @@ namespace CodeImp.Fluxtreme.Data
         private volatile bool running;
         private object syncObject = new object();
 
-        public event Action<List<FluxTableEx>, TimeSpan> DataReady;
+        public event Action<List<FluxTable>, TimeSpan> DataReady;
         public event Action<List<QueryError>> QueryError;
 
         /// <summary>
@@ -79,7 +79,6 @@ namespace CodeImp.Fluxtreme.Data
         public void Run(string query)
         {
             List<FluxTable> result;
-            List<FluxTableEx> extraresult;
             DateTime starttime, endtime;
             running = true;
             cancelsource = new CancellationTokenSource();
@@ -157,13 +156,10 @@ namespace CodeImp.Fluxtreme.Data
                     running = false;
                     return;
                 }
-
-                // Calculate extra data for all tables received
-                extraresult = result.Select(t => new FluxTableEx(t)).ToList();
             }
 
             // Callback
-            DataReady?.Invoke(extraresult, endtime - starttime);
+            DataReady?.Invoke(result, endtime - starttime);
             running = false;
         }
 

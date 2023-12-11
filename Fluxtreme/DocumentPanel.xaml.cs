@@ -1,6 +1,8 @@
 ﻿using CodeImp.Fluxtreme.Configuration;
 using CodeImp.Fluxtreme.Data;
 using CodeImp.Fluxtreme.Properties;
+using CodeImp.Fluxtreme.Viewers;
+using InfluxDB.Client.Core.Flux.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,12 +93,12 @@ namespace CodeImp.Fluxtreme
             progressbar.IsIndeterminate = true;
         }
 
-        private void Query_DataReady(List<FluxTableEx> result, TimeSpan duration)
+        private void Query_DataReady(List<FluxTable> result, TimeSpan duration)
         {
             int recordcount = 0;
-            result.ForEach(t => recordcount += t.Data.Records.Count);
+            result.ForEach(t => recordcount += t.Records.Count);
             Dispatcher.BeginInvoke(new Action(() => ShowNormalStatus($"Query took {duration.TotalSeconds:0.00} seconds. Tables: {result.Count} Records: {recordcount}")));
-            Dispatcher.BeginInvoke(new Action(() => tableview.ShowTables(result)));
+            Dispatcher.BeginInvoke(new Action(() => tableview.ShowTables(result.Select(t => new FluxTableView(t)).ToList())));
         }
 
         private void Query_QueryError(List<QueryError> errors)
