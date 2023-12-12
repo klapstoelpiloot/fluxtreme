@@ -10,7 +10,6 @@ namespace CodeImp.Fluxtreme.Viewers
     public class FluxTableView : INotifyPropertyChanged
     {
         private const int CollapsedRowCount = 3;
-        private const int MaxRowCount = 500;
         private const int MaxColumnChars = 40;
         private const int MinColumnChars = 5;
         private const double MaxColumnWidth = 300.0;
@@ -18,7 +17,6 @@ namespace CodeImp.Fluxtreme.Viewers
         private const double ColumnCharWidthPadding = 20.0;
         private DataTable collapsedtable;
         private DataTable expandedtable;
-        private readonly int totalrowcount;
 
         /// <summary>
         /// True when the DataTable is expanded (DataTable contains all or truncated rows)
@@ -30,21 +28,6 @@ namespace CodeImp.Fluxtreme.Viewers
         /// True when this list can be expanded (it contains more than CollapsedRowCount)
         /// </summary>
         public bool Expandable { get; private set; }
-
-        /// <summary>
-        /// True when the total number of rows is truncated to MaxRowCount
-        /// </summary>
-        public bool RowCountLimited { get; private set; }
-
-        /// <summary>
-        /// True when either the total number of rows is truncated or the list is collapsed.
-        /// </summary>
-        public bool MoreRowsNotDisplayed => RowCountLimited || !Expanded;
-
-        /// <summary>
-        /// Description to show for the number of rows (records)
-        /// </summary>
-        public string RowCountDescription { get; private set; }
 
         /// <summary>
         /// Title to display for this table.
@@ -61,22 +44,26 @@ namespace CodeImp.Fluxtreme.Viewers
         /// </summary>
         public double[] ColumnWidths { get; private set; }
 
+        /// <summary>
+        /// Total number of rows (records) in this table.
+        /// </summary>
+        public int TotalRowCount { get; private set; }
+
         /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Constructor
         public FluxTableView(FluxTable table)
         {
-            totalrowcount = table.Records.Count;
+            TotalRowCount = table.Records.Count;
 
             // Show collapsed or expanded?
-            RowCountLimited = totalrowcount > MaxRowCount;
-            Expandable = totalrowcount > CollapsedRowCount;
+            Expandable = TotalRowCount > CollapsedRowCount;
             Expanded = !Expandable;
 
             // Make up title
             StringBuilder titleBuilder = new StringBuilder();
-            if (totalrowcount > 0)
+            if (TotalRowCount > 0)
             {
                 foreach (FluxColumn c in table.GetGroupKey())
                 {
@@ -126,16 +113,15 @@ namespace CodeImp.Fluxtreme.Viewers
                 expandedtable.Columns.Add(c.Label);
                 collapsedtable.Columns.Add(c.Label);
             }
-            foreach (FluxRecord r in table.Records.Take(Math.Min(CollapsedRowCount, totalrowcount)))
+            foreach (FluxRecord r in table.Records.Take(Math.Min(CollapsedRowCount, TotalRowCount)))
             {
                 collapsedtable.Rows.Add(r.Values.Values.ToArray());
             }
-            foreach (FluxRecord r in table.Records.Take(Math.Min(MaxRowCount, totalrowcount)))
+            foreach (FluxRecord r in table.Records)
             {
                 expandedtable.Rows.Add(r.Values.Values.ToArray());
             }
             DataTable = Expanded ? expandedtable : collapsedtable;
-            UpdateRowCountDescription();
         }
 
         /// <summary>
@@ -149,20 +135,7 @@ namespace CodeImp.Fluxtreme.Viewers
                 DataTable = Expanded ? expandedtable : collapsedtable;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expanded)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DataTable)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MoreRowsNotDisplayed)));
-                UpdateRowCountDescription();
             }
-        }
-
-        private void UpdateRowCountDescription()
-        {
-            string description = $"Records: {totalrowcount}";
-            if (Expanded && RowCountLimited)
-            {
-                description += $" (truncated to {MaxRowCount})";
-            }
-            RowCountDescription = description;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RowCountDescription)));
         }
     }
 }

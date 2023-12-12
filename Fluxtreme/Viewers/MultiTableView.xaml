@@ -13,7 +13,10 @@
 					<DockPanel Margin="2, 2, 2, 10">
 						<Grid Height="21" DockPanel.Dock="Top" Background="#FF424242">
 							<TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Opacity="0.5" Text="{Binding Title}"/>
-							<TextBlock Margin="0,0,32,0" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0.5" Text="{Binding RowCountDescription}"/>
+							<TextBlock Margin="0,0,32,0" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0.5">
+								<Run Text="Records: "/>
+								<Run Text="{Binding Path=TotalRowCount, Mode=OneWay}"/>
+							</TextBlock>
 							<Button Width="18" Height="18" HorizontalAlignment="Right" Margin="0,2,2,0" Padding="1" VerticalAlignment="Top">
 								<Button.Content>
 									<Image MouseDown="ExpandButton_Click">
@@ -41,7 +44,7 @@
 								</Button.Style>
 							</Button>
 						</Grid>
-						<DataGrid ItemsSource="{Binding DataTable}" PreviewMouseWheel="DataGrid_PreviewMouseWheel" AutoGenerateColumns="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" IsReadOnly="True" Focusable="False" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" SelectionMode="Single" SelectionChanged="DataGrid_SelectionChanged">
+						<DataGrid ItemsSource="{Binding DataTable}" MaxHeight="800" PreviewMouseWheel="DataGrid_PreviewMouseWheel" AutoGenerateColumns="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" IsReadOnly="True" Focusable="False" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" SelectionMode="Single" SelectionChanged="DataGrid_SelectionChanged">
 						</DataGrid>
 					</DockPanel>
 					<Rectangle Margin="0,0,0,9" Height="22" VerticalAlignment="Bottom" IsHitTestVisible="False">
@@ -55,7 +58,7 @@
 							<Style TargetType="Rectangle">
 								<Setter Property="Visibility" Value="Hidden"/>
 								<Style.Triggers>
-									<DataTrigger Binding="{Binding MoreRowsNotDisplayed}" Value="True">
+									<DataTrigger Binding="{Binding Expanded}" Value="False">
 										<Setter Property="Visibility" Value="Visible"/>
 									</DataTrigger>
 								</Style.Triggers>

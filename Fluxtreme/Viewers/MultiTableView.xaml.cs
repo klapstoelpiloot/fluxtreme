@@ -71,8 +71,10 @@ namespace CodeImp.Fluxtreme.Viewers
             Image buttonimage = sender as Image;
             Button button = buttonimage.Parent as Button;
             FluxTableView tableview = button.DataContext as FluxTableView;
-            tableview.ToggleExpand();
-
+            if (tableview != null)
+            {
+                tableview.ToggleExpand();
+            }
         }
     }
 }
