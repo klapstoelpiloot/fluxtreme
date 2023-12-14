@@ -36,10 +36,16 @@ namespace CodeImp.Fluxtreme.Viewers
                 ((columnindex == 1) && (e.PropertyName == "table")))
             {
                 e.Cancel = true;
+                return;
             }
-            else
+
+            e.Column.Width = tableview.ColumnWidths[columnindex];
+
+            // If the column name starts with an underscore, we must make it two underscores
+            // because one gets absorbed by the control for AccessKey handling... 
+            if(e.PropertyName.StartsWith("_"))
             {
-                e.Column.Width = tableview.ColumnWidths[columnindex];
+                e.Column.Header = "_" + e.PropertyName;
             }
         }
 
