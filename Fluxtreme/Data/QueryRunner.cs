@@ -102,7 +102,6 @@ namespace CodeImp.Fluxtreme.Data
                     }
 
                     // Send the query and await the result
-                    Console.WriteLine($"Query with WindowPeriod {WindowPeriod}");
                     File extern_ = SetupExtern();
                     Query q = new Query(extern_, query, Query.TypeEnum.Flux, null, QueryApi.Dialect);
                     QueryApiSync queryapi = client.GetQueryApiSync();
