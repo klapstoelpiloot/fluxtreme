@@ -41,11 +41,12 @@ namespace CodeImp.Fluxtreme.Viewers
 
             e.Column.Width = tableview.ColumnWidths[columnindex];
 
-            // If the column name starts with an underscore, we must make it two underscores
+            // If the column name contains an underscore, we must make it two underscores
             // because one gets absorbed by the control for AccessKey handling... 
-            if(e.PropertyName.StartsWith("_"))
+            int underscorepos = e.PropertyName.IndexOf('_');
+            if(underscorepos > -1)
             {
-                e.Column.Header = "_" + e.PropertyName;
+                e.Column.Header = e.PropertyName.Substring(0, underscorepos) + "_" + e.PropertyName.Substring(underscorepos);
             }
         }
 
