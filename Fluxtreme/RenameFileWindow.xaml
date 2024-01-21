@@ -1,0 +1,22 @@
+﻿<Window x:Class="CodeImp.Fluxtreme.RenameFileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CodeImp.Fluxtreme"
+        mc:Ignorable="d"
+        Style="{StaticResource CustomWindowStyle}"
+        Title="Rename file" Height="145" Width="400" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+	<Window.Resources>
+		<Style TargetType="{x:Type local:IntegersOnlyTextBox}" BasedOn="{StaticResource {x:Type TextBox}}"/>
+	</Window.Resources>
+	<Grid>
+		<Label Content="Filename:" HorizontalAlignment="Left" Height="30" Margin="10,28,0,0" Padding="2,0,0,0" VerticalAlignment="Top" Width="82" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+		<TextBox x:Name="namebox" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Height="22" Margin="106,32,32,0" Text="Filename" VerticalAlignment="Top"/>
+
+		<Grid Height="43" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="266">
+			<Button Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Content="OK" Margin="0,0,138,10" Click="OkButton_Click" IsDefault="True"/>
+			<Button Grid.Column="1" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Content="Cancel" Margin="0,0,10,10" Click="CancelButton_Click" IsCancel="True"/>
+		</Grid>
+	</Grid>
+</Window>

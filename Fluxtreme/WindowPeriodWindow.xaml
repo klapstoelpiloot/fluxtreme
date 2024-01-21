@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CodeImp.Fluxtreme"
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
-        Title="Enter window period" Height="194" Width="332" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
+        Title="Enter window period" Height="194" Width="332" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 	<Window.Resources>
 		<Style TargetType="{x:Type local:IntegersOnlyTextBox}" BasedOn="{StaticResource {x:Type TextBox}}"/>
 	</Window.Resources>
@@ -23,8 +23,8 @@
 		<local:IntegersOnlyTextBox x:Name="millisecondsbox" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="22" Margin="237,77,0,0" Text="00" VerticalAlignment="Top" Width="26"/>
 
 		<Grid Height="43" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="266">
-			<Button Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Content="OK" Margin="0,0,138,10" Click="OkButton_Click"/>
-			<Button Grid.Column="1" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Content="Cancel" Margin="0,0,10,10" Click="CancelButton_Click"/>
+			<Button Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Content="OK" Margin="0,0,138,10" Click="OkButton_Click" IsDefault="True"/>
+			<Button Grid.Column="1" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Content="Cancel" Margin="0,0,10,10" Click="CancelButton_Click" IsCancel="True"/>
 		</Grid>
 	</Grid>
 </Window>

@@ -214,11 +214,11 @@ namespace CodeImp.Fluxtreme
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             List<DocumentTab> changedtabs = GetTabs().Where(t => t.HasChanged).ToList();
-            if(changedtabs.Count > 0)
+            if (changedtabs.Count > 0)
             {
                 string filelist = changedtabs.Aggregate(string.Empty, (list, t) => list + t.Title + "\n", list => list.Trim());
                 MessageBoxResult result = MessageBox.Show(this, $"The following files have unsaved changes:\n\n{filelist}\n\nDo you want to save changes to the files?", "Exit", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
-                switch(result)
+                switch (result)
                 {
                     case MessageBoxResult.Yes:
                         // Save files, then continue to exit

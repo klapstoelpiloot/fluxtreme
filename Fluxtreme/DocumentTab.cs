@@ -20,6 +20,7 @@ namespace CodeImp.Fluxtreme
             Panel.Setup();
             Panel.QueryChanged += Panel_QueryChanged;
             Content = Panel;
+            MouseDoubleClick += DocumentTab_MouseDoubleClick;
         }
 
         public static DocumentTab New(string fileName)
@@ -57,6 +58,28 @@ namespace CodeImp.Fluxtreme
         {
             string changedPostfix = HasChanged ? "*" : string.Empty;
             Header = Title + changedPostfix;
+        }
+
+        private void DocumentTab_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if(e.OriginalSource is TextBlock textblock)
+            {
+                if(textblock.Text == Header.ToString())
+                {
+                    RenameFileWindow window = new RenameFileWindow();
+                    window.Owner = System.Windows.Window.GetWindow(this);
+                    window.Filename = title;
+                    bool? result = window.ShowDialog();
+                    if(result.HasValue && result.Value)
+                    {
+                        // We're renaming this file
+                        title = window.Filename;
+                        FilePathName = null;
+                        haschanged = true;
+                        UpdateTabHeader();
+                    }
+                }
+            }
         }
     }
 }

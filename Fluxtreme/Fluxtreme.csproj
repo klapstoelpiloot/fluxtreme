@@ -36,6 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\Fluxtreme.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CsvHelper, Version=30.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.30.0.1\lib\net47\CsvHelper.dll</HintPath>
@@ -208,6 +211,9 @@
     <Compile Include="Editor\IStyler.cs" />
     <Compile Include="Editor\ScintillaExtensions.cs" />
     <Compile Include="Editor\SearchDirection.cs" />
+    <Compile Include="RenameFileWindow.xaml.cs">
+      <DependentUpon>RenameFileWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TimeRangeSelector.xaml.cs">
       <DependentUpon>TimeRangeSelector.xaml</DependentUpon>
     </Compile>
@@ -279,6 +285,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RenameFileWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TimeRangeSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -398,6 +408,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AlwaysExpand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Fluxtreme.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Fluxtreme.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

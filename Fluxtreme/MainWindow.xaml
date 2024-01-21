@@ -6,7 +6,7 @@
 		xmlns:local="clr-namespace:CodeImp.Fluxtreme"
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
-        Title="Fluxtreme" Height="800" Width="1024" Initialized="Window_Initialized" Closing="Window_Closing">
+        Title="Fluxtreme" Height="800" Width="1024" Initialized="Window_Initialized" Closing="Window_Closing" Icon="/Images/Fluxtreme.png">
 	<Window.Resources>
 		<Style TargetType="{x:Type local:DocumentTab}" BasedOn="{StaticResource {x:Type TabItem}}"/>
 	</Window.Resources>
