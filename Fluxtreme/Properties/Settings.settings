@@ -5,5 +5,14 @@
     <Setting Name="Datasources" Type="CodeImp.Fluxtreme.Configuration.DatasourceSettingsCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="AutoExpandMaxTableRows" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
+    <Setting Name="AutoExpandMaxTables" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="AutoExpandMaxTotalRows" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

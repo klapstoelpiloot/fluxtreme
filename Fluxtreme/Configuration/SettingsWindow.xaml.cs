@@ -22,7 +22,8 @@ namespace CodeImp.Fluxtreme.Configuration
             // Make the list of settings pages
             pages = new List<UserControl>()
             {
-                new DatasourceSettingsPage()
+                new DatasourceSettingsPage(),
+                new MultiTableViewSettings()
             };
             pageslist.ItemsSource = pages;
             pageslist.SelectedItem = pages[0];

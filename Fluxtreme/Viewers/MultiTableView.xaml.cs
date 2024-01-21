@@ -13,6 +13,26 @@ namespace CodeImp.Fluxtreme.Viewers
     public partial class MultiTableView : UserControl
     {
         private List<FluxTableView> items;
+        private bool alwaysexpand = false;
+
+        public bool AlwaysExpand
+        {
+            get => alwaysexpand;
+            set
+            {
+                alwaysexpand = value;
+                if (alwaysexpand && (items != null))
+                {
+                    foreach (FluxTableView t in items)
+                    {
+                        if (t.Expandable && !t.IsExpanded)
+                        {
+                            t.ToggleExpand();
+                        }
+                    }
+                }
+            }
+        }
 
         public MultiTableView()
         {
@@ -42,12 +62,8 @@ namespace CodeImp.Fluxtreme.Viewers
             e.Column.Width = tableview.ColumnWidths[columnindex];
 
             // If the column name contains an underscore, we must make it two underscores
-            // because one gets absorbed by the control for AccessKey handling... 
-            int underscorepos = e.PropertyName.IndexOf('_');
-            if(underscorepos > -1)
-            {
-                e.Column.Header = e.PropertyName.Substring(0, underscorepos) + "_" + e.PropertyName.Substring(underscorepos);
-            }
+            // because they get absorbed by the control for AccessKey handling... 
+            e.Column.Header = e.PropertyName.Replace("_", "__");
         }
 
         private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

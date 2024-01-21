@@ -61,6 +61,7 @@ namespace CodeImp.Fluxtreme
         public void CopyTo(DocumentPanel other)
         {
             other.editor.Text = this.editor.Text;
+            other.alwaysexpandbutton.IsChecked = this.alwaysexpandbutton.IsChecked;
             this.datasourcebutton.CopyTo(other.datasourcebutton);
             this.timebutton.CopyTo(other.timebutton);
             this.periodbutton.CopyTo(other.periodbutton);
@@ -95,10 +96,10 @@ namespace CodeImp.Fluxtreme
 
         private void Query_DataReady(List<FluxTable> result, TimeSpan duration)
         {
-            int recordcount = 0;
+            long recordcount = 0;
             result.ForEach(t => recordcount += t.Records.Count);
             Dispatcher.BeginInvoke(new Action(() => ShowNormalStatus($"Query took {duration.TotalSeconds:0.00} seconds. Tables: {result.Count} Records: {recordcount}")));
-            Dispatcher.BeginInvoke(new Action(() => tableview.ShowTables(result.Select(t => new FluxTableView(t)).ToList())));
+            Dispatcher.BeginInvoke(new Action(() => tableview.ShowTables(result.Select(t => new FluxTableView(t, DetermineAutoExpand(recordcount, result.Count, t.Records.Count))).ToList())));
         }
 
         private void Query_QueryError(List<QueryError> errors)
@@ -192,6 +193,19 @@ namespace CodeImp.Fluxtreme
             }
         }
 
+        private bool DetermineAutoExpand(long totalrows, long totaltables, long tablerows)
+        {
+            // Check if we should expand these tables
+            bool expand = alwaysexpandbutton.IsChecked ?? false;
+            if(!expand)
+            {
+                expand = (totalrows <= Settings.Default.AutoExpandMaxTotalRows) &&
+                         (totaltables <= Settings.Default.AutoExpandMaxTables) &&
+                         (tablerows <= Settings.Default.AutoExpandMaxTableRows);
+            }
+            return expand;
+        }
+
         private void Period_ValueChanged(object sender, EventArgs e)
         {
             query.WindowPeriod = periodbutton.Value;
@@ -209,6 +223,16 @@ namespace CodeImp.Fluxtreme
         private void DataSource_ValueChanged(object sender, EventArgs e)
         {
             query.SetDatasource(datasourcebutton.Value);
+            RunQueryAsync();
+        }
+
+        private void alwaysexpandbutton_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            tableview.AlwaysExpand = alwaysexpandbutton.IsChecked ?? false;
+        }
+
+        private void refreshbutton_Click(object sender, RoutedEventArgs e)
+        {
             RunQueryAsync();
         }
     }

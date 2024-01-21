@@ -25,6 +25,16 @@
 			<local:DataSourceSelector x:Name="datasourcebutton" Width="150" Margin="4,0,4,0" Height="26" SnapsToDevicePixels="True" ValueChanged="DataSource_ValueChanged" ToolTip="Data source from which to query the data."/>
 			<local:TimeRangeSelector x:Name="timebutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" ValueChanged="TimeRange_ValueChanged" ToolTip="Time range for the v.timeRangeStart and v.timeRangeStop variables. Commonly used in queries for the range function."/>
 			<local:WindowPeriodSelector x:Name="periodbutton" Width="150" Margin="0,0,4,0" Height="26" SnapsToDevicePixels="True" ValueChanged="Period_ValueChanged" ToolTip="Window period used for the v.windowPeriod variable. Commonly used in queries for the aggregateWindow function." />
+			<Button x:Name="refreshbutton" Width="26" Height="26" Margin="4,0,4,0" SnapsToDevicePixels="True" ToolTip="Execute the query again." Click="refreshbutton_Click">
+				<Button.Content>
+					<Image Source="Images/Refresh.png" Grid.Column="0" Width="20" Height="20" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+				</Button.Content>
+			</Button>
+			<ToggleButton x:Name="alwaysexpandbutton" Width="26" Height="26" Margin="4,0,4,0" SnapsToDevicePixels="True" Checked="alwaysexpandbutton_CheckedChanged" Unchecked="alwaysexpandbutton_CheckedChanged" ToolTip="Always expand all tables from this query.">
+				<ToggleButton.Content>
+					<Image Source="Images/AlwaysExpand.png" Grid.Column="0" Width="14" Height="14" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+				</ToggleButton.Content>
+			</ToggleButton>
 		</StackPanel>
 
 		<!--Editor-->

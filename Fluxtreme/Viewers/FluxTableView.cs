@@ -22,7 +22,7 @@ namespace CodeImp.Fluxtreme.Viewers
         /// True when the DataTable is expanded (DataTable contains all or truncated rows)
         /// False when the DataTable is collapsed (limited to CollapsedRowCount)
         /// </summary>
-        public bool Expanded { get; private set; }
+        public bool IsExpanded { get; private set; }
 
         /// <summary>
         /// True when this list can be expanded (it contains more than CollapsedRowCount)
@@ -53,13 +53,13 @@ namespace CodeImp.Fluxtreme.Viewers
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Constructor
-        public FluxTableView(FluxTable table)
+        public FluxTableView(FluxTable table, bool forceexpanded)
         {
             TotalRowCount = table.Records.Count;
 
             // Show collapsed or expanded?
             Expandable = TotalRowCount > CollapsedRowCount;
-            Expanded = !Expandable;
+            IsExpanded = !Expandable || forceexpanded;
 
             // Make up title
             StringBuilder titleBuilder = new StringBuilder();
@@ -121,7 +121,7 @@ namespace CodeImp.Fluxtreme.Viewers
             {
                 expandedtable.Rows.Add(r.Values.Values.ToArray());
             }
-            DataTable = Expanded ? expandedtable : collapsedtable;
+            DataTable = IsExpanded ? expandedtable : collapsedtable;
         }
 
         /// <summary>
@@ -131,9 +131,9 @@ namespace CodeImp.Fluxtreme.Viewers
         {
             if (Expandable)
             {
-                Expanded = !Expanded;
-                DataTable = Expanded ? expandedtable : collapsedtable;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expanded)));
+                IsExpanded = !IsExpanded;
+                DataTable = IsExpanded ? expandedtable : collapsedtable;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExpanded)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DataTable)));
             }
         }

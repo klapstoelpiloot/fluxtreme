@@ -12,7 +12,7 @@ namespace CodeImp.Fluxtreme.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -31,6 +31,42 @@ namespace CodeImp.Fluxtreme.Properties {
             }
             set {
                 this["Datasources"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public long AutoExpandMaxTableRows {
+            get {
+                return ((long)(this["AutoExpandMaxTableRows"]));
+            }
+            set {
+                this["AutoExpandMaxTableRows"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public long AutoExpandMaxTables {
+            get {
+                return ((long)(this["AutoExpandMaxTables"]));
+            }
+            set {
+                this["AutoExpandMaxTables"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public long AutoExpandMaxTotalRows {
+            get {
+                return ((long)(this["AutoExpandMaxTotalRows"]));
+            }
+            set {
+                this["AutoExpandMaxTotalRows"] = value;
             }
         }
     }

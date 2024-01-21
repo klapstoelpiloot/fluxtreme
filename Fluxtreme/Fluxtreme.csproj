@@ -179,6 +179,9 @@
       <DependentUpon>DatasourceSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration\IpAddressValidator.cs" />
+    <Compile Include="Configuration\MultiTableViewSettings.xaml.cs">
+      <DependentUpon>MultiTableViewSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Configuration\NotEmptyValidator.cs" />
     <Compile Include="Configuration\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -241,6 +244,10 @@
       <DependentUpon>WindowPeriodWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Configuration\DatasourceSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Configuration\MultiTableViewSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -385,6 +392,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\Variable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AlwaysExpand.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
