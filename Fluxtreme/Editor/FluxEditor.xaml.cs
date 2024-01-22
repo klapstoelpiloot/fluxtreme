@@ -45,11 +45,8 @@ namespace CodeImp.Fluxtreme.Editor
         public event EventHandler TextChanged;
         private IStyler styler;
         private IAssistant assistant;
-        private List<int> disabledlines = new List<int>();
 
         public string Text { get { return editor.Text; } set { editor.Text = value; } }
-
-        public IReadOnlyCollection<int> DisabledLines => disabledlines;
 
         public FluxEditor()
         {
@@ -66,17 +63,15 @@ namespace CodeImp.Fluxtreme.Editor
             editor.TabIndents = true;
             
             // Symbol margin
-            editor.Margins[0].Type = MarginType.Symbol;
-            editor.Margins[0].Width = 20;
-            editor.Margins[0].Mask = 1 << (int)FluxEditorImage.DisabledMarker;
+            editor.Margins[0].Type = MarginType.Color;
+            editor.Margins[0].Width = 5;
             editor.Margins[0].Cursor = MarginCursor.Arrow;
-            editor.Margins[0].Sensitive = true;
-            editor.Markers[0].DefineRgbaImage(Properties.Resources.SmallCross);
-            editor.Markers[0].Symbol = MarkerSymbol.RgbaImage;
+            editor.Margins[0].Mask = 0; // No markers here
+            editor.Margins[0].BackColor = GetColorResource("AColour.Tone1.Background.Static");
 
             // Line numbers margin
             editor.Margins[1].Type = MarginType.Number;
-            editor.Margins[1].Width = 16;
+            editor.Margins[1].Width = 30;
             editor.Margins[1].Mask = 0; // No markers here
 
             // Spacing margin
@@ -142,7 +137,7 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Margins[1].BackColor = GetColorResource("AColour.Tone4.Background.Static");
             editor.Margins[2].BackColor = GetColorResource("AColour.Tone4.Background.Static");
 
-            // Indicator for a disabled line
+            // Unused indicator
             editor.Indicators[0].Alpha = 255;
             editor.Indicators[0].ForeColor = GetColorResource("AColour.Glyph.Static");
             editor.Indicators[0].Style = IndicatorStyle.Strike;
@@ -183,20 +178,11 @@ namespace CodeImp.Fluxtreme.Editor
         public void CopyTo(FluxEditor other)
         {
             other.editor.Text = this.editor.Text;
-            other.disabledlines.AddRange(this.disabledlines);
-            other.editor.IndicatorCurrent = 0;
-            foreach(int line in disabledlines)
-            {
-                Line l = this.editor.Lines[line];
-                other.editor.Lines[line].MarkerAdd((int)FluxEditorImage.DisabledMarker);
-                other.editor.IndicatorFillRange(l.Position, l.EndPosition);
-            }
         }
 
         private void Editor_TextChanged(object sender, EventArgs e)
         {
             UpdateScrollbar();
-            UpdateDisabledLines();
             TextChanged?.Invoke(this, e);
         }
 
@@ -249,42 +235,6 @@ namespace CodeImp.Fluxtreme.Editor
         private void Editor_Resize(object sender, EventArgs e)
         {
             UpdateScrollbar();
-        }
-
-        private void Editor_MarginClick(object sender, MarginClickEventArgs e)
-        {
-            if (e.Margin == 0)
-            {
-                int line = editor.LineFromPosition(e.Position);
-                if ((editor.Lines[line].MarkerGet() & (1 << (int)FluxEditorImage.DisabledMarker)) != 0)
-                {
-                    editor.Lines[line].MarkerDelete((int)FluxEditorImage.DisabledMarker);
-                }
-                else
-                {
-                    editor.Lines[line].MarkerAdd((int)FluxEditorImage.DisabledMarker);
-                }
-                UpdateDisabledLines();
-                TextChanged?.Invoke(this, e);
-            }
-        }
-
-        private void UpdateDisabledLines()
-        {
-            editor.IndicatorCurrent = 0;
-            disabledlines.Clear();
-            foreach (Line l in editor.Lines)
-            {
-                if ((l.MarkerGet() & (1 << (int)FluxEditorImage.DisabledMarker)) != 0)
-                {
-                    disabledlines.Add(l.Index);
-                    editor.IndicatorFillRange(l.Position, l.EndPosition);
-                }
-                else
-                {
-                    editor.IndicatorClearRange(l.Position, l.EndPosition);
-                }
-            }
         }
 
         public void ShowErrorIndicator(QueryError error)

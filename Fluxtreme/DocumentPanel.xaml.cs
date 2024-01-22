@@ -22,7 +22,6 @@ namespace CodeImp.Fluxtreme
         private System.Timers.Timer queryDelay;
         private QueryRunner query;
         private string querystring;
-        private List<int> disablesquerylines;
         private object syncobj = new object();
 
         public FluxEditor Editor => editor;
@@ -121,22 +120,12 @@ namespace CodeImp.Fluxtreme
                 DetermineAutoPeriod();
                 Dispatcher.BeginInvoke(new Action(() => ShowQueryInProgress()));
 
-                StringBuilder finalquery = new StringBuilder();
+                string querystr;
                 lock (syncobj)
                 {
-                    if (!string.IsNullOrWhiteSpace(querystring))
-                    {
-                        string[] lines = querystring.Split('\n');
-                        for (int i = 0; i < lines.Length; i++)
-                        {
-                            if (!disablesquerylines.Contains(i))
-                            {
-                                finalquery.AppendLine(lines[i].Trim());
-                            }
-                        }
-                    }
+                    querystr = querystring;
                 }
-                query.Run(finalquery.ToString());
+                query.Run(querystr);
             }
         }
 
@@ -154,7 +143,6 @@ namespace CodeImp.Fluxtreme
             lock (syncobj)
             {
                 querystring = editor.Text;
-                disablesquerylines = new List<int>(editor.DisabledLines);
             }
             queryDelay.Stop();
             queryDelay.Start();
