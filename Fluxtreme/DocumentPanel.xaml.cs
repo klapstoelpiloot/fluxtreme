@@ -1,5 +1,6 @@
 ﻿using CodeImp.Fluxtreme.Configuration;
 using CodeImp.Fluxtreme.Data;
+using CodeImp.Fluxtreme.Editor;
 using CodeImp.Fluxtreme.Properties;
 using CodeImp.Fluxtreme.Viewers;
 using InfluxDB.Client.Core.Flux.Domain;
@@ -24,6 +25,7 @@ namespace CodeImp.Fluxtreme
         private List<int> disablesquerylines;
         private object syncobj = new object();
 
+        public FluxEditor Editor => editor;
         public string Query { get => editor.Text; set => editor.Text = value; }
 
         public event EventHandler QueryChanged;

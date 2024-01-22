@@ -17,7 +17,9 @@
 		<CommandBinding Command="{x:Static local:MainWindow.SaveFileAsCommand}" Executed="SaveFileAs"/>
 		<CommandBinding Command="{x:Static local:MainWindow.DuplicateFileCommand}" Executed="DuplicateFile"/>
 		<CommandBinding Command="{x:Static local:MainWindow.ShowSettingsCommand}" Executed="ShowSettings"/>
+		<CommandBinding Command="{x:Static local:MainWindow.CommentSelectedLinesCommand}" Executed="CommentSelectedLines"/>
 		<CommandBinding Command="{x:Static local:MainWindow.ExitCommand}" Executed="Exit"/>
+		<CommandBinding Command="{x:Static local:MainWindow.CloseFileCommand}" Executed="CloseFile"/>
 	</Window.CommandBindings>
 	<DockPanel>
 		<Menu DockPanel.Dock="Top" Padding="2,1,2,1">
@@ -26,17 +28,21 @@
 				<MenuItem Header="_Open..." InputGestureText="Ctrl+O" Command="{Binding OpenFileCommand}"/>
 				<MenuItem Header="_Duplicate" InputGestureText="Ctrl+D" Command="{Binding DuplicateFileCommand}"/>
 				<Separator/>
-				<MenuItem Header="_Close"/>
+				<MenuItem Header="_Close" Command="{Binding CloseFileCommand}"/>
 				<Separator/>
 				<MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}"/>
 				<MenuItem Header="_Save As..." Command="{Binding SaveFileAsCommand}"/>
 				<Separator/>
 				<MenuItem Header="E_xit" Command="{Binding ExitCommand}"/>
 			</MenuItem>
+			<MenuItem Header="_Edit" Padding="12,2,12,2">
+				<MenuItem Header="_Comment/Uncomment selected lines" InputGestureText="Ctrl+/" Command="{Binding CommentSelectedLinesCommand}"/>
+			</MenuItem>
 			<MenuItem Header="_Tools" Padding="12,2,12,2">
 				<MenuItem Header="_Settings..." Command="{Binding ShowSettingsCommand}"/>
 			</MenuItem>
 		</Menu>
-		<TabControl x:Name="tabs" Margin="2,4,2,0"/>
+		<TabControl x:Name="tabs" Margin="2,4,2,0">
+		</TabControl>
 	</DockPanel>
 </Window>

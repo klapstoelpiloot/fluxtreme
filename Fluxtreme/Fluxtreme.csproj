@@ -181,9 +181,12 @@
     <Compile Include="Configuration\DatasourceSettingsPage.xaml.cs">
       <DependentUpon>DatasourceSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\EditorSettingsPage.xaml.cs">
+      <DependentUpon>EditorSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Configuration\IpAddressValidator.cs" />
-    <Compile Include="Configuration\MultiTableViewSettings.xaml.cs">
-      <DependentUpon>MultiTableViewSettings.xaml</DependentUpon>
+    <Compile Include="Configuration\MultiTableViewSettingsPage.xaml.cs">
+      <DependentUpon>MultiTableViewSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration\NotEmptyValidator.cs" />
     <Compile Include="Configuration\SettingsWindow.xaml.cs">
@@ -197,6 +200,7 @@
       <DependentUpon>DocumentPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="DocumentTab.cs" />
+    <Compile Include="Editor\CommentStyle.cs" />
     <Compile Include="Editor\FluxAssistant.cs" />
     <Compile Include="Editor\FluxContext.cs" />
     <Compile Include="Editor\FluxEditor.xaml.cs">
@@ -253,7 +257,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Configuration\MultiTableViewSettings.xaml">
+    <Page Include="Configuration\EditorSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Configuration\MultiTableViewSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

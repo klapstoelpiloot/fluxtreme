@@ -1,4 +1,5 @@
 ﻿using CodeImp.Fluxtreme.Data;
+using CodeImp.Fluxtreme.Tools;
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
@@ -99,6 +100,7 @@ namespace CodeImp.Fluxtreme.Editor
             editor.AssignCmdKey(Keys.Control | Keys.B, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.N, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.S, Command.Null);
+            editor.AssignCmdKey(Keys.Control | Keys.OemQuestion, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Space, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Shift | Keys.Q, Command.Null);
             editor.AssignCmdKey(Keys.Control | Keys.Shift | Keys.W, Command.Null);
@@ -306,6 +308,58 @@ namespace CodeImp.Fluxtreme.Editor
         {
             editor.IndicatorCurrent = 1;
             editor.IndicatorClearRange(0, editor.TextLength);
+        }
+
+        public void CommentUncommentSelection()
+        {
+            int selectionstart = editor.SelectionStart;
+            int selectionend = editor.SelectionEnd;
+            int startline = editor.LineFromPosition(selectionstart);
+            int endline = editor.LineFromPosition(selectionend - 1);
+            bool uncomment = IsLineCommented(startline);
+            int charsdelta = 0;
+
+            if(endline < startline)
+                endline = startline;
+
+            for(int i = startline; i <= endline; i++)
+            {
+                if(IsLineCommented(i) && uncomment)
+                {
+                    // Remove the first two characters
+                    editor.DeleteRange(editor.Lines[i].Position, 2);
+                    charsdelta -= 2;
+                }
+                else if(!IsLineCommented(i) && !uncomment)
+                {
+                    // Insert comment slashes
+                    editor.InsertText(editor.Lines[i].Position, "//");
+                    charsdelta += 2;
+                }
+            }
+
+            // Restore selection
+            int startlinepos = selectionstart - editor.Lines[startline].Position;
+            if(startlinepos > 1)
+            {
+                selectionstart += uncomment ? -2 : 2;
+            }
+            editor.SelectionStart = selectionstart;
+            editor.SelectionEnd = selectionend + charsdelta;
+        }
+
+        private bool IsLineCommented(int line)
+        {
+            return editor.Lines[line].Text.StartsWith("//");
+        }
+
+        private void Editor_PreviewKeyDown(object sender, System.Windows.Forms.PreviewKeyDownEventArgs e)
+        {
+            // This combination is somehow not picked up by the main window, so we deal with it here.
+            if(e.Control && e.KeyCode == Keys.OemQuestion)
+            {
+                CommentUncommentSelection();
+            }
         }
     }
 }

@@ -25,6 +25,8 @@ namespace CodeImp.Fluxtreme
         public static RoutedCommand SaveFileCommand { get; private set; } = new RoutedCommand();
         public static RoutedCommand SaveFileAsCommand { get; private set; } = new RoutedCommand();
         public static RoutedCommand ExitCommand { get; private set; } = new RoutedCommand();
+        public static RoutedCommand CommentSelectedLinesCommand { get; private set; } = new RoutedCommand();
+        public static RoutedCommand CloseFileCommand { get; private set; } = new RoutedCommand();
 
         public DocumentTab CurrentTab => tabs.SelectedItem as DocumentTab;
 
@@ -38,19 +40,22 @@ namespace CodeImp.Fluxtreme
             OpenFileCommand.InputGestures.Add(new KeyGesture(Key.O, ModifierKeys.Control));
             SaveFileCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
             DuplicateFileCommand.InputGestures.Add(new KeyGesture(Key.D, ModifierKeys.Control));
+            CommentSelectedLinesCommand.InputGestures.Add(new KeyGesture(Key.OemQuestion, ModifierKeys.Control));
         }
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            // Something to test quickly
             DocumentTab tab = DocumentTab.New(MakeNewFileName(NewFileName));
+            tabs.Items.Add(tab);
+            /*
+            // Something to test quickly
             tab.Panel.Query = "from(bucket: \"events\")\r\n" +
                     "\t|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n" +
                     "\t// The lines above are very common. The lines below are very specific.\r\n" +
                     "\t|> filter(fn: (r) => r[\"code\"] =~ /[IE]_SPE_03F2/)\r\n" +
                     "\t|> filter(fn: (r) => r[\"_field\"] == \"p-holder\" or r[\"_field\"] == \"p-mafm\" or r[\"_field\"] == \"p-sniffle_target\" or r[\"_field\"] == \"description\")\r\n" +
                     "\t|> filter(fn: (r) => r[\"ssindex\"] == \"0\")\r\n";
-            tabs.Items.Add(tab);
+            */
         }
 
         public void SettingsChanged()
@@ -67,6 +72,36 @@ namespace CodeImp.Fluxtreme
             DocumentTab newtab = DocumentTab.New(MakeNewFileName(NewFileName));
             tabs.Items.Add(newtab);
             tabs.SelectedItem = newtab;
+        }
+
+        public void CloseFile(object sender, ExecutedRoutedEventArgs e)
+        {
+            DocumentTab tab = CurrentTab;
+            if (tab.HasChanged)
+            {
+                MessageBoxResult result = MessageBox.Show(this, $"The file \"{tab.Title}\" has unsaved changes.\n\nDo you want to save changes?",
+                    Application.Current.MainWindow.Title, MessageBoxButton.YesNoCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        // Save files, then continue to close
+                        SaveTabToFile(tab);
+                        break;
+
+                    case MessageBoxResult.No:
+                        // Continue with close, no saving
+                        break;
+                        
+                    case MessageBoxResult.Cancel:
+                        // Don't close
+                        return;
+
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            tabs.Items.Remove(tab);
         }
 
         private List<DocumentTab> GetTabs()
@@ -181,7 +216,8 @@ namespace CodeImp.Fluxtreme
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, $"Unable to write the file \"{t.FilePathName}\".\n{ex.Message}", "Save file", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(this, $"Unable to write the file \"{t.FilePathName}\".\n{ex.Message}",
+                        Application.Current.MainWindow.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -201,7 +237,8 @@ namespace CodeImp.Fluxtreme
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, $"Unable to write the file \"{t.FilePathName}\".\n{ex.Message}", "Save file", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(this, $"Unable to write the file \"{t.FilePathName}\".\n{ex.Message}",
+                        Application.Current.MainWindow.Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -217,7 +254,8 @@ namespace CodeImp.Fluxtreme
             if (changedtabs.Count > 0)
             {
                 string filelist = changedtabs.Aggregate(string.Empty, (list, t) => list + t.Title + "\n", list => list.Trim());
-                MessageBoxResult result = MessageBox.Show(this, $"The following files have unsaved changes:\n\n{filelist}\n\nDo you want to save changes to the files?", "Exit", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
+                MessageBoxResult result = MessageBox.Show(this, $"The following files have unsaved changes:\n\n{filelist}\n\nDo you want to save changes to the files?",
+                    Application.Current.MainWindow.Title, MessageBoxButton.YesNoCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -239,6 +277,14 @@ namespace CodeImp.Fluxtreme
             }
 
             Settings.Default.Save();
+        }
+
+        private void CommentSelectedLines(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(CurrentTab != null)
+            {
+                CurrentTab.Panel.Editor.CommentUncommentSelection();
+            }
         }
     }
 }

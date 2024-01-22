@@ -13,6 +13,7 @@ namespace CodeImp.Fluxtreme.Editor
     public static class FluxLexer
     {
         public const string IdentifierChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+        public const char IdentifierSeparator = '.';
         public const string WhitspaceChars = " \t\n\r";
         public const string NumberChars = "0123456789.ymowdhsuµn";
         public static readonly string[] Keywords = new []{ "and", "import", "option", "if", "or", "package", "builtin", "then", "not", "return", "testcase", "else", "exists" };
@@ -36,8 +37,8 @@ namespace CodeImp.Fluxtreme.Editor
         public static TextRange IdentifierFromPosition(Scintilla editor, int pos)
         {
             TextRange r = new TextRange();
-            r.Start = editor.WalkWhileCharacterMatch(pos, SearchDirection.Backward, IdentifierChars + ".");
-            r.End = editor.WalkWhileCharacterMatch(pos, SearchDirection.Forward, IdentifierChars + ".") + 1;
+            r.Start = editor.WalkWhileCharacterMatch(pos, SearchDirection.Backward, IdentifierChars + IdentifierSeparator);
+            r.End = editor.WalkWhileCharacterMatch(pos, SearchDirection.Forward, IdentifierChars + IdentifierSeparator) + 1;
             return r;
         }
 

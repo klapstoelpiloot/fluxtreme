@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 
 namespace CodeImp.Fluxtreme.Configuration
 {
@@ -23,7 +21,8 @@ namespace CodeImp.Fluxtreme.Configuration
             pages = new List<UserControl>()
             {
                 new DatasourceSettingsPage(),
-                new MultiTableViewSettings()
+                new EditorSettingsPage(),
+                new MultiTableViewSettingsPage()
             };
             pageslist.ItemsSource = pages;
             pageslist.SelectedItem = pages[0];

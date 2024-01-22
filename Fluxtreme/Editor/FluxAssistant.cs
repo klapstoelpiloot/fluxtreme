@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace CodeImp.Fluxtreme.Editor
 {
@@ -24,6 +25,7 @@ namespace CodeImp.Fluxtreme.Editor
             this.editor = editor;
             editor.AutoCIgnoreCase = true;
             editor.CharAdded += Editor_CharAdded;
+            editor.KeyDown += Editor_KeyDown;
             editor.AutoCCompleted += Editor_AutoCCompleted;
             editor.RegisterRgbaImage((int)Images.Function, Properties.Resources.Function);
             editor.RegisterRgbaImage((int)Images.Parameter, Properties.Resources.Label);
@@ -44,13 +46,15 @@ namespace CodeImp.Fluxtreme.Editor
         {
             if ((editor.GetStyleAt(editor.CurrentPosition) != (int)FluxStyles.String) &&
                 (editor.GetStyleAt(editor.CurrentPosition) != (int)FluxStyles.Comment) &&
-                (editor.GetStyleAt(editor.CurrentPosition) != (int)FluxStyles.RegEx))
+                (editor.GetStyleAt(editor.CurrentPosition) != (int)FluxStyles.RegEx) &&
+                !editor.AutoCActive)
             {
                 // When a ( or , is typed and we are in the scope of a function call,
                 // we want to list the function parameters for insertion...
-                if ((e.Char == '(') || (e.Char == ','))
+                int prevchar = PreviousNonWhitespaceChar();
+                if ((prevchar == '(') || (prevchar == ','))
                 {
-                    if (e.Char == ',')
+                    if (prevchar == ',')
                     {
                         editor.InsertText(editor.CurrentPosition, " ");
                         editor.CurrentPosition++;
@@ -60,16 +64,43 @@ namespace CodeImp.Fluxtreme.Editor
                     if (func != null)
                     {
                         ShowAutoComplete(false, false, FluxLexer.Functions[func]);
+                        return;
                     }
                 }
 
                 // When identifier characters are typed and we are not inside
                 // a string, comment or regex, then show all identifiers...
-                if (FluxLexer.IdentifierChars.Contains((char)e.Char) || (e.Char == '.'))
+                if (FluxLexer.IdentifierChars.Contains((char)e.Char) || (e.Char == FluxLexer.IdentifierSeparator))
                 {
                     ShowAutoComplete(true, true, null);
                 }
             }
+        }
+
+        private void Editor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && (e.KeyCode == Keys.Space))
+            {
+                int prevchar = PreviousNonWhitespaceChar();
+                if ((prevchar == '(') || (prevchar == ','))
+                {
+                    string func = FluxLexer.FunctionFromPosition(editor, editor.CurrentPosition);
+                    if (func != null)
+                    {
+                        ShowAutoComplete(false, false, FluxLexer.Functions[func]);
+                        return;
+                    }
+                }
+
+                ShowAutoComplete(true, true, null);
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private int PreviousNonWhitespaceChar()
+        {
+            int prevnonwhitespace = editor.WalkWhileCharacterMatch(editor.CurrentPosition, SearchDirection.Backward, FluxLexer.WhitspaceChars) - 1;
+            return editor.GetCharAt(prevnonwhitespace);
         }
 
         private void ShowAutoComplete(bool functions, bool variables, IReadOnlyList<string> parameters)

@@ -3,18 +3,18 @@
 namespace CodeImp.Fluxtreme.Configuration
 {
     /// <summary>
-    /// Interaction logic for MultiTableViewSettings.xaml
+    /// Interaction logic for EditorSettingsPage.xaml
     /// </summary>
-    public partial class MultiTableViewSettings : UserControl
+    public partial class EditorSettingsPage : UserControl
     {
-        public MultiTableViewSettings()
+        public EditorSettingsPage()
         {
             InitializeComponent();
         }
 
         public override string ToString()
         {
-            return "Table view";
+            return "Editor";
         }
     }
 }
