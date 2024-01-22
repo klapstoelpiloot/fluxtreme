@@ -67,7 +67,6 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Margins[0].Width = 5;
             editor.Margins[0].Cursor = MarginCursor.Arrow;
             editor.Margins[0].Mask = 0; // No markers here
-            editor.Margins[0].BackColor = GetColorResource("AColour.Tone1.Background.Static");
 
             // Line numbers margin
             editor.Margins[1].Type = MarginType.Number;
@@ -79,7 +78,12 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Margins[2].Width = 5;
             editor.Margins[2].Cursor = MarginCursor.Arrow;
             editor.Margins[2].Mask = 0; // No markers here
-            editor.Margins[2].BackColor = GetColorResource("AColour.Tone1.Background.Static");
+
+            // Spacing margin
+            editor.Margins[3].Type = MarginType.Color;
+            editor.Margins[3].Width = 5;
+            editor.Margins[3].Cursor = MarginCursor.Arrow;
+            editor.Margins[3].Mask = 0; // No markers here
 
             // These key combinations put odd characters in the script. Let's disable them
             editor.AssignCmdKey(Keys.Control | Keys.D, Command.Null);
@@ -136,6 +140,7 @@ namespace CodeImp.Fluxtreme.Editor
             editor.Margins[0].BackColor = GetColorResource("AColour.Tone4.Background.Static");
             editor.Margins[1].BackColor = GetColorResource("AColour.Tone4.Background.Static");
             editor.Margins[2].BackColor = GetColorResource("AColour.Tone4.Background.Static");
+            editor.Margins[3].BackColor = GetColorResource("AColour.Tone1.Background.Static");
 
             // Unused indicator
             editor.Indicators[0].Alpha = 255;
